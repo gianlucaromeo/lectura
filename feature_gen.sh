@@ -8,7 +8,7 @@ fi
 
 FOLDER_NAME="$1"
 
-cd features
+cd lib/features || exit
 
 # Create the root folder
 mkdir "$FOLDER_NAME"
