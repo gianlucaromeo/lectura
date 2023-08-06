@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "727441168093",
+    "project_id": "lectura-6e3f6",
+    "storage_bucket": "lectura-6e3f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727441168093:android:2d6ef1b03c817641c7ad34",
+        "android_client_info": {
+          "package_name": "com.lectura.lectura"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "727441168093-6h5o3omcto50l359nnefcfu7l0tgql2d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjr6aAKbD-PNTD2sViYLPXk1uuSebUYAM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "727441168093-6h5o3omcto50l359nnefcfu7l0tgql2d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

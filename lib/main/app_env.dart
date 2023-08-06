@@ -6,8 +6,8 @@ enum AppEnvironment {
 
 extension _EnvProperties on AppEnvironment {
   String get appTitle => switch (this) {
-    AppEnvironment.dev => 'Lectura Dev',
-    AppEnvironment.staging => 'Lectura Staging',
+    AppEnvironment.dev => 'Lectura DEV',
+    AppEnvironment.staging => 'Lectura STAGING',
     AppEnvironment.prod => 'Lectura',
   };
 
