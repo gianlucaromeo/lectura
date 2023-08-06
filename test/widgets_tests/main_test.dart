@@ -1,13 +1,23 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lectura/main/app.dart';
 import 'package:lectura/main/app_env.dart';
+import 'package:lectura/providers/environment_provider.dart';
 
 void main() {
   group("App environments after startup", () {
     testWidgets("PRODUCTION Banner", (tester) async {
-      EnvInfo.initialize(AppEnvironment.prod);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            environmentInfoProvider.overrideWith(
+              (ref) => EnvironmentInfo(AppEnvironment.prod),
+            ),
+          ],
+          child: App(),
+        ),
+      );
       expect(
         find.byType(Banner),
         findsNothing,
@@ -16,8 +26,16 @@ void main() {
     });
 
     testWidgets("STAGING Banner", (tester) async {
-      EnvInfo.initialize(AppEnvironment.staging);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            environmentInfoProvider.overrideWith(
+              (ref) => EnvironmentInfo(AppEnvironment.staging),
+            ),
+          ],
+          child: App(),
+        ),
+      );
       expect(
         tester.widget(find.byType(Banner)),
         isA<Banner>().having(
@@ -29,8 +47,16 @@ void main() {
     });
 
     testWidgets("DEV Banner", (tester) async {
-      EnvInfo.initialize(AppEnvironment.dev);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            environmentInfoProvider.overrideWith(
+              (ref) => EnvironmentInfo(AppEnvironment.dev),
+            ),
+          ],
+          child: App(),
+        ),
+      );
       expect(
         tester.widget(find.byType(Banner)),
         isA<Banner>().having(
