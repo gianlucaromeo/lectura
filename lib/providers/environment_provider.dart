@@ -1,4 +1,4 @@
-import 'package:lectura/main/app_env.dart';
+import 'package:lectura/core/app_env.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'environment_provider.g.dart';

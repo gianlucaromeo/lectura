@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lectura/main/app_env.dart';
+import 'package:lectura/core/app_env.dart';
 
 void main() {
   group("Environments", () {

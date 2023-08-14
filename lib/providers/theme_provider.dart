@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:lectura/providers/shared_prefs_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'theme_provider.g.dart';
@@ -9,20 +8,29 @@ part 'theme_provider.g.dart';
 class AppThemeMode extends _$AppThemeMode {
   @override
   ThemeMode build() {
-    return ThemeMode.light;
+    final useDarkMode = ref.read(appSharedPreferencesProvider.notifier).isDarkMode();
+    return useDarkMode ? ThemeMode.dark : ThemeMode.light;
   }
 
-  void set(ThemeMode themeMode) {
+  bool get isDarkMode => state == ThemeMode.dark;
+
+  void _updateSharePrefs() {
+      ref.read(appSharedPreferencesProvider.notifier).setDarkMode(isDarkMode);
+  }
+
+  void set(ThemeMode themeMode, {bool updateSharedPrefs = true}) {
     if (state != themeMode) {
       state = themeMode;
+      if (updateSharedPrefs) {
+        _updateSharePrefs();
+      }
     }
   }
 
-  void toggle() {
-    if (state == ThemeMode.dark) {
-      state = ThemeMode.light;
-    } else {
-      state = ThemeMode.dark;
+  void toggleThemeMode({bool updateSharedPrefs = true}) {
+    state = isDarkMode ? ThemeMode.light : ThemeMode.dark;
+    if (updateSharedPrefs) {
+      _updateSharePrefs();
     }
   }
 }

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+createFolderWithGitkeep() {
+    local path="$1"
+    mkdir -p "$path" && touch "$path/.gitkeep"
+}
+
 if [ -z "$1" ]; then
   echo "Error: Folder name not provided."
   echo "Usage: $0 folder_name"
@@ -11,23 +16,27 @@ FOLDER_NAME="$1"
 cd lib/features || exit
 
 # Create the root folder
-mkdir "$FOLDER_NAME"
+createFolderWithGitkeep "$FOLDER_NAME"
 
 # Data
-mkdir -p "$FOLDER_NAME/data"
-mkdir -p "$FOLDER_NAME/data/datasource"
-mkdir -p "$FOLDER_NAME/data/dto"
-mkdir -p "$FOLDER_NAME/data/repositories"
+createFolderWithGitkeep "$FOLDER_NAME/data"
+createFolderWithGitkeep "$FOLDER_NAME/data/datasources"
+createFolderWithGitkeep "$FOLDER_NAME/data/dto"
+createFolderWithGitkeep "$FOLDER_NAME/data/repositories"
+createFolderWithGitkeep "$FOLDER_NAME/data/exceptions"
+createFolderWithGitkeep "$FOLDER_NAME/data/failures"
 
 # Domain
-mkdir -p "$FOLDER_NAME/domain"
-mkdir -p "$FOLDER_NAME/domain/entities"
-mkdir -p "$FOLDER_NAME/domain/repositories"
+createFolderWithGitkeep "$FOLDER_NAME/domain"
+createFolderWithGitkeep "$FOLDER_NAME/domain/entities"
+createFolderWithGitkeep "$FOLDER_NAME/domain/repositories"
+createFolderWithGitkeep "$FOLDER_NAME/domain/use_cases"
 
 # Presentation
-mkdir -p "$FOLDER_NAME/presentation"
-mkdir -p "$FOLDER_NAME/presentation/providers"
-mkdir -p "$FOLDER_NAME/presentation/pages"
-mkdir -p "$FOLDER_NAME/presentation/widgets"
+createFolderWithGitkeep "$FOLDER_NAME/presentation"
+createFolderWithGitkeep "$FOLDER_NAME/presentation/pages"
+createFolderWithGitkeep "$FOLDER_NAME/presentation/providers"
+createFolderWithGitkeep "$FOLDER_NAME/presentation/validators"
+createFolderWithGitkeep "$FOLDER_NAME/presentation/widgets"
 
 echo "Clean Architecture's folders tree generated successfully."

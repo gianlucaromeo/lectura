@@ -1,0 +1,56 @@
+{
+  "@COMMON": "",
+  "app__title": "Lectura",
+
+  "@FAILURES": "",
+  "generic_failure__title": "Ops...",
+  "generic_failure__info": "Something went wrong. If the error persists contact lectura@support.com",
+  "firebase_auth__failure__email_already_in_use__title": "E-mail already in use",
+  "firebase_auth__failure__email_already_in_use__info": "This account already exists.\n\nIf you don't remember your password, click on \"I forgot my password\" to recover it.",
+  "firebase_auth__failure__invalid_email_title": "Invalid e-mail",
+  "firebase_auth__failure__invalid_email_info": "Please provide a well-formatted and correct e-mail address.",
+  "firebase_auth__failure__operation_not_allowed__title": "Operation not allowed",
+  "firebase_auth__failure__operation_not_allowed__info": "This account is not allowed to submit this request. Try with a different account.",
+  "firebase_auth__failure__weak_password__title": "Weak password",
+  "firebase_auth__failure__weak_password__info": "The password you entered is too weak. Please provide a stronger one.",
+  "firebase_auth__failure__auth_channel__title": "Authentication channel error",
+  "firebase_auth__failure__auth_channel__info": "There has been an error while establishing a connection. Please try again.",
+
+  "@AUTH__COMMON":  "",
+  "auth__tab__login": "Login",
+  "auth__tab__signup": "Sign Up",
+  "auth__common__login_with_google": "Login with Google",
+  "auth__common__about_lectura": "About Lectura",
+
+  "@AUTH__COMMON_ERRORS": "",
+  "auth__common__errors__invalid_email": "Invalid e-mail format",
+  "auth__common__errors__email_empty": "Please provide an e-mail address",
+  "auth__common__errors__password_empty": "Please provide a password",
+
+  "@AUTH__SIGNUP__FORM": "",
+  "auth__signup_form__title": "Register an account",
+  "auth__signup_form__subtitle": "You will receive a confirmation e-mail.",
+  "auth__signup_form__email__label": "Email",
+  "auth__signup_form__email__hint": "example@gmail.com",
+  "auth__signup_form__password__label": "Password",
+  "auth__signup_form__confirm_password__label": "Confirm password",
+  "auth__signup_form__register__btn": "Register",
+  "auth__signup_form__err__capital_letter": "- At least 1 upper-case letter (A-Z)",
+  "auth__signup_form__err__password_empty": "Please provide a password first",
+  "auth__signup_form__err__confirm_password_empty": "Confirm your password",
+  "auth__signup_form__err__passwords_not_matching": "Passwords don't match",
+  "auth__signup_form__err__lower_case_letter": "- At least 1 lower-case letter (a-z)",
+  "auth__signup_form__err__numbers": "- At least 1 number (0-9)",
+  "auth__signup_form__err__special_chars": "- At least 1 special character: !@#\\$&*~",
+  "auth__signup_form__err__chars_length": "- Minimum {min} and maximum {max} characters",
+  "@auth__signup_form__err__chars_length": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  }
+}

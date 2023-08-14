@@ -1,5 +1,3 @@
-// A Counter example implemented with riverpod with Logger
-
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,10 +10,16 @@ class ProvidersLogger extends ProviderObserver {
     Object? newValue,
     ProviderContainer container,
   ) {
-    log('''
-    {
-      "provider": "${provider.name ?? provider.runtimeType}",
-      "newValue": "$newValue"
-    }''');
+    log(
+      "New value: $newValue\n",
+      name: "${provider.name ?? provider.runtimeType}",
+    );
+  }
+
+  @override
+  void didAddProvider(ProviderBase<Object?> provider, Object? value,
+      ProviderContainer container) {
+    log("\nProvider: ${provider.toString()}\nValue: ${value.toString()}\n",
+        name: "ProvidersLogger.didAddProvider");
   }
 }

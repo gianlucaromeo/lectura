@@ -11,12 +11,26 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   auto_route: ^7.8.0
   cupertino_icons: ^1.0.2
+  cloud_firestore: ^4.8.4
+  firebase_auth: ^4.7.2
   firebase_core: ^2.15.0
   flutter_riverpod: ^2.3.6
   riverpod_annotation: ^2.1.1
+  shared_preferences: ^2.2.0
+  google_fonts: ^5.1.0
+  google_sign_in: ^6.1.4
+  intl: ^0.18.1
+  equatable: ^2.0.5
+  dartz: ^0.10.1
+  internet_connection_checker: ^1.0.0+1
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+  email_validator: ^2.1.17
 
 dev_dependencies:
   flutter_test:
@@ -28,6 +42,9 @@ dev_dependencies:
   riverpod_generator: ^2.2.4
   riverpod_lint: ^1.4.0
   custom_lint: ^0.4.0
+  freezed: ^2.4.1
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true
+  generate: true

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lectura/main/app.dart';
-import 'package:lectura/main/app_env.dart';
+import 'package:lectura/app.dart';
+import 'package:lectura/core/app_env.dart';
 import 'package:lectura/providers/environment_provider.dart';
 
 void main() {
