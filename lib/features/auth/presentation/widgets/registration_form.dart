@@ -21,17 +21,9 @@ class RegistrationForm extends ConsumerStatefulWidget {
 }
 
 class _RegistrationPageState extends ConsumerState<RegistrationForm> {
-  final emailHandler = FormFieldHandler(
-    textEditingController: TextEditingController(text: "g@i.i"),
-  );
-
-  final passwordHandler = FormFieldHandler(
-    textEditingController: TextEditingController(text: "Password1234?"),
-  );
-
-  final confirmPasswordHandler = FormFieldHandler(
-    textEditingController: TextEditingController(text: "Password1234?"),
-  );
+  final emailHandler = FormFieldHandler();
+  final passwordHandler = FormFieldHandler();
+  final confirmPasswordHandler = FormFieldHandler();
 
   final _formKey = FormKey();
 
@@ -133,6 +125,7 @@ class _RegistrationPageState extends ConsumerState<RegistrationForm> {
                       context.l10n.auth__signup_form__confirm_password__label,
                   keyboardType: TextInputType.visiblePassword,
                   showAndHidePasswordMode: true,
+                  onSubmittedSuccess: _handleRegistration,
                 ),
                 24.0.verticalSpace,
 
