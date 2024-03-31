@@ -1,0 +1,69 @@
+# COMMANDS
+
+- Code generation: dart run build_runner [build|watch]
+
+
+# LINKS AND RESOURCES
+
+- Link (Code Generation, Syntax, and Table of different providers):
+  https://riverpod.dev/docs/concepts/about_code_generation
+
+
+# NOTES - GENERAL
+
+- Providers should always be final
+- Providers can be created in two ways:
+    - using functions -> can't perform side-effects
+    - using classes -> can perform side-effects using public methods
+
+
+# NOTES - REF
+
+- Ref: an object used by providers to interact with other providers and the
+  life-cycles of the app. You can get ref as a parameter of a provider, or using a consumer widget
+  from riverpod.
+
+- read -> the state:
+    Reads the state of a provider, without listening to that provider.
+    By using read inside a provider P1, when the obtained provider P2 changes, P1 doesn't rebuild.
+- watch -> the state:
+     Obtains the state of a provider P2 and causes the state of P1 to be re-evaluated
+     when P2's state changes.
+- listen -> a subscription:
+     Listens to a provider and call [listener] whenever its value changes
+
+- Difference (watch vs listen): watch returns the new value, listen returns [void] but gives access
+                                to the new value and the old one with a callback.
+
+
+
+# NOTES - PROVIDERS
+
+- Provider -> any:
+    "Creates a value, and that's it".
+    Typically used to:
+        - chache computations (powerful when combined with ref.watch)
+        - expose a value to other providers
+        - offer a way for tests or widgets to override a value
+        - reduce rebuilds
+    i.e., service class, computed property, filtered list
+
+- StateProvider -> any:
+    i.e., filter condition or simple state object
+
+- FutureProvider -> Future<any>:
+    i.e., result from an API call
+
+- StreamProvider -> Stream<any>:
+    i.e., stream of results from an API
+
+- NotifierProvider -> subclass of (Async)Notifier:
+    i.e., complex state object that is immutable except through an interface
+
+- StateNotifierProvider -> subclass of StateNotifier:
+    i.e., complex state object that is immutable except through an interface.
+          (Use NotifierProvider when possible.)
+
+- ChangeNotifierProvider -> subclass of ChangeNotifier:
+    i.e., complex state object that requires mutability.
+          (Not recommended for scalable applications.)

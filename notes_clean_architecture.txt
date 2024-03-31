@@ -1,0 +1,74 @@
+# READ ME FIRST
+
+This document is a brief recap of what the Clean Architecture is and how it
+is used inside this project.
+
+
+## CLEAN ARCHITECTURE IN A NUTSHELL
+
+### DATA
+
+- Communicate with the server
+- Communicate with the local DB
+- Manage data logic
+
+Datasource:
+    - describes the process of acquiring/updating data
+    - remote/local datasource
+
+Repository:
+    - is the bridge between DATA and DOMAIN
+    - is the repository implementation of the abstract repository in the DOMAIN layer
+    - coordinates data from different datasources
+
+
+### DOMAIN
+
+- Responsible for all the business logic
+- Pure Dart
+- Only logic -> no implementation!
+
+Providers:
+    - describe the app's logic
+    - communicate with the repositories
+
+Repositories:
+    - abstract classes that define the expected functionalities of the outer layers
+
+
+### PRESENTATION
+
+- Framework-dependent
+- Handles UI and events
+- Does not contain any business logic
+
+Widgets, screens:
+    - notify events
+    - listen to states emitted from the StateNotifierProvider
+
+Providers:
+    - describe the logic processing required for the presentation
+    - communicate with providers from the DOMAIN layer
+
+
+## CLEAN ARCHITECTURE IN LECTURA
+
+- data
+    - datasources: both abstract and implementation of datasources
+    - dto
+    - exceptions: exceptions which return a Failure from [failures]
+    - failures: failures that extend ServerFailure, CacheFailure or other types of failures
+    - repositories: implementations of repositories from DOMAIN
+    data_providers.dart
+
+- domain (pure Dart, only logic)
+    - entities
+    - repositories: abstract repositories
+    - use_cases: classes that extends UseCase<T, Params>
+    domain_providers.dart
+
+- presentation
+    - pages
+    - providers: those needed for the UI, like AuthUseCases
+    - validators
+    - widgets
