@@ -8,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_use_cases_provider.g.dart';
 
-@Riverpod()
+@Riverpod()  // TODO Check why it gets disposed when changing tab Login/Sign Up
 class AuthUseCases extends _$AuthUseCases {
   AuthRepository? _authRepository;
 

@@ -24,8 +24,7 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
       );
       return true;
     } on FirebaseAuthException catch (e) {
-      if (firebaseAuthExceptions
-          .containsKey(e.code)) {
+      if (firebaseAuthExceptions.containsKey(e.code)) {
         log("Firebase Auth Exception: ${e.code}", name: "App Exception");
         throw firebaseAuthExceptions[e.code]!;
       } else {

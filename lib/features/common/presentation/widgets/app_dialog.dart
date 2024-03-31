@@ -27,23 +27,23 @@ Future<dynamic> showAppFailureDialog({
   var content = l10n.generic_failure__info;
 
   switch (failure.runtimeType) {
-    case FirebaseAuthEmailAlreadyInUseFailure:
+    case FirebaseAuthEmailAlreadyInUseFailure _:
       title = l10n.firebase_auth__failure__email_already_in_use__title;
       content = l10n.firebase_auth__failure__email_already_in_use__info;
       break;
-    case FirebaseAuthInvalidEmailFailure:
+    case FirebaseAuthInvalidEmailFailure _:
       title = l10n.firebase_auth__failure__invalid_email_title;
       content = l10n.firebase_auth__failure__invalid_email_info;
       break;
-    case FirebaseAuthOperationNotAllowedFailure:
+    case FirebaseAuthOperationNotAllowedFailure _:
       title = l10n.firebase_auth__failure__operation_not_allowed__title;
       content = l10n.firebase_auth__failure__operation_not_allowed__info;
       break;
-    case FirebaseAuthWeakPasswordFailure:
+    case FirebaseAuthWeakPasswordFailure _:
       title = l10n.firebase_auth__failure__weak_password__title;
       content = l10n.firebase_auth__failure__weak_password__info;
       break;
-    case FirebaseAuthChannelErrorFailure:
+    case FirebaseAuthChannelErrorFailure _:
       title = l10n.firebase_auth__failure__auth_channel__title;
       content = l10n.firebase_auth__failure__auth_channel__info;
       break;

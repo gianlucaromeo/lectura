@@ -40,7 +40,7 @@ class _RegistrationPageState extends ConsumerState<RegistrationForm> {
           });
         } else if (previousState is AsyncLoading && state is! AsyncLoading) {
           await AutoRouter.of(context).pop(); // Remove loading dialog
-          if (state.value?.isLeft() == true) {
+          if (state.isFailure) {
             final failure = state.value!.failure;
             _handleFailure(failure);
           }

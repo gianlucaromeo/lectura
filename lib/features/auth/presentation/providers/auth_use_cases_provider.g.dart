@@ -6,7 +6,7 @@ part of 'auth_use_cases_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authUseCasesHash() => r'5e51c478ad91850253085db35b2e19319309070f';
+String _$authUseCasesHash() => r'e5ce12c7e67bf3f08a1c2adf103e95f8ca3be09e';
 
 /// See also [AuthUseCases].
 @ProviderFor(AuthUseCases)
@@ -22,4 +22,4 @@ final authUseCasesProvider = AutoDisposeAsyncNotifierProvider<AuthUseCases,
 
 typedef _$AuthUseCases = AutoDisposeAsyncNotifier<Either<Failure, dynamic>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

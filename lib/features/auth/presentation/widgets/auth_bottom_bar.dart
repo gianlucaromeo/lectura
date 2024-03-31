@@ -8,6 +8,8 @@ class AuthBottomBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(appThemeModeProvider);
+
     return  BottomAppBar(
       padding: 20.0.all,
       child: Row(
@@ -23,7 +25,7 @@ class AuthBottomBar extends ConsumerWidget {
           ),
           IconButton(
             onPressed: ref.read(appThemeModeProvider.notifier).toggleThemeMode,
-            icon: ref.read(appThemeModeProvider) == ThemeMode.dark
+            icon: themeMode == ThemeMode.dark
                 ? const Icon(Icons.light_mode_outlined)
                 : const Icon(Icons.dark_mode_outlined),
           ),

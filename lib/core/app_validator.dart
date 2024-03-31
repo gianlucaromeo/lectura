@@ -9,6 +9,6 @@ abstract class AppValidator<Params> {
   // Useful for TextFormField's validate property.
   String? validate(String? value) => internalValidate(value, params);
 
-  /// Concrete implementation of the [validate()] method.
+  /// Concrete implementation of the [validate] method.
   String? internalValidate(String? value, Params params);
 }

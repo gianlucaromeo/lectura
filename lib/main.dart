@@ -14,6 +14,7 @@ import 'package:lectura/providers/network_info_provider.dart';
 import 'package:lectura/providers/shared_prefs_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// Call this from one of the class of the "/main" folder
 Future<void> mainCommon(AppEnvironment environment) async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -43,6 +44,9 @@ ProviderContainer _initProviderContainer(
   AppEnvironment environment,
   SharedPreferences prefs,
 ) {
+  // Create a ProviderContainer to have access to providers before creating
+  // the ProviderScope (i.e., to initialize the AppSharedPreferences provider).
+
   final container = ProviderContainer(
     overrides: [
       environmentInfoProvider.overrideWith(

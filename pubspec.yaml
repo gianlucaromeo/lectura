@@ -22,7 +22,7 @@ dependencies:
   flutter_riverpod: ^2.3.6
   riverpod_annotation: ^2.1.1
   shared_preferences: ^2.2.0
-  google_fonts: ^5.1.0
+  google_fonts: ^6.1.0
   google_sign_in: ^6.1.4
   intl: ^0.18.1
   equatable: ^2.0.5
@@ -36,12 +36,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
   auto_route_generator: ^7.3.0
   build_runner: ^2.4.6
   riverpod_generator: ^2.2.4
-  riverpod_lint: ^1.4.0
-  custom_lint: ^0.4.0
+  riverpod_lint: ^2.3.4
+  custom_lint: ^0.5.6
   freezed: ^2.4.1
   json_serializable: ^6.7.1
 

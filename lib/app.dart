@@ -7,7 +7,7 @@ import 'package:lectura/style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class App extends ConsumerWidget {
-  App({super.key});
+   App({super.key});
 
   final _appRouter = AppRouter();
 
