@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lectura/core/extensions.dart';
-import 'package:lectura/providers/theme_provider.dart';
 
-class AuthBottomBar extends ConsumerWidget {
+class AuthBottomBar extends StatelessWidget {
   const AuthBottomBar({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(appThemeModeProvider);
+  Widget build(BuildContext context) {
+
+    const themeMode = ThemeMode.dark; // TODO Fetch
 
     return  BottomAppBar(
       padding: 20.0.all,
@@ -24,7 +23,9 @@ class AuthBottomBar extends ConsumerWidget {
             ),
           ),
           IconButton(
-            onPressed: ref.read(appThemeModeProvider.notifier).toggleThemeMode,
+            onPressed: () {
+              // TODO Update
+            },
             icon: themeMode == ThemeMode.dark
                 ? const Icon(Icons.light_mode_outlined)
                 : const Icon(Icons.dark_mode_outlined),

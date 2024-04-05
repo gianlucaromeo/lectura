@@ -1,26 +1,25 @@
-import 'package:auto_route/auto_route.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/core/keys.dart';
 import 'package:lectura/core/use_case.dart';
 import 'package:lectura/features/auth/data/failures/firebase_auth_failures.dart';
-import 'package:lectura/features/auth/presentation/providers/auth_use_cases_provider.dart';
 import 'package:lectura/features/auth/presentation/validators/auth_validators.dart';
 import 'package:lectura/core/utils.dart';
 import 'package:lectura/features/auth/presentation/widgets/google_login_button.dart';
 import 'package:lectura/features/common/presentation/widgets/app_dialog.dart';
 import 'package:lectura/features/common/presentation/widgets/app_text_form_field.dart';
 
-class RegistrationForm extends ConsumerStatefulWidget {
+class RegistrationForm extends StatefulWidget {
   const RegistrationForm({super.key});
 
   @override
-  ConsumerState createState() => _RegistrationPageState();
+  State createState() => _RegistrationPageState();
 }
 
-class _RegistrationPageState extends ConsumerState<RegistrationForm> {
+class _RegistrationPageState extends State<RegistrationForm> {
   final emailHandler = FormFieldHandler();
   final passwordHandler = FormFieldHandler();
   final confirmPasswordHandler = FormFieldHandler();
@@ -31,23 +30,6 @@ class _RegistrationPageState extends ConsumerState<RegistrationForm> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(
-      authUseCasesProvider,
-      (previousState, state) async {
-        if (state is AsyncLoading) {
-          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            showAppLoadingDialog(context);
-          });
-        } else if (previousState is AsyncLoading && state is! AsyncLoading) {
-          await AutoRouter.of(context).pop(); // Remove loading dialog
-          if (state.isFailure) {
-            final failure = state.value!.failure;
-            _handleFailure(failure);
-          }
-        }
-      },
-    );
-
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -162,11 +144,14 @@ class _RegistrationPageState extends ConsumerState<RegistrationForm> {
     if (_formKey.currentState!.validate()) {
       final email = emailHandler.controller.text.trim();
       final password = passwordHandler.controller.text;
+      
+      log("Email: ${email}, Password: ${password}");
 
-      ref.read(authUseCasesProvider.notifier).createUserWithEmailAndPassword(
-            email: email,
-            password: password,
-          );
+      // TODO
+      // ref.read(authUseCasesProvider.notifier).createUserWithEmailAndPassword(
+      //             email: email,
+      //             password: password,
+      //           );
     } else {
       setState(() {
         isFormUnvalid = true;
