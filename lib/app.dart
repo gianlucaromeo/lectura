@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lectura/providers/environment_provider.dart';
-import 'package:lectura/providers/theme_provider.dart';
+import 'package:lectura/core/app_env.dart';
 import 'package:lectura/router/app_router.dart';
 import 'package:lectura/style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class App extends ConsumerWidget {
-   App({super.key});
+class App extends StatelessWidget {
 
+  App({super.key, required this.appEnvironment});
+
+  final AppEnvironment appEnvironment;
   final _appRouter = AppRouter();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final environmentInfo = ref.read(environmentInfoProvider);
-    final appThemeMode = ref.watch(appThemeModeProvider);
+  Widget build(BuildContext context) {
+    final environmentInfo = EnvironmentInfo(appEnvironment); // TODO
 
     return MaterialApp.router(
       title: "Lectura",
       routerConfig: _appRouter.config(),
       debugShowCheckedModeBanner: false,
-      themeMode: appThemeMode,
+      themeMode: ThemeMode.dark, // TODO
       theme: lightTheme,
       darkTheme: darkTheme,
       localizationsDelegates: AppLocalizations.localizationsDelegates,

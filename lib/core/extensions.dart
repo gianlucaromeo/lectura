@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,10 +17,6 @@ extension SharedPreferencesLogs on SharedPreferences {
         .join(",");
     log("Shared Preferences: { $keysAsString }\n");
   }
-}
-
-extension IsFailure on AsyncValue<Either<Failure, dynamic>> {
-  bool get isFailure => value?.isLeft() == true;
 }
 
 extension GetFailure on Either<Failure, dynamic> {

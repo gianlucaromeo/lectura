@@ -1,24 +1,19 @@
-import 'dart:developer';
-
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lectura/core/extensions.dart';
-import 'package:lectura/features/auth/domain/domain_providers.dart';
-import 'package:lectura/features/auth/presentation/providers/auth_use_cases_provider.dart';
 import 'package:lectura/features/auth/presentation/widgets/auth_bottom_bar.dart';
 import 'package:lectura/features/auth/presentation/widgets/registration_form.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
 
 @RoutePage()
-class AuthPage extends ConsumerStatefulWidget {
+class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
 
   @override
-  ConsumerState createState() => _AuthPageState();
+  State createState() => _AuthPageState();
 }
 
-class _AuthPageState extends ConsumerState<AuthPage>
+class _AuthPageState extends State<AuthPage>
     with SingleTickerProviderStateMixin {
   late final TabController? tabController;
 
@@ -26,10 +21,6 @@ class _AuthPageState extends ConsumerState<AuthPage>
   @override
   void initState() {
     super.initState();
-
-    ref.read(authUseCasesProvider.notifier).initialize(
-        ref.read(authRepositoryProvider),
-    );
 
     tabController = TabController(
       length: 2,
@@ -46,11 +37,6 @@ class _AuthPageState extends ConsumerState<AuthPage>
 
   @override
   Widget build(BuildContext context) {
-    /* TODO - Check how this should be solved:
-         If authUseCasesProvider is not watched, it gets disposed when for example
-         the user switches between the Login and Sign Up tabs.
-     */
-    final authUseCases = ref.watch(authUseCasesProvider.notifier);
 
     return LecturaPage(
       title: context.l10n.app__title,
