@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/network_info.dart';
-import 'package:lectura/features/auth/bloc/registration_bloc/registration_bloc.dart';
+import 'package:lectura/features/auth/bloc/registration/registration_bloc.dart';
 import 'package:lectura/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:lectura/features/auth/data/repositories/auth_repository.dart';
 import 'package:lectura/features/auth/domain/repositories/auth_repository.dart';
