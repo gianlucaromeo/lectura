@@ -1,10 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/core/keys.dart';
 import 'package:lectura/core/use_case.dart';
+import 'package:lectura/features/auth/bloc/registration_bloc/registration_bloc.dart';
 import 'package:lectura/features/auth/data/failures/firebase_auth_failures.dart';
 import 'package:lectura/features/auth/presentation/validators/auth_validators.dart';
 import 'package:lectura/core/utils.dart';
@@ -48,8 +48,8 @@ class _RegistrationPageState extends State<RegistrationForm> {
           Text(
             context.l10n.auth__signup_form__subtitle,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).colorScheme.outline,
-                ),
+              color: Theme.of(context).colorScheme.outline,
+            ),
           ),
           24.0.verticalSpace,
 
@@ -97,14 +97,14 @@ class _RegistrationPageState extends State<RegistrationForm> {
                     AppConfirmPasswordValidatorParams(
                       passwordController: passwordHandler.controller,
                       confirmPasswordController:
-                          confirmPasswordHandler.controller,
+                      confirmPasswordHandler.controller,
                     ),
                     context,
                   ),
                   handler: confirmPasswordHandler,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   label:
-                      context.l10n.auth__signup_form__confirm_password__label,
+                  context.l10n.auth__signup_form__confirm_password__label,
                   keyboardType: TextInputType.visiblePassword,
                   showAndHidePasswordMode: true,
                   onSubmittedSuccess: _handleRegistration,
@@ -117,7 +117,8 @@ class _RegistrationPageState extends State<RegistrationForm> {
                   child: FilledButton(
                     key: const Key(AppKeys.registerButton),
                     onPressed: _handleRegistration,
-                    child: Text(context.l10n.auth__signup_form__register__btn),
+                    child: Text(
+                        context.l10n.auth__signup_form__register__btn),
                   ),
                 ),
                 24.0.verticalSpace,
@@ -144,14 +145,14 @@ class _RegistrationPageState extends State<RegistrationForm> {
     if (_formKey.currentState!.validate()) {
       final email = emailHandler.controller.text.trim();
       final password = passwordHandler.controller.text;
-      
-      log("Email: ${email}, Password: ${password}");
 
-      // TODO
-      // ref.read(authUseCasesProvider.notifier).createUserWithEmailAndPassword(
-      //             email: email,
-      //             password: password,
-      //           );
+      context.read<RegistrationBloc>().add(
+            RegistrationRequested(
+              email: email,
+              password: password,
+              passwordConfirmation: password, // TODO Fix
+            ),
+          );
     } else {
       setState(() {
         isFormUnvalid = true;

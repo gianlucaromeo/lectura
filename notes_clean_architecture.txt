@@ -46,10 +46,6 @@ Widgets, screens:
     - notify events
     - listen to states emitted from the StateNotifierProvider
 
-Providers:
-    - describe the logic processing required for the presentation
-    - communicate with providers from the DOMAIN layer
-
 
 ## CLEAN ARCHITECTURE IN LECTURA
 
@@ -59,16 +55,13 @@ Providers:
     - exceptions: exceptions which return a Failure from [failures]
     - failures: failures that extend ServerFailure, CacheFailure or other types of failures
     - repositories: implementations of repositories from DOMAIN
-    data_providers.dart
 
 - domain (pure Dart, only logic)
     - entities
     - repositories: abstract repositories
     - use_cases: classes that extends UseCase<T, Params>
-    domain_providers.dart
 
 - presentation
     - pages
-    - providers: those needed for the UI, like AuthUseCases
     - validators
     - widgets
