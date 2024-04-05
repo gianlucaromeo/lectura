@@ -5,7 +5,6 @@ import 'package:lectura/style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class App extends StatelessWidget {
-
   App({super.key, required this.appEnvironment});
 
   final AppEnvironment appEnvironment;

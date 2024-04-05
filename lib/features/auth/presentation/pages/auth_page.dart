@@ -1,6 +1,13 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lectura/core/extensions.dart';
+import 'package:lectura/core/network_info.dart';
+import 'package:lectura/features/auth/bloc/registration/registration_bloc.dart';
+import 'package:lectura/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:lectura/features/auth/data/repositories/auth_repository.dart';
+import 'package:lectura/features/auth/domain/repositories/auth_repository.dart';
 import 'package:lectura/features/auth/presentation/widgets/auth_bottom_bar.dart';
 import 'package:lectura/features/auth/presentation/widgets/registration_form.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
@@ -16,7 +23,6 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage>
     with SingleTickerProviderStateMixin {
   late final TabController? tabController;
-
 
   @override
   void initState() {
@@ -37,36 +43,51 @@ class _AuthPageState extends State<AuthPage>
 
   @override
   Widget build(BuildContext context) {
-
-    return LecturaPage(
-      title: context.l10n.app__title,
-      padding: [20.0, 20.0, 20.0, 0.0].fromLTRB,
-      body: Column(
-        children: [
-          TabBar(
-            controller: tabController,
-            indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Tab(text: context.l10n.auth__tab__login),
-              Tab(text: context.l10n.auth__tab__signup),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
+    return RepositoryProvider<AuthRepository>.value(
+      value: AuthRepositoryImpl(
+        authRemoteDataSource: FirebaseAuthDataSource(),
+        networkInfo: NetworkInfoImpl(
+          InternetConnectionChecker(),
+        ),
+      ),
+      child: LecturaPage(
+        title: context.l10n.app__title,
+        padding: [20.0, 20.0, 20.0, 0.0].fromLTRB,
+        body: Column(
+          children: [
+            TabBar(
               controller: tabController,
-              children: [
-                const Text("Login"),
-                Padding(
-                  padding: [20.0, 0.0, 20.0, 0.0].fromLTRB,
-                  child: const RegistrationForm(),
-                ),
+              indicatorSize: TabBarIndicatorSize.tab,
+              tabs: [
+                Tab(text: context.l10n.auth__tab__login),
+                Tab(text: context.l10n.auth__tab__signup),
               ],
             ),
-          ),
-          20.0.verticalSpace,
-        ],
+            Expanded(
+              child: TabBarView(
+                controller: tabController,
+                children: [
+                  const Text("Login"),
+                  Padding(
+                    padding: [20.0, 0.0, 20.0, 0.0].fromLTRB,
+                    child: BlocProvider<RegistrationBloc>(
+                      create: (BuildContext context) {
+                        return RegistrationBloc(
+                          authRepository:
+                              RepositoryProvider.of<AuthRepository>(context),
+                        );
+                      },
+                      child: const RegistrationForm(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            20.0.verticalSpace,
+          ],
+        ),
+        bottomNavigationBar: const AuthBottomBar(),
       ),
-      bottomNavigationBar: const AuthBottomBar(),
     );
   }
 }
