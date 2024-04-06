@@ -1,3 +1,5 @@
+part of 'registration_bloc.dart';
+
 /// EVENTS
 sealed class RegistrationEvent {
   const RegistrationEvent();
@@ -14,3 +16,5 @@ final class RegistrationRequested extends RegistrationEvent {
   final String password;
   final String passwordConfirmation;
 }
+
+final class RegistrationRetryAfterFailure extends RegistrationEvent {}

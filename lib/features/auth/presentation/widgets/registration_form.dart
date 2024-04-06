@@ -5,8 +5,6 @@ import 'package:lectura/core/failures.dart';
 import 'package:lectura/core/keys.dart';
 import 'package:lectura/core/use_case.dart';
 import 'package:lectura/features/auth/bloc/registration/registration_bloc.dart';
-import 'package:lectura/features/auth/bloc/registration/registration_event.dart';
-import 'package:lectura/features/auth/bloc/registration/registration_state.dart';
 import 'package:lectura/features/auth/data/failures/firebase_auth_failures.dart';
 import 'package:lectura/features/auth/presentation/validators/auth_validators.dart';
 import 'package:lectura/core/utils.dart';
@@ -31,23 +29,38 @@ class _RegistrationPageState extends State<RegistrationForm> {
   bool isFormUnvalid = false;
 
   bool isLoading = false;
+  bool isFailed = false;
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        if (state.status.isOnProgress) {
+        // Close the loading dialog when not loading anymore
+        if (isLoading && state.status != RegistrationStatus.inProgress) {
           setState(() {
-            isLoading = true;
+            isLoading = false;
           });
-          showAppLoadingDialog(context);
-        } else {
-          if (isLoading) {
-            setState(() {
-              isLoading = false;
-            });
+          Navigator.of(context).maybePop();
+        }
+
+        switch (state.status) {
+          case RegistrationStatus.retryAfterFailure:
             Navigator.of(context).maybePop();
-          }
+            break;
+          case RegistrationStatus.unknown:
+            break;
+          case RegistrationStatus.inProgress:
+            setState(() {
+              isLoading = true;
+            });
+            showAppLoadingDialog(context);
+            break;
+          case RegistrationStatus.failed:
+            _handleFailure(state.registrationFailure ?? GenericFailure());
+            break;
+          case RegistrationStatus.registered:
+            // TODO: Handle this case.
+            break;
         }
       },
       child: SingleChildScrollView(
@@ -169,12 +182,12 @@ class _RegistrationPageState extends State<RegistrationForm> {
       final passwordConfirmation = confirmPasswordHandler.controller.text;
 
       context.read<RegistrationBloc>().add(
-        RegistrationRequested(
-          email: email,
-          password: password,
-          passwordConfirmation: passwordConfirmation,
-        ),
-      );
+            RegistrationRequested(
+              email: email,
+              password: password,
+              passwordConfirmation: passwordConfirmation,
+            ),
+          );
     } else {
       setState(() {
         isFormUnvalid = true;
@@ -185,7 +198,8 @@ class _RegistrationPageState extends State<RegistrationForm> {
   void _handleFailure(Failure failure) {
     Function? onClose;
 
-    if (failure is FirebaseAuthInvalidEmailFailure) {
+    if (failure is FirebaseAuthInvalidEmailFailure ||
+        failure is FirebaseAuthEmailAlreadyInUseFailure) {
       onClose = () {
         emailHandler.focusNode.requestFocus();
       };
@@ -195,12 +209,12 @@ class _RegistrationPageState extends State<RegistrationForm> {
       };
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      showAppFailureDialog(
+    showAppFailureDialog(
         context: context,
         failure: failure,
-        onClose: onClose,
-      );
-    });
+        onClose: () {
+          context.read<RegistrationBloc>().add(RegistrationRetryAfterFailure());
+          onClose?.call();
+        });
   }
 }

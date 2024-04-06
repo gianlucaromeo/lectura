@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
@@ -27,23 +29,23 @@ Future<dynamic> showAppFailureDialog({
   var content = l10n.generic_failure__info;
 
   switch (failure.runtimeType) {
-    case FirebaseAuthEmailAlreadyInUseFailure _:
+    case const (FirebaseAuthEmailAlreadyInUseFailure):
       title = l10n.firebase_auth__failure__email_already_in_use__title;
       content = l10n.firebase_auth__failure__email_already_in_use__info;
       break;
-    case FirebaseAuthInvalidEmailFailure _:
+    case const (FirebaseAuthInvalidEmailFailure):
       title = l10n.firebase_auth__failure__invalid_email_title;
       content = l10n.firebase_auth__failure__invalid_email_info;
       break;
-    case FirebaseAuthOperationNotAllowedFailure _:
+    case const (FirebaseAuthOperationNotAllowedFailure):
       title = l10n.firebase_auth__failure__operation_not_allowed__title;
       content = l10n.firebase_auth__failure__operation_not_allowed__info;
       break;
-    case FirebaseAuthWeakPasswordFailure _:
+    case const (FirebaseAuthWeakPasswordFailure):
       title = l10n.firebase_auth__failure__weak_password__title;
       content = l10n.firebase_auth__failure__weak_password__info;
       break;
-    case FirebaseAuthChannelErrorFailure _:
+    case const (FirebaseAuthChannelErrorFailure):
       title = l10n.firebase_auth__failure__auth_channel__title;
       content = l10n.firebase_auth__failure__auth_channel__info;
       break;
