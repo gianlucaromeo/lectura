@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
+import 'package:lectura/features/common/bloc/theme/theme_bloc.dart';
 
 class AuthBottomBar extends StatelessWidget {
   const AuthBottomBar({super.key});
@@ -7,7 +9,7 @@ class AuthBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    const themeMode = ThemeMode.dark; // TODO Fetch
+    final themeMode = context.watch<ThemeBloc>().state.currentThemeMode;
 
     return  BottomAppBar(
       padding: 20.0.all,
@@ -24,7 +26,7 @@ class AuthBottomBar extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              // TODO Update
+              context.read<ThemeBloc>().add(ThemeToggled());
             },
             icon: themeMode == ThemeMode.dark
                 ? const Icon(Icons.light_mode_outlined)
