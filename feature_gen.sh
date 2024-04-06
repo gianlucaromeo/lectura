@@ -22,9 +22,9 @@ createFolderWithGitkeep "$FOLDER_NAME"
 createFolderWithGitkeep "$FOLDER_NAME/data"
 createFolderWithGitkeep "$FOLDER_NAME/data/datasources"
 createFolderWithGitkeep "$FOLDER_NAME/data/dto"
-createFolderWithGitkeep "$FOLDER_NAME/data/repositories"
 createFolderWithGitkeep "$FOLDER_NAME/data/exceptions"
 createFolderWithGitkeep "$FOLDER_NAME/data/failures"
+createFolderWithGitkeep "$FOLDER_NAME/data/repositories"
 
 # Domain
 createFolderWithGitkeep "$FOLDER_NAME/domain"
@@ -34,8 +34,8 @@ createFolderWithGitkeep "$FOLDER_NAME/domain/use_cases"
 
 # Presentation
 createFolderWithGitkeep "$FOLDER_NAME/presentation"
+createFolderWithGitkeep "$FOLDER_NAME/presentation/bloc"
 createFolderWithGitkeep "$FOLDER_NAME/presentation/pages"
-createFolderWithGitkeep "$FOLDER_NAME/presentation/providers"
 createFolderWithGitkeep "$FOLDER_NAME/presentation/validators"
 createFolderWithGitkeep "$FOLDER_NAME/presentation/widgets"
 

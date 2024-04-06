@@ -1,53 +1,39 @@
 # READ ME FIRST
 
-This document is a brief recap of what the Clean Architecture is and how it
-is used inside this project.
+This document is a brief recap of what the Clean Architecture is and how it is used inside this
+project.
 
 
-## CLEAN ARCHITECTURE IN A NUTSHELL
+# CLEAN ARCHITECTURE IN A NUTSHELL
 
-### DATA
-
+DATA
 - Communicate with the server
 - Communicate with the local DB
 - Manage data logic
-
-Datasource:
+- Datasource:
     - describes the process of acquiring/updating data
     - remote/local datasource
-
-Repository:
+- Repository:
     - is the bridge between DATA and DOMAIN
     - is the repository implementation of the abstract repository in the DOMAIN layer
     - coordinates data from different datasources
 
 
-### DOMAIN
-
+DOMAIN
 - Responsible for all the business logic
 - Pure Dart
 - Only logic -> no implementation!
-
-Providers:
-    - describe the app's logic
-    - communicate with the repositories
-
-Repositories:
+- Repositories:
     - abstract classes that define the expected functionalities of the outer layers
 
 
-### PRESENTATION
-
+PRESENTATION
 - Framework-dependent
 - Handles UI and events
 - Does not contain any business logic
 
-Widgets, screens:
-    - notify events
-    - listen to states emitted from the StateNotifierProvider
 
-
-## CLEAN ARCHITECTURE IN LECTURA
+# CLEAN ARCHITECTURE IN LECTURA
 
 - data
     - datasources: both abstract and implementation of datasources
@@ -65,3 +51,5 @@ Widgets, screens:
     - pages
     - validators
     - widgets
+    - bloc: implementation of states, events, and blocs.
+            Note that Blocs use cases from "domain/use_cases" for the business logic.
