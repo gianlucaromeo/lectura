@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lectura/core/extensions.dart';
 import 'package:lectura/features/auth/bloc/registration/registration_event.dart';
 import 'package:lectura/features/auth/bloc/registration/registration_state.dart';
 import 'package:lectura/features/auth/domain/repositories/auth_repository.dart';
@@ -25,7 +26,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       ),
     );
 
-    if (resp.isLeft()) {
+    if (resp.isFailure) {
       emit(const RegistrationState.failed());
     } else {
       emit(const RegistrationState.registered());

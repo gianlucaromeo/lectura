@@ -19,6 +19,10 @@ extension SharedPreferencesLogs on SharedPreferences {
   }
 }
 
+extension IsFailure on Either<Failure, dynamic> {
+  bool get isFailure => isLeft();
+}
+
 extension GetFailure on Either<Failure, dynamic> {
   Failure get failure {
     assert(isLeft(), "Trying to get Left from an Either but isLeft() is false.");
