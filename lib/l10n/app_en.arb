@@ -52,5 +52,12 @@
         "type": "int"
       }
     }
-  }
+  },
+
+  "@AUTH__LOGIN__FORM": "",
+  "auth__login_form__title": "Login",
+  "auth__login_form__email__label": "Email",
+  "auth__login_form__email__hint": "example@gmail.com",
+  "auth__login_form__password__label": "Password",
+  "auth__login_form__login__btn": "Login"
 }

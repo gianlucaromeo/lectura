@@ -8,6 +8,11 @@ abstract class AuthRemoteDataSource {
     required String email,
     required String password,
   });
+
+  Future<bool> loginUserWithEmailAndPassword({
+    required String email,
+    required String password,
+  });
 }
 
 class FirebaseAuthDataSource extends AuthRemoteDataSource {
@@ -25,7 +30,33 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
       return true;
     } on FirebaseAuthException catch (e) {
       if (firebaseAuthExceptions.containsKey(e.code)) {
-        log("Firebase Auth Exception: ${e.code}", name: "App Exception");
+        log("Firebase Registration Exception: ${e.code}", name: "App Exception");
+        throw firebaseAuthExceptions[e.code]!;
+      } else {
+        log(
+          "Unhandled exception. Code: ${e.code}, message: ${e.message}",
+          name: "App Exception",
+        );
+        rethrow;
+      }
+    }
+  }
+
+  @override
+  Future<bool> loginUserWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      email = email.trim();
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (firebaseAuthExceptions.containsKey(e.code)) {
+        log("Firebase Login Exception: ${e.code}", name: "App Exception");
         throw firebaseAuthExceptions[e.code]!;
       } else {
         log(

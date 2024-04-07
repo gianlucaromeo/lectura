@@ -3,8 +3,8 @@ import 'package:lectura/core/failures.dart';
 import 'package:lectura/core/use_case.dart';
 import 'package:lectura/features/auth/domain/repositories/auth_repository.dart';
 
-class EmailAndPasswordRegistrationParams {
-  const EmailAndPasswordRegistrationParams({
+class EmailAndPasswordLoginParams {
+  const EmailAndPasswordLoginParams({
     required this.email,
     required this.password,
   });
@@ -13,14 +13,14 @@ class EmailAndPasswordRegistrationParams {
   final String password;
 }
 
-class CreateUserWithEmailAndPassword extends UseCase<bool, EmailAndPasswordRegistrationParams> {
+class LoginUserWithEmailAndPassword extends UseCase<bool, EmailAndPasswordLoginParams> {
   final AuthRepository authRepository;
 
-  CreateUserWithEmailAndPassword(this.authRepository);
+  LoginUserWithEmailAndPassword(this.authRepository);
 
   @override
-  Future<Either<Failure, bool>> call(EmailAndPasswordRegistrationParams params) async {
-    return await authRepository.createUserWithEmailAndPassword(
+  Future<Either<Failure, bool>> call(EmailAndPasswordLoginParams params) async {
+    return await authRepository.loginUserWithEmailAndPassword(
       email: params.email,
       password: params.password,
     );

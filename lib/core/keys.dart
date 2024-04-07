@@ -8,4 +8,9 @@ class AppKeys {
   static const registrationPasswordField = "registration_password_field";
   static const registrationConfirmPasswordField = "registration_confirm_password_field";
   static const registerButton = "register_btn";
+
+  /// AUTH - LOGIN
+  static const loginEmailField = "login_email_field";
+  static const loginPasswordField = "login_password_field";
+  static const loginButton = "login_btn";
 }

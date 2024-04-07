@@ -23,7 +23,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     emit(const RegistrationState.inProgress());
 
     final resp = await CreateUserWithEmailAndPassword(_authRepository).call(
-      EmailAndPasswordAuthParams(
+      EmailAndPasswordRegistrationParams(
         email: event.email,
         password: event.password,
       ),

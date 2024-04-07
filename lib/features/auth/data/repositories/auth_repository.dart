@@ -38,4 +38,29 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(CacheFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> loginUserWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(
+          await authRemoteDataSource.loginUserWithEmailAndPassword(
+            email: email,
+            password: password,
+          ),
+        );
+      } catch (e) {
+        if (e is ServerException) {
+          return Left(e.failure);
+        } else {
+          return Left(ServerFailure());
+        }
+      }
+    } else {
+      return Left(CacheFailure());
+    }
+  }
 }

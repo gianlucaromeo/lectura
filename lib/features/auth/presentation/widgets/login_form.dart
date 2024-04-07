@@ -4,7 +4,7 @@ import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/core/keys.dart';
 import 'package:lectura/core/use_case.dart';
-import 'package:lectura/features/auth/bloc/registration/registration_bloc.dart';
+import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
 import 'package:lectura/features/auth/data/failures/firebase_auth_failures.dart';
 import 'package:lectura/features/auth/presentation/validators/auth_validators.dart';
 import 'package:lectura/core/utils.dart';
@@ -12,17 +12,16 @@ import 'package:lectura/features/auth/presentation/widgets/google_login_button.d
 import 'package:lectura/features/common/presentation/widgets/app_dialog.dart';
 import 'package:lectura/features/common/presentation/widgets/app_text_form_field.dart';
 
-class RegistrationForm extends StatefulWidget {
-  const RegistrationForm({super.key});
+class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
 
   @override
-  State createState() => _RegistrationPageState();
+  State createState() => _LoginPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationForm> {
+class _LoginPageState extends State<LoginForm> {
   final emailHandler = FormFieldHandler();
   final passwordHandler = FormFieldHandler();
-  final confirmPasswordHandler = FormFieldHandler();
 
   final _formKey = FormKey();
 
@@ -32,10 +31,10 @@ class _RegistrationPageState extends State<RegistrationForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegistrationBloc, RegistrationState>(
+    return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         // Close the loading dialog when not loading anymore
-        if (isLoading && state.status != RegistrationStatus.inProgress) {
+        if (isLoading && state.status != LoginStatus.inProgress) {
           setState(() {
             isLoading = false;
           });
@@ -43,21 +42,21 @@ class _RegistrationPageState extends State<RegistrationForm> {
         }
 
         switch (state.status) {
-          case RegistrationStatus.retryAfterFailure:
+          case LoginStatus.retryAfterFailure:
             Navigator.of(context).maybePop();
             break;
-          case RegistrationStatus.unknown:
+          case LoginStatus.unknown:
             break;
-          case RegistrationStatus.inProgress:
+          case LoginStatus.inProgress:
             setState(() {
               isLoading = true;
             });
             showAppLoadingDialog(context);
             break;
-          case RegistrationStatus.failed:
-            _handleFailure(state.registrationFailure ?? GenericFailure());
+          case LoginStatus.failed:
+            _handleFailure(state.loginFailure ?? GenericFailure());
             break;
-          case RegistrationStatus.registered:
+          case LoginStatus.loggedIn:
             // TODO: Handle this case.
             break;
         }
@@ -71,17 +70,8 @@ class _RegistrationPageState extends State<RegistrationForm> {
 
             /// TITLE
             Text(
-              context.l10n.auth__signup_form__title,
+              context.l10n.auth__login_form__title,
               style: Theme.of(context).textTheme.titleLarge,
-            ),
-            6.0.verticalSpace,
-
-            /// SUBTITLE
-            Text(
-              context.l10n.auth__signup_form__subtitle,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
             ),
             24.0.verticalSpace,
 
@@ -91,12 +81,12 @@ class _RegistrationPageState extends State<RegistrationForm> {
                 children: [
                   /// EMAIL
                   AppTextFormField(
-                    key: const Key(AppKeys.registrationEmailField),
+                    key: const Key(AppKeys.loginEmailField),
                     handler: emailHandler,
                     isFormUnvalid: isFormUnvalid,
                     appValidator: AppEmailValidator(NoParams(), context),
-                    hintText: context.l10n.auth__signup_form__email__hint,
-                    label: context.l10n.auth__signup_form__email__label,
+                    hintText: context.l10n.auth__login_form__email__hint,
+                    label: context.l10n.auth__login_form__email__label,
                     keyboardType: TextInputType.emailAddress,
                     onSubmittedSuccess: () {
                       FocusScope.of(context)
@@ -107,50 +97,24 @@ class _RegistrationPageState extends State<RegistrationForm> {
 
                   /// PASSWORD
                   AppTextFormField(
-                    key: const Key(AppKeys.registrationPasswordField),
+                    key: const Key(AppKeys.loginPasswordField),
                     handler: passwordHandler,
                     isFormUnvalid: isFormUnvalid,
                     appValidator: AppPasswordValidator(NoParams(), context),
                     showAndHidePasswordMode: true,
-                    label: context.l10n.auth__signup_form__password__label,
+                    label: context.l10n.auth__login_form__password__label,
                     keyboardType: TextInputType.visiblePassword,
-                    onSubmittedSuccess: () {
-                      FocusScope.of(context)
-                          .requestFocus(confirmPasswordHandler.focusNode);
-                    },
+                    onSubmittedSuccess: _handleLogin,
                   ),
                   24.0.verticalSpace,
 
-                  /// CONFIRM PASSWORD
-                  AppTextFormField(
-                    key: const Key(AppKeys.registrationConfirmPasswordField),
-                    isFormUnvalid: isFormUnvalid,
-                    appValidator: AppConfirmPasswordValidator(
-                      AppConfirmPasswordValidatorParams(
-                        passwordController: passwordHandler.controller,
-                        confirmPasswordController:
-                            confirmPasswordHandler.controller,
-                      ),
-                      context,
-                    ),
-                    handler: confirmPasswordHandler,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    label:
-                        context.l10n.auth__signup_form__confirm_password__label,
-                    keyboardType: TextInputType.visiblePassword,
-                    showAndHidePasswordMode: true,
-                    onSubmittedSuccess: _handleRegistration,
-                  ),
-                  24.0.verticalSpace,
-
-                  /// REGISTER BUTTON
+                  /// LOGIN BUTTON
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton(
-                      key: const Key(AppKeys.registerButton),
-                      onPressed: _handleRegistration,
-                      child:
-                          Text(context.l10n.auth__signup_form__register__btn),
+                      key: const Key(AppKeys.loginButton),
+                      onPressed: _handleLogin,
+                      child: Text(context.l10n.auth__login_form__login__btn),
                     ),
                   ),
                   24.0.verticalSpace,
@@ -172,19 +136,17 @@ class _RegistrationPageState extends State<RegistrationForm> {
     );
   }
 
-  void _handleRegistration() {
+  void _handleLogin() {
     FocusScope.of(context).unfocus(); // Hide keyboard
 
     if (_formKey.currentState!.validate()) {
       final email = emailHandler.controller.text;
       final password = passwordHandler.controller.text;
-      final passwordConfirmation = confirmPasswordHandler.controller.text;
 
-      context.read<RegistrationBloc>().add(
-            RegistrationRequested(
+      context.read<LoginBloc>().add(
+            LoginWithEmailAndPasswordRequested(
               email: email,
               password: password,
-              passwordConfirmation: passwordConfirmation,
             ),
           );
     } else {
@@ -197,14 +159,17 @@ class _RegistrationPageState extends State<RegistrationForm> {
   void _handleFailure(Failure failure) {
     Function? onClose;
 
-    if (failure is FirebaseAuthInvalidEmailFailure ||
-        failure is FirebaseAuthEmailAlreadyInUseFailure) {
+    if (failure is FirebaseAuthInvalidEmailFailure) {
       onClose = () {
         emailHandler.focusNode.requestFocus();
       };
-    } else if (failure is FirebaseAuthWeakPasswordFailure) {
+    } else if (failure is FirebaseWrongPasswordFailure) {
       onClose = () {
         passwordHandler.focusNode.requestFocus();
+      };
+    } else if (failure is GenericFailure) {
+      onClose = () {
+        Focus.of(context).unfocus();
       };
     }
 
@@ -212,7 +177,7 @@ class _RegistrationPageState extends State<RegistrationForm> {
         context: context,
         failure: failure,
         onClose: () {
-          context.read<RegistrationBloc>().add(RegistrationRetryAfterFailure());
+          context.read<LoginBloc>().add(LoginRetryAfterFailure());
           onClose?.call();
         });
   }

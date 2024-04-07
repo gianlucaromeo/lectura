@@ -1,6 +1,12 @@
 part of 'registration_bloc.dart';
 
-enum RegistrationStatus { unknown, inProgress, failed, registered, retryAfterFailure }
+enum RegistrationStatus {
+  unknown,
+  inProgress,
+  failed,
+  registered,
+  retryAfterFailure
+}
 
 class RegistrationState extends Equatable {
   const RegistrationState._({
@@ -23,7 +29,8 @@ class RegistrationState extends Equatable {
   const RegistrationState.registered()
       : this._(status: RegistrationStatus.registered);
 
-  const RegistrationState.retryAfterFailure() : this._(status: RegistrationStatus.retryAfterFailure);
+  const RegistrationState.retryAfterFailure()
+      : this._(status: RegistrationStatus.retryAfterFailure);
 
   final RegistrationStatus status;
   final Failure? registrationFailure;
