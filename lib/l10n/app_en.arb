@@ -5,16 +5,30 @@
   "@FAILURES": "",
   "generic_failure__title": "Ops...",
   "generic_failure__info": "Something went wrong. If the error persists contact lectura@support.com",
+
   "firebase_auth__failure__email_already_in_use__title": "E-mail already in use",
   "firebase_auth__failure__email_already_in_use__info": "This account already exists.\n\nIf you don't remember your password, click on \"I forgot my password\" to recover it.",
-  "firebase_auth__failure__invalid_email_title": "Invalid e-mail",
-  "firebase_auth__failure__invalid_email_info": "Please provide a well-formatted and correct e-mail address.",
+
   "firebase_auth__failure__operation_not_allowed__title": "Operation not allowed",
   "firebase_auth__failure__operation_not_allowed__info": "This account is not allowed to submit this request. Try with a different account.",
+
   "firebase_auth__failure__weak_password__title": "Weak password",
   "firebase_auth__failure__weak_password__info": "The password you entered is too weak. Please provide a stronger one.",
+
   "firebase_auth__failure__auth_channel__title": "Authentication channel error",
   "firebase_auth__failure__auth_channel__info": "There has been an error while establishing a connection. Please try again.",
+
+  "firebase_auth__failure__user_disabled__title": "User disabled",
+  "firebase_auth__failure__user_disabled__info": "This user has been disabled",
+
+  "firebase_auth__failure__user_not_found__title": "User not found",
+  "firebase_auth__failure__user_not_found__info": "Please check your email again, or register if you don't have an account.",
+
+  "firebase_auth__failure__wrong_password__title": "Wrong password",
+  "firebase_auth__failure__wrong_password__info": "Please check your password again and retry. If you don't remember your password click on 'I forgot my password'.",
+
+  "firebase_auth__failure__invalid_email_title": "Invalid e-mail",
+  "firebase_auth__failure__invalid_email_info": "Please provide a well-formatted and correct e-mail address.",
 
   "@AUTH__COMMON":  "",
   "auth__tab__login": "Login",

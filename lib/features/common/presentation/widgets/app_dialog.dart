@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
+import 'package:lectura/features/auth/data/exceptions/firebase_auth_exceptions.dart';
 import 'package:lectura/features/auth/data/failures/firebase_auth_failures.dart';
 
 Future showAppLoadingDialog(BuildContext context) async {
@@ -33,10 +34,6 @@ Future<dynamic> showAppFailureDialog({
       title = l10n.firebase_auth__failure__email_already_in_use__title;
       content = l10n.firebase_auth__failure__email_already_in_use__info;
       break;
-    case const (FirebaseAuthInvalidEmailFailure):
-      title = l10n.firebase_auth__failure__invalid_email_title;
-      content = l10n.firebase_auth__failure__invalid_email_info;
-      break;
     case const (FirebaseAuthOperationNotAllowedFailure):
       title = l10n.firebase_auth__failure__operation_not_allowed__title;
       content = l10n.firebase_auth__failure__operation_not_allowed__info;
@@ -48,6 +45,22 @@ Future<dynamic> showAppFailureDialog({
     case const (FirebaseAuthChannelErrorFailure):
       title = l10n.firebase_auth__failure__auth_channel__title;
       content = l10n.firebase_auth__failure__auth_channel__info;
+      break;
+    case const (FirebaseUserDisabledFailure):
+      title = l10n.firebase_auth__failure__user_disabled__title;
+      content = l10n.firebase_auth__failure__user_disabled__info;
+      break;
+    case const (FirebaseUserNotFoundFailure):
+      title = l10n.firebase_auth__failure__user_not_found__title;
+      content = l10n.firebase_auth__failure__user_not_found__info;
+      break;
+    case const (FirebaseWrongPasswordFailure):
+      title = l10n.firebase_auth__failure__wrong_password__title;
+      content = l10n.firebase_auth__failure__wrong_password__info;
+      break;
+    case const (FirebaseAuthInvalidEmailFailure):
+      title = l10n.firebase_auth__failure__invalid_email_title;
+      content = l10n.firebase_auth__failure__invalid_email_info;
       break;
     default:
       break;

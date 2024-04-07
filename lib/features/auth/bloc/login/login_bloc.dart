@@ -15,6 +15,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginWithEmailAndPasswordRequested>(
       _onLoginWithEmailAndPasswordRequested,
     );
+
+    on<LoginRetryAfterFailure>(_onLoginRetryAfterFailure);
   }
 
   final AuthRepository _authRepository;
@@ -37,5 +39,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else {
       emit(const LoginState.loggedIn());
     }
+  }
+
+  void _onLoginRetryAfterFailure(
+    LoginRetryAfterFailure event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(const LoginState.retryAfterFailure());
   }
 }

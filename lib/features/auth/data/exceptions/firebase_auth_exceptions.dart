@@ -46,19 +46,19 @@ class FirebaseAuthChannelError extends ServerException {
 // Login
 class FirebaseUserDisabledException extends ServerException {
   @override
-  Failure get failure => throw FirebaseUserDisabledFailure();
+  Failure get failure => FirebaseUserDisabledFailure();
 }
 
 // Login
 class FirebaseUserNotFoundException extends ServerException {
   @override
-  Failure get failure => throw FirebaseUserNotFoundFailure();
+  Failure get failure => FirebaseUserNotFoundFailure();
 }
 
 // Login
 class FirebaseWrongPasswordException extends ServerException {
   @override
-  Failure get failure => throw FirebaseWrongPasswordFailure();
+  Failure get failure => FirebaseWrongPasswordFailure();
 }
 
 
