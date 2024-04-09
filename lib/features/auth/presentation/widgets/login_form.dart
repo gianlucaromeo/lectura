@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/core/keys.dart';
+import 'package:lectura/core/routes.dart';
 import 'package:lectura/core/use_case.dart';
 import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
 import 'package:lectura/features/auth/data/failures/firebase_auth_failures.dart';
@@ -11,6 +13,7 @@ import 'package:lectura/core/utils.dart';
 import 'package:lectura/features/auth/presentation/widgets/google_login_button.dart';
 import 'package:lectura/features/common/presentation/widgets/app_dialog.dart';
 import 'package:lectura/features/common/presentation/widgets/app_text_form_field.dart';
+import 'package:lectura/router/app_router.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -57,7 +60,7 @@ class _LoginPageState extends State<LoginForm> {
             _handleFailure(state.loginFailure ?? GenericFailure());
             break;
           case LoginStatus.loggedIn:
-            // TODO: Handle this case.
+            AutoRouter.of(context).replace(Routes.homeRoute);
             break;
         }
       },

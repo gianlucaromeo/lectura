@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lectura/core/exceptions.dart';
+import 'package:lectura/features/auth/data/dto/user_dto.dart';
 import 'package:lectura/features/auth/data/exceptions/firebase_auth_exceptions.dart';
 
 abstract class AuthRemoteDataSource {
@@ -9,7 +11,7 @@ abstract class AuthRemoteDataSource {
     required String password,
   });
 
-  Future<bool> loginUserWithEmailAndPassword({
+  Future<UserDto> loginUserWithEmailAndPassword({
     required String email,
     required String password,
   });
@@ -43,17 +45,31 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
   }
 
   @override
-  Future<bool> loginUserWithEmailAndPassword({
+  Future<UserDto> loginUserWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
     try {
       email = email.trim();
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+
+      final credentials = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return true;
+
+      if (credentials.user?.uid == null) {
+        throw FirebaseUserIdIsNullException();
+      }
+
+      if (credentials.user?.email == null) {
+        throw FirebaseUserEmailIsNullException();
+      }
+
+      return UserDto(
+        id: credentials.user!.uid,
+        email: credentials.user!.email,
+      );
+
     } on FirebaseAuthException catch (e) {
       if (firebaseAuthExceptions.containsKey(e.code)) {
         log("Firebase Login Exception: ${e.code}", name: "App Exception");

@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
+import 'package:lectura/features/auth/domain/entities/user.dart';
 import 'package:lectura/features/auth/domain/repositories/auth_repository.dart';
 import 'package:lectura/features/auth/domain/use_cases/login_user_with_email_and_password.dart';
 
@@ -37,7 +38,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (resp.isFailure) {
       emit(LoginState.failed(resp.failure));
     } else {
-      emit(const LoginState.loggedIn());
+      emit(LoginState.loggedIn(resp.user));
     }
   }
 

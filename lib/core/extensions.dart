@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:lectura/core/failures.dart';
+import 'package:lectura/features/auth/data/dto/user_dto.dart';
+import 'package:lectura/features/auth/domain/entities/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -27,6 +29,20 @@ extension GetFailure on Either<Failure, dynamic> {
   Failure get failure {
     assert(isLeft(), "Trying to get Left from an Either but isLeft() is false.");
     return fold((l) => l, (r) => r) as Failure;
+  }
+}
+
+extension GetUserDto on Either<Failure, UserDto> {
+  UserDto get userDto {
+    assert(isRight(), "Trying to get Right from an Either but isRight() is false.");
+    return fold((l) => l, (r) => r) as UserDto;
+  }
+}
+
+extension GetUser on Either<Failure, User> {
+  User get user {
+    assert(isRight(), "Trying to get Right from an Either but isRight() is false.");
+    return fold((l) => l, (r) => r) as User;
   }
 }
 

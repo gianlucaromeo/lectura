@@ -3,6 +3,7 @@ import 'package:lectura/core/exceptions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/core/network_info.dart';
 import 'package:lectura/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:lectura/features/auth/data/dto/user_dto.dart';
 import 'package:lectura/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -40,7 +41,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> loginUserWithEmailAndPassword({
+  Future<Either<Failure, UserDto>> loginUserWithEmailAndPassword({
     required String email,
     required String password,
   }) async {

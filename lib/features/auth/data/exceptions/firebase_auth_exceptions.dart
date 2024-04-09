@@ -2,6 +2,17 @@ import 'package:lectura/core/exceptions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/features/auth/data/failures/firebase_auth_failures.dart';
 
+// Generic
+class FirebaseUserIdIsNullException extends ServerException {
+  @override
+  Failure get failure => FirebaseUserIdIsNullFailure();
+}
+
+class FirebaseUserEmailIsNullException extends ServerException {
+  @override
+  Failure get failure => FirebaseUserEmailIsNullFailure();
+}
+
 final firebaseAuthExceptions = {
   // Registration
   "email-already-in-use": FirebaseAuthEmailAlreadyInUseException(),

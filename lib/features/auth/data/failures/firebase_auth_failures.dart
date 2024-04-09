@@ -1,5 +1,9 @@
 import 'package:lectura/core/failures.dart';
 
+// Generic
+class FirebaseUserIdIsNullFailure extends ServerFailure {}
+class FirebaseUserEmailIsNullFailure extends ServerFailure {}
+
 // Registration
 class FirebaseAuthEmailAlreadyInUseFailure extends ServerFailure {}
 class FirebaseAuthOperationNotAllowedFailure extends ServerFailure {}

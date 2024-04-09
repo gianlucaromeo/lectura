@@ -4,6 +4,7 @@ enum LoginStatus { unknown, inProgress, failed, loggedIn, retryAfterFailure }
 
 class LoginState extends Equatable {
   const LoginState._({
+    this.user,
     this.status = LoginStatus.unknown,
     this.loginFailure,
   });
@@ -18,16 +19,22 @@ class LoginState extends Equatable {
           loginFailure: failure,
         );
 
-  const LoginState.loggedIn() : this._(status: LoginStatus.loggedIn);
+  const LoginState.loggedIn(User user)
+      : this._(
+          user: user,
+          status: LoginStatus.loggedIn,
+        );
 
   const LoginState.retryAfterFailure()
       : this._(status: LoginStatus.retryAfterFailure);
 
   final LoginStatus status;
+  final User? user;
   final Failure? loginFailure;
 
   @override
   List<Object?> get props => [
+        user,
         status,
         loginFailure,
       ];
