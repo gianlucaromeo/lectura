@@ -45,66 +45,50 @@ class _AuthPageState extends State<AuthPage>
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<AuthRepository>.value(
-      value: AuthRepositoryImpl(
-        authRemoteDataSource: FirebaseAuthDataSource(),
-        networkInfo: NetworkInfoImpl(
-          InternetConnectionChecker(),
-        ),
-      ),
-      child: LecturaPage(
-        title: context.l10n.app__title,
-        padding: [20.0, 20.0, 20.0, 0.0].fromLTRB,
-        body: Column(
-          children: [
-            TabBar(
+    return LecturaPage(
+      title: context.l10n.app__title,
+      padding: [20.0, 20.0, 20.0, 0.0].fromLTRB,
+      body: Column(
+        children: [
+          TabBar(
+            controller: tabController,
+            indicatorSize: TabBarIndicatorSize.tab,
+            tabs: [
+              Tab(text: context.l10n.auth__tab__login),
+              Tab(text: context.l10n.auth__tab__signup),
+            ],
+          ),
+          Expanded(
+            child: TabBarView(
               controller: tabController,
-              indicatorSize: TabBarIndicatorSize.tab,
-              tabs: [
-                Tab(text: context.l10n.auth__tab__login),
-                Tab(text: context.l10n.auth__tab__signup),
+              children: [
+
+                /// LOGIN FORM
+                Padding(
+                  padding: [20.0, 0.0, 20.0, 0.0].fromLTRB,
+                  child: const LoginForm(),
+                ),
+
+                /// REGISTRATION FORM
+                Padding(
+                  padding: [20.0, 0.0, 20.0, 0.0].fromLTRB,
+                  child: BlocProvider<RegistrationBloc>(
+                    create: (BuildContext context) {
+                      return RegistrationBloc(
+                        authRepository:
+                            RepositoryProvider.of<AuthRepository>(context),
+                      );
+                    },
+                    child: const RegistrationForm(),
+                  ),
+                ),
               ],
             ),
-            Expanded(
-              child: TabBarView(
-                controller: tabController,
-                children: [
-
-                  /// LOGIN FORM
-                  Padding(
-                    padding: [20.0, 0.0, 20.0, 0.0].fromLTRB,
-                    child: BlocProvider<LoginBloc>(
-                      create: (BuildContext context) {
-                        return LoginBloc(
-                          authRepository:
-                          RepositoryProvider.of<AuthRepository>(context),
-                        );
-                      },
-                      child: const LoginForm(),
-                    ),
-                  ),
-
-                  /// REGISTRATION FORM
-                  Padding(
-                    padding: [20.0, 0.0, 20.0, 0.0].fromLTRB,
-                    child: BlocProvider<RegistrationBloc>(
-                      create: (BuildContext context) {
-                        return RegistrationBloc(
-                          authRepository:
-                              RepositoryProvider.of<AuthRepository>(context),
-                        );
-                      },
-                      child: const RegistrationForm(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            20.0.verticalSpace,
-          ],
-        ),
-        bottomNavigationBar: const AuthBottomBar(),
+          ),
+          20.0.verticalSpace,
+        ],
       ),
+      bottomNavigationBar: const AuthBottomBar(),
     );
   }
 }

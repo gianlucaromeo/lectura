@@ -2,8 +2,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lectura/app.dart';
 import 'package:lectura/core/extensions.dart';
+import 'package:lectura/core/network_info.dart';
+import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
+import 'package:lectura/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:lectura/features/auth/data/repositories/auth_repository.dart';
+import 'package:lectura/features/auth/domain/repositories/auth_repository.dart';
 import 'package:lectura/features/common/bloc/theme/theme_bloc.dart';
 import 'package:lectura/firebase_options.dart';
 import 'package:lectura/core/app_env.dart';
@@ -22,10 +28,27 @@ Future<void> mainCommon(AppEnvironment environment) async {
     prefs.logAll();
   }
 
+  final authRepository = AuthRepositoryImpl(
+    authRemoteDataSource: FirebaseAuthDataSource(),
+    networkInfo: NetworkInfoImpl(
+      InternetConnectionChecker(),
+    ),
+  );
+
   runApp(
-    BlocProvider(
-      create: (context) => ThemeBloc(),
-      child: App(appEnvironment: environment),
+    RepositoryProvider<AuthRepository>.value(
+      value: authRepository,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ThemeBloc(),
+          ),
+          BlocProvider(
+            create: (context) => LoginBloc(authRepository: authRepository),
+          ),
+        ],
+        child: App(appEnvironment: environment),
+      ),
     ),
   );
 }
