@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
         // TODO Test
         if (state.user == null) {
           AutoRouter.of(context).popUntil((route) => route.isFirst);
-          AutoRouter.of(context).popAndPush(Routes.authRoute);
+          AutoRouter.of(context).replace(Routes.authRoute);
         }
       },
       builder: (context, state) {
@@ -24,8 +24,16 @@ class HomePage extends StatelessWidget {
           appBar: AppBar(
             title: const Text("***HOME PAGE"),
           ),
-          body: Center(
-            child: Text("User: ${state.user?.email ?? ""}"),
+          body: Column(
+            children: [
+              Text("User: ${state.user?.email ?? ""}"),
+              MaterialButton(
+                child: const Text("Logout"),
+                onPressed: () {
+                  context.read<LoginBloc>().add(UserLoggedOut());
+                },
+              ),
+            ],
           ),
         );
       },

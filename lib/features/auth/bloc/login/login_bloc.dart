@@ -18,6 +18,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
 
     on<LoginRetryAfterFailure>(_onLoginRetryAfterFailure);
+    on<UserLoggedOut>(_onUserLoggedOut);
   }
 
   final AuthRepository _authRepository;
@@ -47,5 +48,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async {
     emit(const LoginState.retryAfterFailure());
+  }
+
+  void _onUserLoggedOut(
+    UserLoggedOut event,
+    Emitter<LoginState> emit,
+  ) {
+    emit(const LoginState.unknown());
   }
 }

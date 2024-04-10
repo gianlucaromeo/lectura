@@ -15,3 +15,5 @@ final class LoginWithEmailAndPasswordRequested extends LoginEvent {
 }
 
 final class LoginRetryAfterFailure extends LoginEvent {}
+
+final class UserLoggedOut extends LoginEvent {}
