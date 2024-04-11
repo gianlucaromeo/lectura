@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lectura/core/exceptions.dart';
 import 'package:lectura/features/auth/data/dto/user_dto.dart';
 import 'package:lectura/features/auth/data/exceptions/firebase_auth_exceptions.dart';
 
@@ -26,10 +27,11 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
   }) async {
     try {
       email = email.trim();
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final userCredentials = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      userCredentials.user?.sendEmailVerification();
       return true;
     } on FirebaseAuthException catch (e) {
       if (firebaseAuthExceptions.containsKey(e.code)) {
@@ -58,12 +60,19 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
         password: password,
       );
 
-      if (credentials.user?.uid == null) {
-        throw FirebaseUserIdIsNullException();
+      if (credentials.user == null) {
+        log("Error: credentials.user is null");
+        throw GenericException(); // TODO Handle this case
       }
 
-      if (credentials.user?.email == null) {
-        throw FirebaseUserEmailIsNullException();
+      // TODO Check if needed
+      //if (credentials.user!.email == null) {
+      //  throw FirebaseUserEmailIsNullException();
+      //}
+
+      if (!credentials.user!.emailVerified) {
+        log("Error: credentials.user.emailVerified is false");
+        throw FirebaseEmailNotVerifiedException();
       }
 
       return UserDto(

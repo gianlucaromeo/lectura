@@ -58,7 +58,14 @@ class _RegistrationPageState extends State<RegistrationForm> {
             _handleFailure(state.registrationFailure ?? GenericFailure());
             break;
           case RegistrationStatus.registered:
-            // TODO: Handle this case.
+            showAppGenericDialog(
+              context: context,
+              title: context.l10n.auth__signup_form__registration_success__dialog__title,
+              content: context.l10n.auth__signup_form__registration_success__dialog__content,
+              onClose: () {
+                Navigator.of(context).pop();
+            },
+            );
             break;
         }
       },

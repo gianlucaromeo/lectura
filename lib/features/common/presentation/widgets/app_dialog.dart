@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
@@ -15,6 +14,43 @@ Future showAppLoadingDialog(BuildContext context) async {
       );
     },
   );
+}
+
+Future<dynamic> showAppGenericDialog({
+  required BuildContext context,
+  Function? onClose,
+  required String title,
+  required String content,
+}) async {
+  await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        icon: const Icon(Icons.error),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Divider(thickness: 0.5),
+            12.0.verticalSpace,
+            Flexible(
+              child: Text(
+                content,
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+  onClose?.call();
 }
 
 Future<dynamic> showAppFailureDialog({
@@ -57,9 +93,12 @@ Future<dynamic> showAppFailureDialog({
       content = l10n.firebase_auth__failure__wrong_password__info;
       break;
     case const (FirebaseAuthInvalidEmailFailure):
-      title = l10n.firebase_auth__failure__invalid_email_title;
-      content = l10n.firebase_auth__failure__invalid_email_info;
+      title = l10n.firebase_auth__failure__invalid_email__title;
+      content = l10n.firebase_auth__failure__invalid_email__info;
       break;
+    case const (FirebaseEmailNotVerifiedFailure):
+      title = l10n.firebase_auth__failure__email_not_verified__title;
+      content = l10n.firebase_auth__failure__email_not_verified__info;
     default:
       break;
   }

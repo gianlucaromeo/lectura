@@ -3,15 +3,15 @@ import 'package:lectura/core/failures.dart';
 import 'package:lectura/features/auth/data/failures/firebase_auth_failures.dart';
 
 // Generic
-class FirebaseUserIdIsNullException extends ServerException {
-  @override
-  Failure get failure => FirebaseUserIdIsNullFailure();
-}
-
-// Generic
 class FirebaseUserEmailIsNullException extends ServerException {
   @override
   Failure get failure => FirebaseUserEmailIsNullFailure();
+}
+
+// Generic
+class FirebaseEmailNotVerifiedException extends ServerException {
+  @override
+  Failure get failure => FirebaseEmailNotVerifiedFailure();
 }
 
 final firebaseAuthExceptions = {
@@ -21,13 +21,18 @@ final firebaseAuthExceptions = {
   "weak-password": FirebaseAuthWeakPasswordException(),
   "channel-error": FirebaseAuthChannelError(),
 
+  // Email Confirmation
+  "invalid-id-token": FirebaseInvalidIdTokenException(),
+
   // Login
   "user-disabled": FirebaseUserDisabledException(),
-  "user-not-found": FirebaseUserNotFoundException(),
   "wrong-password": FirebaseWrongPasswordException(),
 
   // Registration AND Login
   "invalid-email": FirebaseAuthInvalidEmailException(),
+
+  // Login AND Email Confirmation
+  "user-not-found": FirebaseUserNotFoundException(),
 };
 
 // Registration
@@ -52,6 +57,12 @@ class FirebaseAuthWeakPasswordException extends ServerException {
 class FirebaseAuthChannelError extends ServerException {
   @override
   Failure get failure => FirebaseAuthChannelErrorFailure();
+}
+
+// Email verification
+class FirebaseInvalidIdTokenException extends ServerException {
+  @override
+  Failure get failure => FirebaseInvalidIdTokenFailure();
 }
 
 // Login
