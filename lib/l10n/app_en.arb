@@ -27,8 +27,11 @@
   "firebase_auth__failure__wrong_password__title": "Wrong password",
   "firebase_auth__failure__wrong_password__info": "Please check your password again and retry. If you don't remember your password click on 'I forgot my password'.",
 
-  "firebase_auth__failure__invalid_email_title": "Invalid e-mail",
-  "firebase_auth__failure__invalid_email_info": "Please provide a well-formatted and correct e-mail address.",
+  "firebase_auth__failure__invalid_email__title": "Invalid e-mail",
+  "firebase_auth__failure__invalid_email__info": "Please provide a well-formatted and correct e-mail address.",
+
+  "firebase_auth__failure__email_not_verified__title": "Invalid e-mail",
+  "firebase_auth__failure__email_not_verified__info": "Please provide a well-formatted and correct e-mail address.",
 
   "@AUTH__COMMON":  "",
   "auth__tab__login": "Login",
@@ -67,6 +70,8 @@
       }
     }
   },
+  "auth__signup_form__registration_success__dialog__title": "Account created!",
+  "auth__signup_form__registration_success__dialog__content": "A confirmation e-mail has been sent to the email provided.",
 
   "@AUTH__LOGIN__FORM": "",
   "auth__login_form__title": "Login",
