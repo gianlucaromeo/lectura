@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/routes.dart';
 import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
+import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
 import 'package:lectura/features/common/presentation/widgets/app_dialog.dart';
 
 @RoutePage()
@@ -40,10 +41,8 @@ class _HomePageState extends State<HomePage> {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text("***HOME PAGE"),
-          ),
+        return LecturaPage(
+          title: "**HOME PAGE",
           body: Column(
             children: [
               Text("User: ${state.user?.email ?? ""}"),

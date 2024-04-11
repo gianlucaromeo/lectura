@@ -8,6 +8,7 @@ class FirebaseUserIdIsNullException extends ServerException {
   Failure get failure => FirebaseUserIdIsNullFailure();
 }
 
+// Generic
 class FirebaseUserEmailIsNullException extends ServerException {
   @override
   Failure get failure => FirebaseUserEmailIsNullFailure();

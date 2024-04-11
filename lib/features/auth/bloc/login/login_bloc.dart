@@ -57,7 +57,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async {
     emit(LoginState.inProgress(state.user));
-    await Future.delayed(const Duration(seconds: 1));
     await LogoutUser(_authRepository).call(NoParams());
     emit(const LoginState.unknown());
   }
