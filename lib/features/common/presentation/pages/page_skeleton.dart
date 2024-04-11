@@ -24,7 +24,7 @@ class LecturaPage extends StatelessWidget {
         elevation: 1.0,
         titleTextStyle: Theme.of(context).textTheme.titleLarge,
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
         padding: padding ?? 20.0.all,
         child: body,

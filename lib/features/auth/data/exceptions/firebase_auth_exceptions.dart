@@ -16,7 +16,6 @@ class FirebaseUserEmailIsNullException extends ServerException {
 final firebaseAuthExceptions = {
   // Registration
   "email-already-in-use": FirebaseAuthEmailAlreadyInUseException(),
-  "invalid-email": FirebaseAuthInvalidEmailException(),
   "operation-not-allowed": FirebaseAuthOperationNotAllowedException(),
   "weak-password": FirebaseAuthWeakPasswordException(),
   "channel-error": FirebaseAuthChannelError(),

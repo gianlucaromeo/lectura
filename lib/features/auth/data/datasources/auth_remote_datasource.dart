@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:lectura/core/exceptions.dart';
 import 'package:lectura/features/auth/data/dto/user_dto.dart';
 import 'package:lectura/features/auth/data/exceptions/firebase_auth_exceptions.dart';
 

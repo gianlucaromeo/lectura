@@ -1,9 +1,7 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
-import 'package:lectura/features/auth/data/exceptions/firebase_auth_exceptions.dart';
 import 'package:lectura/features/auth/data/failures/firebase_auth_failures.dart';
 
 Future showAppLoadingDialog(BuildContext context) async {
