@@ -28,7 +28,7 @@ class _AuthPageState extends State<AuthPage>
     tabController = TabController(
       length: 2,
       vsync: this,
-      initialIndex: 1,
+      initialIndex: 0,
     );
   }
 

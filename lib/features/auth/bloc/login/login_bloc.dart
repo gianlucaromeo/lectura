@@ -2,9 +2,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
+import 'package:lectura/core/use_case.dart';
 import 'package:lectura/features/auth/domain/entities/user.dart';
 import 'package:lectura/features/auth/domain/repositories/auth_repository.dart';
 import 'package:lectura/features/auth/domain/use_cases/login_user_with_email_and_password.dart';
+import 'package:lectura/features/auth/domain/use_cases/logout_user.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -27,7 +29,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginWithEmailAndPasswordRequested event,
     Emitter<LoginState> emit,
   ) async {
-    emit(const LoginState.inProgress());
+    emit(LoginState.inProgress(state.user));
 
     final resp = await LoginUserWithEmailAndPassword(_authRepository).call(
       EmailAndPasswordLoginParams(
@@ -53,7 +55,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _onUserLoggedOut(
     UserLoggedOut event,
     Emitter<LoginState> emit,
-  ) {
+  ) async {
+    emit(LoginState.inProgress(state.user));
+    await Future.delayed(const Duration(seconds: 1));
+    await LogoutUser(_authRepository).call(NoParams());
     emit(const LoginState.unknown());
   }
 }

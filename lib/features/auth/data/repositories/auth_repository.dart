@@ -64,4 +64,9 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(CacheFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, Future<void>>> logout() async {
+    return Right(authRemoteDataSource.logout());
+  }
 }

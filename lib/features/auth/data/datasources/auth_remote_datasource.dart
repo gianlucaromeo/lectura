@@ -14,6 +14,8 @@ abstract class AuthRemoteDataSource {
     required String email,
     required String password,
   });
+
+  Future<void> logout();
 }
 
 class FirebaseAuthDataSource extends AuthRemoteDataSource {
@@ -81,5 +83,10 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
         rethrow;
       }
     }
+  }
+
+  @override
+  Future<void> logout() {
+    return FirebaseAuth.instance.signOut();
   }
 }
