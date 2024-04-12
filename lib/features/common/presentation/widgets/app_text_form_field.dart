@@ -16,6 +16,7 @@ class AppTextFormField extends StatefulWidget {
     this.onChanged,
     this.showAndHidePasswordMode = false,
     this.isFormUnvalid = false,
+    this.initialText,
   }) {
     if (showAndHidePasswordMode) {
       assert(obscureText == null,
@@ -49,6 +50,8 @@ class AppTextFormField extends StatefulWidget {
   /// <br>If [true], the [obscureText] field must be [null].
   final bool showAndHidePasswordMode;
 
+  final String? initialText;
+
   @override
   State<AppTextFormField> createState() => _AppTextFormFieldState();
 }
@@ -67,11 +70,11 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
 
   @override
   void initState() {
-    super.initState();
     internalObscureText = widget.obscureText ?? widget.showAndHidePasswordMode;
     if (widget.isFormUnvalid) {
       _onFormUnvalid();
     }
+    super.initState();
   }
 
   /// Updates the UX logic, checking whether this field has been validated
