@@ -23,10 +23,10 @@ class LoginForm extends StatefulWidget {
 
 class _LoginPageState extends State<LoginForm> {
   final emailHandler = FormFieldHandler(
-    textEditingController: TextEditingController(text: "gianlucaromeo@outlook.com"),
+    textEditingController: TextEditingController(text: "gianlucaromeo@outlook.com"), // TODO Remove
   );
   final passwordHandler = FormFieldHandler(
-    textEditingController: TextEditingController(text: "Password1?"),
+    textEditingController: TextEditingController(text: "Password1?"), // TODO Remove
   );
 
   final _formKey = FormKey();
