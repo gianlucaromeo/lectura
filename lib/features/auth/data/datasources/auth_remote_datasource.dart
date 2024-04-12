@@ -17,6 +17,8 @@ abstract class AuthRemoteDataSource {
   });
 
   Future<void> logout();
+
+  Future<void> deleteUser();
 }
 
 class FirebaseAuthDataSource extends AuthRemoteDataSource {
@@ -97,5 +99,10 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
   @override
   Future<void> logout() {
     return FirebaseAuth.instance.signOut();
+  }
+
+  @override
+  Future<void> deleteUser() {
+    return FirebaseAuth.instance.currentUser?.delete() ?? Future.value();
   }
 }

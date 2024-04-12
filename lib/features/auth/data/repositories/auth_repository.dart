@@ -69,4 +69,9 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, Future<void>>> logout() async {
     return Right(authRemoteDataSource.logout());
   }
+  @override
+  Future<Either<Failure, Future<void>>> deleteUser() async {
+    return Right(authRemoteDataSource.deleteUser());
+  }
+
 }

@@ -20,9 +20,15 @@ class RegistrationForm extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationForm> {
-  final emailHandler = FormFieldHandler();
-  final passwordHandler = FormFieldHandler();
-  final confirmPasswordHandler = FormFieldHandler();
+  final emailHandler = FormFieldHandler(
+    textEditingController: TextEditingController(text: "gianlucaromeo@outlook.com"), // TODO Remove
+  );
+  final passwordHandler = FormFieldHandler(
+    textEditingController: TextEditingController(text: "Password1?"), // TODO Remove
+  );
+  final confirmPasswordHandler = FormFieldHandler(
+    textEditingController: TextEditingController(text: "Password1?"), // TODO Remove
+  );
 
   final _formKey = FormKey();
 

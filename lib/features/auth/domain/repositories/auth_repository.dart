@@ -14,4 +14,6 @@ abstract class AuthRepository {
 });
 
   Future<Either<Failure, Future<void>>> logout();
+
+  Future<Either<Failure, Future<void>>> deleteUser();
 }

@@ -22,6 +22,12 @@ class ProfilePage extends StatelessWidget {
                 context.read<LoginBloc>().add(UserLoggedOut());
               },
             ),
+            MaterialButton(
+              child: const Text("***Delete account"),
+              onPressed: () {
+                context.read<LoginBloc>().add(UserDeleteAccountRequested());
+              },
+            ),
           ],
         ),
       ),
