@@ -30,8 +30,8 @@
   "firebase_auth__failure__invalid_email__title": "Invalid e-mail",
   "firebase_auth__failure__invalid_email__info": "Please provide a well-formatted and correct e-mail address.",
 
-  "firebase_auth__failure__email_not_verified__title": "Invalid e-mail",
-  "firebase_auth__failure__email_not_verified__info": "Please provide a well-formatted and correct e-mail address.",
+  "firebase_auth__failure__email_not_verified__title": "E-mail not verified",
+  "firebase_auth__failure__email_not_verified__info": "You must confirm your e-mail before using the app.",
 
   "@AUTH__COMMON":  "",
   "auth__tab__login": "Login",
