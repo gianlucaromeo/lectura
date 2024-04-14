@@ -4,13 +4,15 @@ import 'package:lectura/core/routes.dart';
 
 enum BottomBarCurrentPage {
   home,
-  //search,
-  //library,
+  search,
+  library,
   profile
 }
 
 final _routes = [
   Routes.homeRoute,
+  Routes.searchRoute,
+  Routes.libraryRoute,
   Routes.profileRoute,
 ];
 
@@ -40,8 +42,8 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
     return BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "***home"),
-        //BottomNavigationBarItem(icon: Icon(Icons.search)),
-        //BottomNavigationBarItem(icon: Icon(Icons.book)),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: "***search"),
+        BottomNavigationBarItem(icon: Icon(Icons.book), label: "***library"),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: "***profile"),
       ],
       currentIndex: index,
