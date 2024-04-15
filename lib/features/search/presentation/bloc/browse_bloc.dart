@@ -78,8 +78,6 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
 
     emit(BrowseState.searching(state.books));
 
-    List<Book> books = List.empty(growable: true);
-
     await FetchGoogleBooks(_searchRepository)
         .call(FetchGoogleBooksParams(event.value))
         .then(
