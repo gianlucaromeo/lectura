@@ -31,9 +31,9 @@ class ProfilePage extends StatelessWidget {
             ),
           ],
         ),
-        bottomNavigationBar: const AppBottomNavigationBar(
-          currentPage: BottomBarCurrentPage.profile,
-        ),
+        //bottomNavigationBar: const AppBottomNavigationBar(
+          //currentPage: BottomBarCurrentPage.profile,
+        //),
       ),
     );
   }

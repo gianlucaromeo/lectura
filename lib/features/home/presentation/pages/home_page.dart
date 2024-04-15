@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
             MaterialButton(
               child: const Text("***Profile"),
               onPressed: () {
-                AutoRouter.of(context).replace(Routes.profileRoute);
+                AutoRouter.of(context).push(Routes.profileRoute);
               },
             ),
           ],

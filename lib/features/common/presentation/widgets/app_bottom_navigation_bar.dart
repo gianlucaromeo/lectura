@@ -6,14 +6,14 @@ enum BottomBarCurrentPage {
   home,
   search,
   library,
-  profile
+  //profile
 }
 
 final _routes = [
   Routes.homeRoute,
   Routes.searchRoute,
   Routes.libraryRoute,
-  Routes.profileRoute,
+  //Routes.profileRoute,
 ];
 
 class AppBottomNavigationBar extends StatefulWidget {
@@ -44,7 +44,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "***home"),
         BottomNavigationBarItem(icon: Icon(Icons.search), label: "***search"),
         BottomNavigationBarItem(icon: Icon(Icons.book), label: "***library"),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: "***profile"),
+        //BottomNavigationBarItem(icon: Icon(Icons.person), label: "***profile"),
       ],
       currentIndex: index,
       onTap: (value) {
