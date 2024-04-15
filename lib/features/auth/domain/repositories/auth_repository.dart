@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:lectura/core/failures.dart';
-import 'package:lectura/features/auth/data/dto/user_dto.dart';
+import 'package:lectura/features/auth/domain/entities/user.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, bool>> createUserWithEmailAndPassword({
@@ -8,7 +8,7 @@ abstract class AuthRepository {
     required String password,
   });
 
-  Future<Either<Failure, UserDto>> loginUserWithEmailAndPassword({
+  Future<Either<Failure, User>> loginUserWithEmailAndPassword({
     required String email,
     required String password,
 });

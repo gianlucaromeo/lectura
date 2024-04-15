@@ -3,7 +3,7 @@ import 'package:lectura/core/exceptions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/core/network_info.dart';
 import 'package:lectura/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:lectura/features/auth/data/dto/user_dto.dart';
+import 'package:lectura/features/auth/domain/entities/user.dart';
 import 'package:lectura/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -41,7 +41,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, UserDto>> loginUserWithEmailAndPassword({
+  Future<Either<Failure, User>> loginUserWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -51,7 +51,7 @@ class AuthRepositoryImpl implements AuthRepository {
           await authRemoteDataSource.loginUserWithEmailAndPassword(
             email: email,
             password: password,
-          ),
+          ).then((dto) => dto.toEntity()),
         );
       } catch (e) {
         if (e is ServerException) {

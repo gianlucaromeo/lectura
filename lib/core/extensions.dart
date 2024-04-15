@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/features/auth/data/dto/user_dto.dart';
 import 'package:lectura/features/auth/domain/entities/user.dart';
+import 'package:lectura/features/profile/data/dto/google_book_dto.dart';
+import 'package:lectura/features/profile/domain/entities/book.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -32,10 +34,10 @@ extension GetFailure on Either<Failure, dynamic> {
   }
 }
 
-extension GetUserDto on Either<Failure, UserDto> {
-  UserDto get userDto {
+extension GetListOfBooksDTOs on Either<Failure, List<GoogleBookDto>> {
+  List<GoogleBookDto> get googleBooksDTOs {
     assert(isRight(), "Trying to get Right from an Either but isRight() is false.");
-    return fold((l) => l, (r) => r) as UserDto;
+    return fold((l) => l, (r) => r) as List<GoogleBookDto>;
   }
 }
 
@@ -43,6 +45,13 @@ extension GetUser on Either<Failure, User> {
   User get user {
     assert(isRight(), "Trying to get Right from an Either but isRight() is false.");
     return fold((l) => l, (r) => r) as User;
+  }
+}
+
+extension GetListOfBooks on Either<Failure, List<Book>> {
+  List<Book> get books {
+    assert(isRight(), "Trying to get Right from an Either but isRight() is false.");
+    return fold((l) => l, (r) => r) as List<Book>;
   }
 }
 

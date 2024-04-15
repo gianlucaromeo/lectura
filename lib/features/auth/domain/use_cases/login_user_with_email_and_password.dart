@@ -30,7 +30,7 @@ class LoginUserWithEmailAndPassword extends UseCase<User, EmailAndPasswordLoginP
     if (resp.isFailure) {
       return Left(resp.failure);
     } else {
-      return Right(resp.userDto.toEntity());
+      return Right(resp.user);
     }
   }
 }
