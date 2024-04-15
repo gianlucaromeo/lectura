@@ -6,6 +6,7 @@ import 'package:lectura/core/extensions.dart';
 import 'package:lectura/features/profile/domain/entities/book.dart';
 import 'package:lectura/features/search/domain/repositories/search_repository.dart';
 import 'package:lectura/features/search/domain/use_cases/fetch_google_books.dart';
+import 'package:rxdart/rxdart.dart';
 
 enum BrowseStatus { empty, searching, filled }
 
@@ -34,9 +35,9 @@ class BrowseState extends Equatable {
 
   @override
   List<Object?> get props => [
-    status,
-    books,
-  ];
+        status,
+        books,
+      ];
 }
 
 sealed class BrowseEvent {}
@@ -51,23 +52,46 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
   BrowseBloc(SearchRepository searchRepository)
       : _searchRepository = searchRepository,
         super(BrowseState.empty()) {
-    on<BrowseInputChanged>(_onBrowseInputChanged);
+    on<BrowseInputChanged>(
+      _onBrowseInputChanged,
+      transformer: _debounceSequential(const Duration(milliseconds: 300)),
+    );
   }
 
   final SearchRepository _searchRepository;
 
+  EventTransformer<BrowseInputChanged> _debounceSequential<BrowseInputChanged>(
+    Duration duration,
+  ) {
+    return (events, mapper) => events.debounceTime(duration).switchMap(mapper);
+  }
+
   void _onBrowseInputChanged(
     BrowseInputChanged event,
-    Emitter<BrowseState> emitter,
+    Emitter<BrowseState> emit,
   ) async {
-    emit(BrowseState.searching(state.books));
-    await FetchGoogleBooks(_searchRepository)
-        .call(FetchGoogleBooksParams(event.value)).then((resp) {
 
-          if (resp.isFailure) {
-            // TODO
-          }
+    if (event.value?.isEmpty == true) {
+      emit(BrowseState.empty());
+      return;
+    }
+
+    emit(BrowseState.searching(state.books));
+
+    List<Book> books = List.empty(growable: true);
+
+    await FetchGoogleBooks(_searchRepository)
+        .call(FetchGoogleBooksParams(event.value))
+        .then(
+      (resp) {
+        if (resp.isFailure) {
+          log("Failure ${resp.failure}");
+          // TODO
+        } else {
+          log("Success: ${resp.books.length}");
           emit(BrowseState.filled(resp.books));
-        },);
+        }
+      },
+    );
   }
 }

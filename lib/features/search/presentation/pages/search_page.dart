@@ -1,10 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lectura/core/utils.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
 import 'package:lectura/features/common/presentation/widgets/app_bottom_navigation_bar.dart';
-import 'package:lectura/features/common/presentation/widgets/app_text_form_field.dart';
 import 'package:lectura/features/common/presentation/widgets/login_bloc_consumer_with_loading.dart';
 import 'package:lectura/features/search/data/datasources/search_datasource.dart';
 import 'package:lectura/features/search/data/repositories/search_repository.dart';
@@ -41,15 +39,19 @@ class _SearchPageState extends State<SearchPage> {
                       //controller: searchController,
                       onChanged: (value) {
                         context.read<BrowseBloc>().add(
-                          BrowseInputChanged(value),
-                        );
+                              BrowseInputChanged(value),
+                            );
                       },
                     ),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            ...context.watch<BrowseBloc>().state.books.map((e) => ListTile(title: Text(e.title ?? "...")),)
+                            ...context.watch<BrowseBloc>().state.books.map(
+                                  (e) => ListTile(
+                                    title: Text(e.title ?? "..."),
+                                  ),
+                                )
                           ],
                         ),
                       ),

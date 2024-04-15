@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:lectura/core/failures.dart';
-import 'package:lectura/features/auth/data/dto/user_dto.dart';
 import 'package:lectura/features/auth/domain/entities/user.dart';
 import 'package:lectura/features/profile/data/dto/google_book_dto.dart';
 import 'package:lectura/features/profile/domain/entities/book.dart';
