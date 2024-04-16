@@ -31,7 +31,6 @@ class GoogleApiDataSource extends SearchDatasource {
 
       final googleBooksDTOs =
           booksData.map((json) => GoogleBookDto.fromJson(json)).toList();
-      //return Right(googleBooksDTOs);
       return Right(googleBooksDTOs);
     } catch (e) {
       log(e.toString());

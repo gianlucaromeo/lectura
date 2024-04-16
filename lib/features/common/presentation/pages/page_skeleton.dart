@@ -18,16 +18,21 @@ class LecturaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: title?.isNotEmpty == true ? Text(title!) : null,
-        titleSpacing: 20.0,
-        elevation: 1.0,
-        titleTextStyle: Theme.of(context).textTheme.titleLarge,
-      ),
+      appBar: title?.isNotEmpty == true
+          ? AppBar(
+              title: Text(title!),
+              titleSpacing: 20.0,
+              elevation: 1.0,
+              titleTextStyle: Theme.of(context).textTheme.titleLarge,
+            )
+      : null,
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
-        padding: padding ?? 20.0.all,
-        child: body,
+        padding: title?.isNotEmpty == true ? EdgeInsets.zero : kToolbarHeight.onlyTop,
+        child: Padding(
+          padding: padding ?? 20.0.all,
+          child: body,
+        ),
       ),
       bottomNavigationBar: bottomNavigationBar,
     );

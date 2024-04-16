@@ -18,8 +18,11 @@ class SearchRepositoryImpl implements SearchRepository {
       return Left(resp.failure);
     }
 
+    final books = resp.googleBooksDTOs
+        .where((dto) => dto.isValid)
+        .map((dto) => dto.toEntity())
+        .toList();
 
-    final books = resp.googleBooksDTOs.map((dto) => dto.toEntity()).toList();
     return Right(books);
   }
 }

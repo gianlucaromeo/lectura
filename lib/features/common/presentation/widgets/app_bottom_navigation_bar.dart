@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/routes.dart';
 
 enum BottomBarCurrentPage {
@@ -40,10 +41,20 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: "***home"),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: "***search"),
-        BottomNavigationBarItem(icon: Icon(Icons.book), label: "***library"),
+      showUnselectedLabels: false,
+      items: [
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.home),
+          label: context.l10n.bottom_bar__home,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.search),
+          label: context.l10n.bottom_bar__search,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.book),
+          label: context.l10n.bottom_bar__library,
+        ),
         //BottomNavigationBarItem(icon: Icon(Icons.person), label: "***profile"),
       ],
       currentIndex: index,

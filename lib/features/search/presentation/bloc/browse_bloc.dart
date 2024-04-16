@@ -49,13 +49,16 @@ final class BrowseInputChanged extends BrowseEvent {
 }
 
 class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
+
   BrowseBloc(SearchRepository searchRepository)
       : _searchRepository = searchRepository,
         super(BrowseState.empty()) {
+
     on<BrowseInputChanged>(
       _onBrowseInputChanged,
       transformer: _debounceSequential(const Duration(milliseconds: 300)),
     );
+
   }
 
   final SearchRepository _searchRepository;

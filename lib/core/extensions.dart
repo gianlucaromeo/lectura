@@ -28,30 +28,42 @@ extension IsFailure on Either<Failure, dynamic> {
 
 extension GetFailure on Either<Failure, dynamic> {
   Failure get failure {
-    assert(isLeft(), "Trying to get Left from an Either but isLeft() is false.");
+    assert(
+        isLeft(), "Trying to get Left from an Either but isLeft() is false.");
     return fold((l) => l, (r) => r) as Failure;
   }
 }
 
 extension GetListOfBooksDTOs on Either<Failure, List<GoogleBookDto>> {
   List<GoogleBookDto> get googleBooksDTOs {
-    assert(isRight(), "Trying to get Right from an Either but isRight() is false.");
+    assert(isRight(),
+        "Trying to get Right from an Either but isRight() is false.");
     return fold((l) => l, (r) => r) as List<GoogleBookDto>;
   }
 }
 
 extension GetUser on Either<Failure, User> {
   User get user {
-    assert(isRight(), "Trying to get Right from an Either but isRight() is false.");
+    assert(isRight(),
+        "Trying to get Right from an Either but isRight() is false.");
     return fold((l) => l, (r) => r) as User;
   }
 }
 
 extension GetListOfBooks on Either<Failure, List<Book>> {
   List<Book> get books {
-    assert(isRight(), "Trying to get Right from an Either but isRight() is false.");
+    assert(isRight(),
+        "Trying to get Right from an Either but isRight() is false.");
     return fold((l) => l, (r) => r) as List<Book>;
   }
+}
+
+extension GetValidGoogleBook on GoogleBookDto {
+  bool get isValid =>
+      this.id?.isNotEmpty == true &&
+      volumeInfo.title?.isNotEmpty == true &&
+      volumeInfo.description?.isNotEmpty == true &&
+      volumeInfo.smallImageLink?.isNotEmpty == true;
 }
 
 extension SizedBoxFromDouble on double {
