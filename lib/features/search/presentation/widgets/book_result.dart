@@ -41,7 +41,6 @@ class BookResult extends StatelessWidget {
           /// TITLE - AUTHOR(S) - DESCRIPTION
           Expanded(
             child: Column(
-              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -53,9 +52,41 @@ class BookResult extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+
+
+                /* Currently, cannot find a book with rating from the API
+
+                if (book.averageRating != null && book.ratingCount != null)
+                  Padding(
+                    padding: 4.0.onlyBottom,
+                    child: Row(children: [
+                      ...List.generate(
+                        5,
+                        (i) {
+                          if (i < book.averageRating!) {
+                            return const Icon(
+                              Icons.star,
+                              size: 12.0,
+                            );
+                          } else if (i < book.averageRating!.ceil()) {
+                            return const Icon(
+                              Icons.star_half,
+                              size: 12.0,
+                            );
+                          } else {
+                            return const Icon(Icons.star_border, size: 12.0);
+                          }
+                        },
+                      ),
+                    ]),
+                  ),
+                  */
+
                 Text(
                   book.description,
                   maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),
