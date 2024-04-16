@@ -9,7 +9,7 @@ class LoginState extends Equatable {
     this.loginFailure,
   });
 
-  const LoginState.unknown() : this._(status: LoginStatus.unknown);
+  const LoginState.unknown() : this._();
 
   const LoginState.inProgress(User? user) : this._(user: user, status: LoginStatus.inProgress);
 

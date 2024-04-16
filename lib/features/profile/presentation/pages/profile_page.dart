@@ -11,28 +11,23 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LoginBlocConsumerWithLoading(
-      builder: (context, state) => LecturaPage(
-        title: "***PROFILE",
-        body: Column(
-          children: [
-            MaterialButton(
-              child: const Text("***Logout"),
-              onPressed: () {
-                context.read<LoginBloc>().add(UserLoggedOut());
-              },
-            ),
-            MaterialButton(
-              child: const Text("***Delete account"),
-              onPressed: () {
-                context.read<LoginBloc>().add(UserDeleteAccountRequested());
-              },
-            ),
-          ],
-        ),
-        //bottomNavigationBar: const AppBottomNavigationBar(
-          //currentPage: BottomBarCurrentPage.profile,
-        //),
+    return LecturaPage(
+      title: "***PROFILE",
+      body: Column(
+        children: [
+          MaterialButton(
+            child: const Text("***Logout"),
+            onPressed: () {
+              context.read<LoginBloc>().add(UserLoggedOut());
+            },
+          ),
+          MaterialButton(
+            child: const Text("***Delete account"),
+            onPressed: () {
+              context.read<LoginBloc>().add(UserDeleteAccountRequested());
+            },
+          ),
+        ],
       ),
     );
   }

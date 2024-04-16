@@ -31,18 +31,15 @@ class _LoginBlocConsumerWithLoadingState
             isLoading = true;
           });
           showAppLoadingDialog(context);
-        }
-
-        if (isLoading && state.status != LoginStatus.inProgress) {
+        } else if (isLoading && state.status != LoginStatus.inProgress) {
           setState(() {
             isLoading = false;
           });
-          AutoRouter.of(context).popForced();
-        }
-
-        if (state.user == null) {
-          AutoRouter.of(context).popUntil((route) => route.isFirst);
-          AutoRouter.of(context).replace(Routes.authRoute);
+          AutoRouter.of(context).popForced(); // pop loading
+          if (state.user == null) {
+            AutoRouter.of(context).popUntil((route) => route.isFirst);
+            AutoRouter.of(context).replace(Routes.authRoute);
+          }
         }
       },
       builder: widget.builder,
