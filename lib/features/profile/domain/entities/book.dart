@@ -7,11 +7,11 @@ class Book {
     required this.description,
   });
 
-  final String? id;
+  final String id;
 
-  final String? imagePath;
+  final String imagePath;
 
-  final String? title;
-  final List<String>? authors;
-  final String? description;
+  final String title;
+  final List<String> authors;
+  final String description;
 }

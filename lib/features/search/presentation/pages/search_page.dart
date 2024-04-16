@@ -32,6 +32,7 @@ class _SearchPageState extends State<SearchPage> {
             RepositoryProvider.of<SearchRepository>(context),
           ),
           child: LecturaPage(
+            padding: [20.0, 20.0, 20.0, 0.0].fromLTRB,
             body: Builder(
               builder: (context) {
                 return Column(
@@ -51,7 +52,7 @@ class _SearchPageState extends State<SearchPage> {
                           children: [
                             ...context.watch<BrowseBloc>().state.books.map(
                                   (book) => Padding(
-                                    padding: 10.0.onlyBottom,
+                                    padding: 25.0.onlyBottom,
                                     child: BookResult(
                                       book: book,
                                     ),

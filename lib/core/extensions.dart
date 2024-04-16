@@ -63,7 +63,7 @@ extension GetValidGoogleBook on GoogleBookDto {
       this.id?.isNotEmpty == true &&
       volumeInfo.title?.isNotEmpty == true &&
       volumeInfo.description?.isNotEmpty == true &&
-      volumeInfo.smallImageLink?.isNotEmpty == true;
+      volumeInfo.thumbnail?.isNotEmpty == true;
 }
 
 extension SizedBoxFromDouble on double {

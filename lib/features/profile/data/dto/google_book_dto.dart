@@ -1,4 +1,5 @@
 import 'package:lectura/core/convertible_dto.dart';
+import 'package:lectura/core/extensions.dart';
 import 'package:lectura/features/profile/domain/entities/book.dart';
 
 class GoogleBookVolumeInfoDto {
@@ -14,7 +15,7 @@ class GoogleBookVolumeInfoDto {
     this.categories,
     this.averageRating,
     this.ratingCount,
-    this.smallImageLink,
+    this.thumbnail,
     this.language,
     this.infoLink,
   });
@@ -30,7 +31,7 @@ class GoogleBookVolumeInfoDto {
   final List<String>? categories;
   final double? averageRating;
   final int? ratingCount;
-  final String? smallImageLink;
+  final String? thumbnail;
   final String? language;
   final String? infoLink;
 
@@ -46,7 +47,7 @@ class GoogleBookVolumeInfoDto {
         categories = [], // TODO
         averageRating = (json["averageRating"] as num?)?.toDouble(),
         ratingCount = json["ratingCount"],
-        smallImageLink = json["imageLinks"]?["smallThumbnail"],
+        thumbnail = json["imageLinks"]?["thumbnail"],
         language = json["language"],
         infoLink = json["infoLink"];
 }
@@ -69,12 +70,15 @@ class GoogleBookDto extends ConvertibleDto<Book> {
 
   @override
   Book toEntity() {
+    if (!isValid) {
+      throw Exception("Book.toEntity has been called but book.isValid is false");
+    }
     return Book(
-      id: id,
-      imagePath: volumeInfo.smallImageLink,
-      title: volumeInfo.title,
-      authors: volumeInfo.authors,
-      description: volumeInfo.description,
+      id: id!,
+      imagePath: volumeInfo.thumbnail!,
+      title: volumeInfo.title!,
+      authors: volumeInfo.authors!,
+      description: volumeInfo.description!,
     );
   }
 }

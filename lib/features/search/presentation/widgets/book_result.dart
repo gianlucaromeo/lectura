@@ -12,35 +12,49 @@ class BookResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (book.title?.isEmpty == true) {
-      return const SizedBox();
-    }
-
     return SizedBox(
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// IMAGE
-          () {
-            if (book.imagePath != null) {
-              return Image.network(book.imagePath!);
-            } else {
-              return const SizedBox();
-            }
-          }(),
-
+          Container(
+            width: 70.0,
+            height: 100.0,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).shadowColor.withOpacity(0.2),
+                  blurRadius: 4,
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              child: Image.network(
+                book.imagePath,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
           25.0.horizontalSpace,
 
           /// TITLE - AUTHOR(S) - DESCRIPTION
           Expanded(
             child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  book.title!,
+                  book.title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
-                  book.description ?? "no descr",
+                  book.description,
                   maxLines: 3,
                 ),
               ],
