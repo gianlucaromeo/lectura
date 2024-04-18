@@ -18,6 +18,7 @@ class LecturaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
       appBar: title?.isNotEmpty == true
           ? AppBar(
               title: Text(title!),

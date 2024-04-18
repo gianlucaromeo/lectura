@@ -21,6 +21,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const AuthPage(),
       );
     },
+    BookRoute.name: (routeData) {
+      final args = routeData.argsAs<BookRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: BookPage(
+          key: args.key,
+          book: args.book,
+        ),
+      );
+    },
     HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -60,6 +70,43 @@ class AuthRoute extends PageRouteInfo<void> {
   static const String name = 'AuthRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [BookPage]
+class BookRoute extends PageRouteInfo<BookRouteArgs> {
+  BookRoute({
+    Key? key,
+    required Book book,
+    List<PageRouteInfo>? children,
+  }) : super(
+          BookRoute.name,
+          args: BookRouteArgs(
+            key: key,
+            book: book,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'BookRoute';
+
+  static const PageInfo<BookRouteArgs> page = PageInfo<BookRouteArgs>(name);
+}
+
+class BookRouteArgs {
+  const BookRouteArgs({
+    this.key,
+    required this.book,
+  });
+
+  final Key? key;
+
+  final Book book;
+
+  @override
+  String toString() {
+    return 'BookRouteArgs{key: $key, book: $book}';
+  }
 }
 
 /// generated route for

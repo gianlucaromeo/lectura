@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/features/auth/domain/entities/user.dart';
 import 'package:lectura/features/profile/data/dto/google_book_dto.dart';
-import 'package:lectura/features/profile/domain/entities/book.dart';
+import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -67,9 +67,9 @@ extension GetValidGoogleBook on GoogleBookDto {
 }
 
 extension SizedBoxFromDouble on double {
-  get verticalSpace => SizedBox(height: this);
+  SizedBox get verticalSpace => SizedBox(height: this);
 
-  get horizontalSpace => SizedBox(width: this);
+  SizedBox get horizontalSpace => SizedBox(width: this);
 }
 
 extension DurationFromInt on int {

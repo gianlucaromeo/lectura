@@ -1,6 +1,6 @@
 import 'package:lectura/core/convertible_dto.dart';
 import 'package:lectura/core/extensions.dart';
-import 'package:lectura/features/profile/domain/entities/book.dart';
+import 'package:lectura/features/search/domain/entities/book.dart';
 
 class GoogleBookVolumeInfoDto {
   const GoogleBookVolumeInfoDto({

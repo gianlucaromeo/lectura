@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
-import 'package:lectura/features/profile/domain/entities/book.dart';
+import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:lectura/features/search/domain/repositories/search_repository.dart';
 import 'package:lectura/features/search/domain/use_cases/fetch_google_books.dart';
 import 'package:rxdart/rxdart.dart';
