@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
+import 'package:lectura/features/common/presentation/widgets/book_image.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
 
 @RoutePage()
@@ -32,23 +33,9 @@ class _BookPageState extends State<BookPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     /// IMAGE
-                    Container(
-                      width: 135.0,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Theme.of(context).shadowColor.withOpacity(0.2),
-                            blurRadius: 4,
-                            spreadRadius: 1,
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        child: Image.network(
-                          widget.book.imagePath,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                    BookImage(
+                      imagePath: widget.book.imagePath,
+                      imageSize: BookImageSize.big,
                     ),
                     25.0.verticalSpace,
 

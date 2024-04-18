@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:lectura/core/extensions.dart';
+import 'package:lectura/features/common/presentation/widgets/book_image.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
 
 class BookResult extends StatelessWidget {
@@ -23,24 +23,9 @@ class BookResult extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// IMAGE
-            Container(
-              width: 70.0,
-              height: 100.0,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).shadowColor.withOpacity(0.2),
-                    blurRadius: 4,
-                    spreadRadius: 1,
-                  ),
-                ],
-              ),
-              child: ClipRRect(
-                child: Image.network(
-                  book.imagePath,
-                  fit: BoxFit.cover,
-                ),
-              ),
+            BookImage(
+              imagePath: book.imagePath,
+              imageSize: BookImageSize.small,
             ),
             25.0.horizontalSpace,
 
