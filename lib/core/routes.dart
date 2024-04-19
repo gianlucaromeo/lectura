@@ -1,4 +1,3 @@
-import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:lectura/router/app_router.dart';
 
 class Routes {
