@@ -5,7 +5,6 @@ import 'package:lectura/core/extensions.dart';
 import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
 import 'package:lectura/features/common/presentation/widgets/book_image.dart';
-import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:lectura/features/search/domain/entities/book_status.dart';
 import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
 
@@ -13,10 +12,8 @@ import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
 class BookPage extends StatefulWidget {
   const BookPage({
     super.key,
-    required this.book,
   });
 
-  final Book book;
 
   @override
   State<BookPage> createState() => _BookPageState();
@@ -25,8 +22,14 @@ class BookPage extends StatefulWidget {
 class _BookPageState extends State<BookPage> {
   @override
   Widget build(BuildContext context) {
+    final book = context.watch<BrowseBloc>().state.openedBook;
+
+    if (book == null) {
+      return const SizedBox(); // TODO
+    }
+
     return LecturaPage(
-      title: widget.book.title,
+      title: book.title,
       body: SizedBox(
         width: double.infinity,
         child: Column(
@@ -38,14 +41,14 @@ class _BookPageState extends State<BookPage> {
                   children: [
                     /// IMAGE
                     BookImage(
-                      imagePath: widget.book.imagePath,
+                      imagePath: book.imagePath,
                       imageSize: BookImageSize.big,
                     ),
                     25.0.verticalSpace,
 
                     /// TITLE
                     Text(
-                      widget.book.title,
+                      book.title,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     25.0.verticalSpace,
@@ -55,7 +58,7 @@ class _BookPageState extends State<BookPage> {
                       padding: [3.0, 10.0].verticalHorizontal,
                       color: Theme.of(context).colorScheme.surfaceVariant,
                       child: Text(
-                        widget.book.status.name,
+                        book.status.name,
                         style: Theme.of(context).textTheme.labelSmall,
                       ),
                     ),
@@ -63,7 +66,7 @@ class _BookPageState extends State<BookPage> {
 
                     /// DESCRIPTION
                     Text(
-                      widget.book.description,
+                      book.description,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
@@ -80,7 +83,7 @@ class _BookPageState extends State<BookPage> {
                     context.read<BrowseBloc>().add(
                           AddBookRequested(
                             userId,
-                            widget.book.id,
+                            book.id,
                             BookStatus.read,
                           ),
                         );

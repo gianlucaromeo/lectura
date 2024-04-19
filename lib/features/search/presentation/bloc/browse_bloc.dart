@@ -23,6 +23,8 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
     );
 
     on<AddBookRequested>(_onAddBookRequested);
+
+    on<OpenBookRequested>(_onOpenBookRequested);
   }
 
   final SearchRepository _searchRepository;
@@ -64,7 +66,6 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
     Emitter<BrowseState> emit,
   ) async {
     log("...Adding book ${event.bookId} with status ${event.status.name}");
-    emit(BrowseState.searching(state.books));
 
     await AddBook(_searchRepository)
         .call(AddBookParams(event.userId, event.bookId, event.status))
@@ -77,8 +78,15 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
         final books = state.books
             .map((e) => e.id == resp.book.id ? resp.book : e)
             .toList();
-        emit(BrowseState.filled(books));
+        emit(BrowseState.openedBook(books, resp.book));
       }
     });
+  }
+
+  void _onOpenBookRequested(
+    OpenBookRequested event,
+    Emitter<BrowseState> emit,
+  ) {
+    emit(BrowseState.openedBook(state.books, event.book));
   }
 }

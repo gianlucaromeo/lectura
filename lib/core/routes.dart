@@ -8,5 +8,5 @@ class Routes {
   static get profileRoute => const ProfileRoute();
   static get searchRoute => const SearchRoute();
   static get libraryRoute => const LibraryRoute();
-  static BookRoute bookRoute(Book book) => BookRoute(book: book);
+  static get bookRoute => const BookRoute();
 }

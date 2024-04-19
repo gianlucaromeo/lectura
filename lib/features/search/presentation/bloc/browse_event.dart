@@ -15,3 +15,9 @@ final class AddBookRequested extends BrowseEvent {
   final String bookId;
   final BookStatus status;
 }
+
+final class OpenBookRequested extends BrowseEvent {
+  OpenBookRequested(this.book);
+
+  final Book book;
+}

@@ -25,8 +25,8 @@ class SearchPage extends StatelessWidget {
                 //controller: searchController,
                 onChanged: (value) {
                   context.read<BrowseBloc>().add(
-                    BrowseInputChanged(value),
-                  );
+                        BrowseInputChanged(value),
+                      );
                 },
               ),
               25.0.verticalSpace,
@@ -36,15 +36,19 @@ class SearchPage extends StatelessWidget {
                     children: [
                       ...context.watch<BrowseBloc>().state.books.map(
                             (book) => Padding(
-                          padding: 25.0.onlyBottom,
-                          child: BookResult(
-                            book: book,
-                            onTap: () {
-                              AutoRouter.of(context).push(Routes.bookRoute(book));
-                            },
+                              padding: 25.0.onlyBottom,
+                              child: BookResult(
+                                book: book,
+                                onTap: () {
+                                  context
+                                      .read<BrowseBloc>()
+                                      .add(OpenBookRequested(book));
+                                  AutoRouter.of(context)
+                                      .push(Routes.bookRoute);
+                                },
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
