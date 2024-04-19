@@ -12,7 +12,7 @@ enum BottomBarCurrentPage {
 
 final _routes = [
   Routes.homeRoute,
-  Routes.searchRoute,
+  Routes.searchWrapperRoute, // Routes.searchRoute,
   Routes.libraryRoute,
   //Routes.profileRoute,
 ];

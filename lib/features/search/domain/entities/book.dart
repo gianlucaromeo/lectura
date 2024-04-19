@@ -1,3 +1,5 @@
+import 'package:lectura/features/search/domain/entities/book_status.dart';
+
 class Book {
   const Book({
     required this.id,
@@ -7,7 +9,30 @@ class Book {
     required this.description,
     this.averageRating,
     this.ratingCount,
+    this.status = BookStatus.unknown,
   });
+
+  Book copyWith({
+    String? id,
+    String? imagePath,
+    String? title,
+    List<String>? authors,
+    String? description,
+    double? averageRating,
+    int? ratingCount,
+    BookStatus? status,
+  }) {
+    return Book(
+      id: id ?? this.id,
+      imagePath: imagePath ?? this.imagePath,
+      title: title ?? this.title,
+      authors: authors ?? this.authors,
+      description: description ?? this.description,
+      averageRating: averageRating ?? this.averageRating,
+      ratingCount: ratingCount ?? this.ratingCount,
+      status: status ?? this.status,
+    );
+  }
 
   final String id;
   final String imagePath;
@@ -17,4 +42,6 @@ class Book {
 
   final double? averageRating;
   final int? ratingCount;
+
+  final BookStatus status;
 }

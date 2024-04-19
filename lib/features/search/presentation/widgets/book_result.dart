@@ -71,11 +71,23 @@ class BookResult extends StatelessWidget {
                     ),
                     */
 
+                  /// DESCRIPTION
                   Text(
                     book.description,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  15.0.verticalSpace,
+
+                  /// STATUS
+                  Container(
+                    padding: [3.0, 10.0].verticalHorizontal,
+                    color: Theme.of(context).colorScheme.surfaceVariant,
+                    child: Text(
+                      book.status.name,
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
                   ),
                 ],
               ),

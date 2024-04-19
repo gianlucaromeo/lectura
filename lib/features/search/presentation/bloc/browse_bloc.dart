@@ -4,61 +4,25 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
+import 'package:lectura/features/search/domain/entities/book_status.dart';
 import 'package:lectura/features/search/domain/repositories/search_repository.dart';
+import 'package:lectura/features/search/domain/use_cases/add_book.dart';
 import 'package:lectura/features/search/domain/use_cases/fetch_google_books.dart';
 import 'package:rxdart/rxdart.dart';
 
-enum BrowseStatus { empty, searching, filled }
-
-class BrowseState extends Equatable {
-  const BrowseState._(
-    this.books,
-    this.status,
-  );
-
-  BrowseState.empty() : this._([], BrowseStatus.empty);
-
-  const BrowseState.filled(List<Book> books)
-      : this._(
-          books,
-          BrowseStatus.filled,
-        );
-
-  const BrowseState.searching(List<Book> books)
-      : this._(
-          books,
-          BrowseStatus.searching,
-        );
-
-  final BrowseStatus status;
-  final List<Book> books;
-
-  @override
-  List<Object?> get props => [
-        status,
-        books,
-      ];
-}
-
-sealed class BrowseEvent {}
-
-final class BrowseInputChanged extends BrowseEvent {
-  BrowseInputChanged(this.value);
-
-  final String? value;
-}
+part 'browse_event.dart';
+part 'browse_state.dart';
 
 class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
-
   BrowseBloc(SearchRepository searchRepository)
       : _searchRepository = searchRepository,
         super(BrowseState.empty()) {
-
     on<BrowseInputChanged>(
       _onBrowseInputChanged,
       transformer: _debounceSequential(const Duration(milliseconds: 300)),
     );
 
+    on<AddBookRequested>(_onAddBookRequested);
   }
 
   final SearchRepository _searchRepository;
@@ -73,7 +37,6 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
     BrowseInputChanged event,
     Emitter<BrowseState> emit,
   ) async {
-
     if (event.value?.isEmpty == true) {
       emit(BrowseState.empty());
       return;
@@ -94,5 +57,28 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
         }
       },
     );
+  }
+
+  void _onAddBookRequested(
+    AddBookRequested event,
+    Emitter<BrowseState> emit,
+  ) async {
+    log("...Adding book ${event.bookId} with status ${event.status.name}");
+    emit(BrowseState.searching(state.books));
+
+    await AddBook(_searchRepository)
+        .call(AddBookParams(event.userId, event.bookId, event.status))
+        .then((resp) {
+      if (resp.isFailure) {
+        log("Failure ${resp.failure}");
+        // TODO
+      } else {
+        log("Success");
+        final books = state.books
+            .map((e) => e.id == resp.book.id ? resp.book : e)
+            .toList();
+        emit(BrowseState.filled(books));
+      }
+    });
   }
 }

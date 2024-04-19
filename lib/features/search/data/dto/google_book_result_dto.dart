@@ -52,8 +52,8 @@ class GoogleBookVolumeInfoDto {
         infoLink = json["infoLink"];
 }
 
-class GoogleBookDto extends ConvertibleDto<Book> {
-  const GoogleBookDto({
+class GoogleBookResultDto extends ConvertibleDto<Book> {
+  const GoogleBookResultDto({
     this.id,
     required this.volumeInfo,
   });
@@ -61,8 +61,8 @@ class GoogleBookDto extends ConvertibleDto<Book> {
   final String? id;
   final GoogleBookVolumeInfoDto volumeInfo;
 
-  factory GoogleBookDto.fromJson(Map<String, dynamic> json) {
-    return GoogleBookDto(
+  factory GoogleBookResultDto.fromJson(Map<String, dynamic> json) {
+    return GoogleBookResultDto(
       id: json["id"],
       volumeInfo: GoogleBookVolumeInfoDto.fromMap(json["volumeInfo"]),
     );
@@ -71,7 +71,8 @@ class GoogleBookDto extends ConvertibleDto<Book> {
   @override
   Book toEntity() {
     if (!isValid) {
-      throw Exception("Book.toEntity has been called but book.isValid is false");
+      throw Exception(
+          "Book.toEntity has been called but book.isValid is false");
     }
     return Book(
       id: id!,

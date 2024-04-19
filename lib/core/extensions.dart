@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/features/auth/domain/entities/user.dart';
-import 'package:lectura/features/profile/data/dto/google_book_dto.dart';
+import 'package:lectura/features/search/data/dto/google_book_result_dto.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -34,11 +34,11 @@ extension GetFailure on Either<Failure, dynamic> {
   }
 }
 
-extension GetListOfBooksDTOs on Either<Failure, List<GoogleBookDto>> {
-  List<GoogleBookDto> get googleBooksDTOs {
+extension GetListOfBooksDTOs on Either<Failure, List<GoogleBookResultDto>> {
+  List<GoogleBookResultDto> get googleBooksDTOs {
     assert(isRight(),
         "Trying to get Right from an Either but isRight() is false.");
-    return fold((l) => l, (r) => r) as List<GoogleBookDto>;
+    return fold((l) => l, (r) => r) as List<GoogleBookResultDto>;
   }
 }
 
@@ -58,12 +58,28 @@ extension GetListOfBooks on Either<Failure, List<Book>> {
   }
 }
 
-extension GetValidGoogleBook on GoogleBookDto {
+extension GetValidGoogleBook on GoogleBookResultDto {
   bool get isValid =>
       this.id?.isNotEmpty == true &&
       volumeInfo.title?.isNotEmpty == true &&
       volumeInfo.description?.isNotEmpty == true &&
       volumeInfo.thumbnail?.isNotEmpty == true;
+}
+
+extension GetBook on Either<Failure, Book> {
+  Book get book {
+    assert(isRight(),
+    "Trying to get Right from an Either but isRight() is false.");
+    return fold((l) => l, (r) => r) as Book;
+  }
+}
+
+extension GetGoogleBookDto on Either<Failure, GoogleBookResultDto> {
+  GoogleBookResultDto get bookDto {
+    assert(isRight(),
+    "Trying to get Right from an Either but isRight() is false.");
+    return fold((l) => l, (r) => r) as GoogleBookResultDto;
+  }
 }
 
 extension SizedBoxFromDouble on double {
