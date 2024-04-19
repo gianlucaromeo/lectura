@@ -16,20 +16,24 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LecturaPage(
+      title: context.l10n.search__page_title,
       padding: [20.0, 20.0, 20.0, 0.0].fromLTRB,
       body: Builder(
         builder: (context) {
           return Column(
             children: [
-              TextField(
-                //controller: searchController,
+              SearchBar(
+                hintText: context.l10n.search__search_input__hint,
                 onChanged: (value) {
                   context.read<BrowseBloc>().add(
-                        BrowseInputChanged(value),
-                      );
+                    BrowseInputChanged(value),
+                  );
                 },
+                elevation: const MaterialStatePropertyAll(1.0),
+                shadowColor: const MaterialStatePropertyAll(Colors.transparent),
               ),
               25.0.verticalSpace,
+
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
