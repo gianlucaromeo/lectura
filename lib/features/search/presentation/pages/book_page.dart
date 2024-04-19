@@ -14,7 +14,6 @@ class BookPage extends StatefulWidget {
     super.key,
   });
 
-
   @override
   State<BookPage> createState() => _BookPageState();
 }
@@ -22,7 +21,7 @@ class BookPage extends StatefulWidget {
 class _BookPageState extends State<BookPage> {
   @override
   Widget build(BuildContext context) {
-    final book = context.watch<BrowseBloc>().state.openedBook;
+    final book = context.read<BrowseBloc>().state.openedBook;
 
     if (book == null) {
       return const SizedBox(); // TODO
@@ -54,14 +53,24 @@ class _BookPageState extends State<BookPage> {
                     25.0.verticalSpace,
 
                     /// STATUS
-                    Container(
-                      padding: [3.0, 10.0].verticalHorizontal,
-                      color: Theme.of(context).colorScheme.surfaceVariant,
-                      child: Text(
-                        book.status.name,
-                        style: Theme.of(context).textTheme.labelSmall,
-                      ),
+                    Builder(
+                      builder: (context) {
+                        return Container(
+                          padding: [3.0, 10.0].verticalHorizontal,
+                          color: Theme.of(context).colorScheme.surfaceVariant,
+                          child: Text(
+                            context
+                                .watch<BrowseBloc>()
+                                .state
+                                .openedBook!
+                                .status
+                                .name,
+                            style: Theme.of(context).textTheme.labelSmall,
+                          ),
+                        );
+                      },
                     ),
+
                     25.0.verticalSpace,
 
                     /// DESCRIPTION

@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:lectura/features/search/domain/entities/book_status.dart';
 
-class Book {
+class Book extends Equatable {
   const Book({
     required this.id,
     required this.imagePath,
@@ -44,4 +45,10 @@ class Book {
   final int? ratingCount;
 
   final BookStatus status;
+
+  @override
+  List<Object> get props => [
+    id,
+    status,
+  ];
 }
