@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/features/common/presentation/widgets/book_image.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
+import 'package:lectura/features/search/domain/entities/book_status.dart';
 
 class BookResult extends StatelessWidget {
   const BookResult({
@@ -18,9 +19,10 @@ class BookResult extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => onTap?.call(),
-      child: SizedBox(
+      child: Padding(
+        padding: 10.0.vertical,
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             /// IMAGE
             BookImage(
@@ -39,56 +41,41 @@ class BookResult extends StatelessWidget {
                     book.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold,),
                   ),
-                  10.0.verticalSpace,
+                  4.0.verticalSpace,
 
-                  /* Currently, cannot find a book with rating from the API
-
-                  if (book.averageRating != null && book.ratingCount != null)
+                  /// AUTHORS
+                  if (book.authors?.isNotEmpty == true)
                     Padding(
-                      padding: 4.0.onlyBottom,
-                      child: Row(children: [
-                        ...List.generate(
-                          5,
-                          (i) {
-                            if (i < book.averageRating!) {
-                              return const Icon(
-                                Icons.star,
-                                size: 12.0,
-                              );
-                            } else if (i < book.averageRating!.ceil()) {
-                              return const Icon(
-                                Icons.star_half,
-                                size: 12.0,
-                              );
-                            } else {
-                              return const Icon(Icons.star_border, size: 12.0);
-                            }
-                          },
-                        ),
-                      ]),
+                      padding: 10.0.onlyBottom,
+                      child: Text(
+                        book.authors!.join(","),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
                     ),
-                    */
 
                   /// DESCRIPTION
                   Text(
                     book.description,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   15.0.verticalSpace,
 
                   /// STATUS
-                  Container(
-                    padding: [3.0, 10.0].verticalHorizontal,
-                    color: Theme.of(context).colorScheme.surfaceVariant,
-                    child: Text(
-                      book.status.name,
-                      style: Theme.of(context).textTheme.labelSmall,
+                  if (book.status != BookStatus.unknown)
+                    Container(
+                      padding: [3.0, 10.0].verticalHorizontal,
+                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      child: Text(
+                        book.status.name,
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

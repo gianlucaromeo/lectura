@@ -10,6 +10,7 @@ class Book extends Equatable {
     required this.description,
     this.averageRating,
     this.ratingCount,
+    this.categories,
     this.status = BookStatus.unknown,
   });
 
@@ -22,6 +23,7 @@ class Book extends Equatable {
     double? averageRating,
     int? ratingCount,
     BookStatus? status,
+    List<String>? categories,
   }) {
     return Book(
       id: id ?? this.id,
@@ -32,13 +34,15 @@ class Book extends Equatable {
       averageRating: averageRating ?? this.averageRating,
       ratingCount: ratingCount ?? this.ratingCount,
       status: status ?? this.status,
+      categories: categories ?? this.categories,
     );
   }
 
   final String id;
   final String imagePath;
   final String title;
-  final List<String> authors;
+  final List<String>? authors;
+  final List<String>? categories;
   final String description;
 
   final double? averageRating;

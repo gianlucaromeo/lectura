@@ -38,13 +38,13 @@ class GoogleBookVolumeInfoDto {
   GoogleBookVolumeInfoDto.fromMap(Map<String, dynamic> json)
       : title = json["title"],
         subtitle = json["subtitle"],
-        authors = [], // TODO
+        authors = (json["authors"] as List?)?.map((e) => e as String).toList(),
         publisher = json["publisher"],
         publisherDate = json["publisherDate"],
         description = json["description"],
         pageCount = json["pageCount"],
         mainCategory = json["mainCategory"],
-        categories = [], // TODO
+        categories = (json["categories"] as List?)?.map((e) => e as String).toList(),
         averageRating = (json["averageRating"] as num?)?.toDouble(),
         ratingCount = json["ratingCount"],
         thumbnail = json["imageLinks"]?["thumbnail"],
@@ -78,10 +78,11 @@ class GoogleBookResultDto extends ConvertibleDto<Book> {
       id: id!,
       imagePath: volumeInfo.thumbnail!,
       title: volumeInfo.title!,
-      authors: volumeInfo.authors!,
+      authors: volumeInfo.authors,
       description: volumeInfo.description!,
       averageRating: volumeInfo.averageRating,
       ratingCount: volumeInfo.ratingCount,
+      categories: volumeInfo.categories,
     );
   }
 }

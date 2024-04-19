@@ -35,18 +35,19 @@ class SearchPage extends StatelessWidget {
                   child: Column(
                     children: [
                       ...context.watch<BrowseBloc>().state.books.map(
-                            (book) => Padding(
-                              padding: 25.0.onlyBottom,
-                              child: BookResult(
-                                book: book,
-                                onTap: () {
-                                  context
-                                      .read<BrowseBloc>()
-                                      .add(OpenBookRequested(book));
-                                  AutoRouter.of(context)
-                                      .push(Routes.bookRoute);
-                                },
-                              ),
+                            (book) => Column(
+                              children: [
+                                BookResult(
+                                  book: book,
+                                  onTap: () {
+                                    context
+                                        .read<BrowseBloc>()
+                                        .add(OpenBookRequested(book));
+                                    AutoRouter.of(context).push(Routes.bookRoute);
+                                  },
+                                ),
+                                const Divider(),
+                              ],
                             ),
                           ),
                     ],
