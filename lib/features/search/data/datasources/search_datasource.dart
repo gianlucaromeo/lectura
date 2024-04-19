@@ -59,11 +59,15 @@ class GoogleApiDataSource extends SearchDatasource {
     String bookId,
     String status,
   ) async {
+
     FirebaseFirestore.instance
         .collection("users")
         .doc(userId)
         .collection(status)
-        .doc(bookId);
+        .doc(bookId)
+        .set({"date": DateTime.now().toIso8601String()});
+
+    log(userId);
 
     final path = getBookPath(bookId);
 
