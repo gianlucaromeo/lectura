@@ -3,7 +3,7 @@ import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:lectura/features/search/data/datasources/search_datasource.dart';
-import 'package:lectura/features/search/domain/entities/book_status.dart';
+import 'package:lectura/core/enums.dart';
 import 'package:lectura/features/search/domain/repositories/search_repository.dart';
 
 class SearchRepositoryImpl implements SearchRepository {
@@ -28,8 +28,10 @@ class SearchRepositoryImpl implements SearchRepository {
   }
 
   @override
-  Future<Either<Failure, Book>> addBook(String userId, String bookId, BookStatus status) async {
-    final resp = await searchDatasource.addGoogleBook(userId, bookId, status.name);
+  Future<Either<Failure, Book>> addBook(
+      String userId, String bookId, BookStatus status) async {
+    final resp =
+        await searchDatasource.addGoogleBook(userId, bookId, status.name);
 
     if (resp.isFailure) {
       return Left(resp.failure);
@@ -37,5 +39,25 @@ class SearchRepositoryImpl implements SearchRepository {
 
     final book = resp.bookDto.toEntity().copyWith(status: status);
     return Right(book);
+  }
+
+  @override
+  Future<Either<Failure, List<Book>>> fetchAllUserBooks(
+    String userId,
+  ) async {
+    final resp = await searchDatasource.fetchAllUserBooks(userId);
+
+    if (resp.isFailure) {
+      return Left(resp.failure);
+    }
+
+    final futures = resp.googleUserBooksDTOs.map((e) async {
+      final book = await searchDatasource.fetchGoogleBook(e.bookId);
+      return book.bookDto.toEntity().copyWith(status: e.status);
+    }).toList();
+
+    final books = await futures.wait;
+
+    return Right(books);
   }
 }

@@ -3,9 +3,13 @@ part of 'browse_bloc.dart';
 sealed class BrowseEvent {}
 
 final class BrowseInputChanged extends BrowseEvent {
-  BrowseInputChanged(this.value);
+  BrowseInputChanged({
+    required this.value,
+    required this.userId,
+  });
 
-  final String? value;
+  final String value;
+  final String userId;
 }
 
 final class AddBookRequested extends BrowseEvent {

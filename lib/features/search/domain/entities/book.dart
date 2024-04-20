@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:lectura/features/search/domain/entities/book_status.dart';
+import 'package:lectura/core/enums.dart';
 
 class Book extends Equatable {
   const Book({

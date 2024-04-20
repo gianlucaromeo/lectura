@@ -4,10 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
-import 'package:lectura/features/search/domain/entities/book_status.dart';
+import 'package:lectura/core/enums.dart';
 import 'package:lectura/features/search/domain/repositories/search_repository.dart';
 import 'package:lectura/features/search/domain/use_cases/add_book.dart';
-import 'package:lectura/features/search/domain/use_cases/fetch_google_books.dart';
+import 'package:lectura/features/search/domain/use_cases/fetchBooks.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'browse_event.dart';
@@ -39,15 +39,15 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
     BrowseInputChanged event,
     Emitter<BrowseState> emit,
   ) async {
-    if (event.value?.isEmpty == true) {
+    if (event.value.isEmpty == true) {
       emit(BrowseState.empty());
       return;
     }
 
     emit(BrowseState.searching(state.books));
 
-    await FetchGoogleBooks(_searchRepository)
-        .call(FetchGoogleBooksParams(event.value))
+    await FetchBooks(_searchRepository)
+        .call(FetchBooksParams(userId: event.userId, input: event.value))
         .then(
       (resp) {
         if (resp.isFailure) {

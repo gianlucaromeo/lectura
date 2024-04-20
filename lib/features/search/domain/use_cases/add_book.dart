@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/core/use_case.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
-import 'package:lectura/features/search/domain/entities/book_status.dart';
+import 'package:lectura/core/enums.dart';
 import 'package:lectura/features/search/domain/repositories/search_repository.dart';
 
 class AddBookParams {

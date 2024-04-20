@@ -5,7 +5,7 @@ import 'package:lectura/core/extensions.dart';
 import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
 import 'package:lectura/features/common/presentation/widgets/book_image.dart';
-import 'package:lectura/features/search/domain/entities/book_status.dart';
+import 'package:lectura/core/enums.dart';
 import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
 
 @RoutePage()

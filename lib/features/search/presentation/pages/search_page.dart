@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/routes.dart';
+import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
 import 'package:lectura/features/common/presentation/widgets/app_bottom_navigation_bar.dart';
 import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
@@ -25,15 +26,18 @@ class SearchPage extends StatelessWidget {
               SearchBar(
                 hintText: context.l10n.search__search_input__hint,
                 onChanged: (value) {
+                  final userId = context.read<LoginBloc>().state.user!.id!;
                   context.read<BrowseBloc>().add(
-                    BrowseInputChanged(value),
-                  );
+                        BrowseInputChanged(
+                          value: value,
+                          userId: userId,
+                        ),
+                      );
                 },
                 elevation: const MaterialStatePropertyAll(1.0),
                 shadowColor: const MaterialStatePropertyAll(Colors.transparent),
               ),
               25.0.verticalSpace,
-
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -47,7 +51,8 @@ class SearchPage extends StatelessWidget {
                                     context
                                         .read<BrowseBloc>()
                                         .add(OpenBookRequested(book));
-                                    AutoRouter.of(context).push(Routes.bookRoute);
+                                    AutoRouter.of(context)
+                                        .push(Routes.bookRoute);
                                   },
                                 ),
                                 const Divider(),

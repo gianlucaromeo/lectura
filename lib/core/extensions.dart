@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/features/auth/domain/entities/user.dart';
 import 'package:lectura/features/search/data/dto/google_book_result_dto.dart';
+import 'package:lectura/features/search/data/dto/user_book_dto.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -39,6 +40,14 @@ extension GetListOfBooksDTOs on Either<Failure, List<GoogleBookResultDto>> {
     assert(isRight(),
         "Trying to get Right from an Either but isRight() is false.");
     return fold((l) => l, (r) => r) as List<GoogleBookResultDto>;
+  }
+}
+
+extension GetListOfUserBooksDTOs on Either<Failure, List<UserBookDto>> {
+  List<UserBookDto> get googleUserBooksDTOs {
+    assert(isRight(),
+        "Trying to get Right from an Either but isRight() is false.");
+    return fold((l) => l, (r) => r) as List<UserBookDto>;
   }
 }
 

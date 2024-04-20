@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/features/common/presentation/widgets/book_image.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
-import 'package:lectura/features/search/domain/entities/book_status.dart';
+import 'package:lectura/core/enums.dart';
 
 class BookResult extends StatelessWidget {
   const BookResult({
