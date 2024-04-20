@@ -21,7 +21,7 @@ class FetchBooks extends UseCase<void, FetchBooksParams> {
 
   @override
   Future<Either<Failure, List<Book>>> call(FetchBooksParams params) async {
-    if (params.input?.isEmpty == true) {
+    if (params.input.isEmpty == true) {
       return Left(GenericFailure()); // TODO
     }
 

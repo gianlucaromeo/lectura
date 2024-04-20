@@ -7,7 +7,7 @@ import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:lectura/core/enums.dart';
 import 'package:lectura/features/search/domain/repositories/search_repository.dart';
 import 'package:lectura/features/search/domain/use_cases/add_book.dart';
-import 'package:lectura/features/search/domain/use_cases/fetchBooks.dart';
+import 'package:lectura/features/search/domain/use_cases/fetch_books.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'browse_event.dart';
