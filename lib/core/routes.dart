@@ -5,7 +5,7 @@ class Routes {
   static get homeRoute => const HomeRoute();
   static get searchWrapperRoute => const SearchWrapperRoute();
   static get profileRoute => const ProfileRoute();
-  static get searchRoute => const SearchRoute();
+  static get searchRoute => SearchRoute();
   static get libraryRoute => const LibraryRoute();
   static get bookRoute => const BookRoute();
 }

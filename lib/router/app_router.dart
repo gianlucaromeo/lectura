@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:lectura/features/auth/presentation/pages/auth_page.dart';
 import 'package:lectura/features/home/presentation/pages/home_page.dart';

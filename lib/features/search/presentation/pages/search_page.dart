@@ -7,31 +7,59 @@ import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
 import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
 import 'package:lectura/features/search/presentation/widgets/book_result.dart';
+import 'package:lottie/lottie.dart';
 
 @RoutePage()
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
-  //final searchController = TextEditingController();
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  final controller = TextEditingController();
+
+  void _onInputChanged() {
+    final userId = context.read<LoginBloc>().state.user!.id!;
+    context.read<BrowseBloc>().add(
+          BrowseInputChanged(
+            value: controller.text,
+            userId: userId,
+          ),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return LecturaPage(
       title: context.l10n.search__page_title,
-      padding: [20.0, 20.0, 20.0, 0.0].fromLTRB,
+      padding: [20.0, 40.0, 20.0, 0.0].fromLTRB,
       body: Builder(
         builder: (context) {
           return Column(
             children: [
               SearchBar(
+                controller: controller,
                 hintText: context.l10n.search__search_input__hint,
-                onChanged: (value) {
-                  final userId = context.read<LoginBloc>().state.user!.id!;
-                  context.read<BrowseBloc>().add(
-                        BrowseInputChanged(
-                          value: value,
-                          userId: userId,
+                trailing: controller.text.isNotEmpty
+                    ? [
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              controller.text = "";
+                            });
+                            _onInputChanged();
+                          },
+                          icon: const Icon(Icons.close),
                         ),
-                      );
+                      ]
+                    : null,
+                onChanged: (value) {
+                  setState(() {
+                    controller.text = value;
+                  });
+                  _onInputChanged();
                 },
                 elevation: const MaterialStatePropertyAll(1.0),
                 shadowColor: const MaterialStatePropertyAll(Colors.transparent),
@@ -39,26 +67,38 @@ class SearchPage extends StatelessWidget {
               25.0.verticalSpace,
               Expanded(
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ...context.watch<BrowseBloc>().state.books.map(
-                            (book) => Column(
-                              children: [
-                                BookResult(
-                                  book: book,
-                                  onTap: () {
-                                    context
-                                        .read<BrowseBloc>()
-                                        .add(OpenBookRequested(book));
-                                    AutoRouter.of(context)
-                                        .push(Routes.bookRoute);
-                                  },
+                  child: BlocBuilder<BrowseBloc, BrowseState>(
+                    builder: (context, state) {
+                      if (state.status == BrowseStatus.searching) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      if (state.status == BrowseStatus.empty) {
+                        return Lottie.asset("assets/books.json", height: 125.0);
+                      }
+
+                      return Column(
+                        children: [
+                          ...context.watch<BrowseBloc>().state.books.map(
+                                (book) => Column(
+                                  children: [
+                                    BookResult(
+                                      book: book,
+                                      onTap: () {
+                                        context
+                                            .read<BrowseBloc>()
+                                            .add(OpenBookRequested(book));
+                                        AutoRouter.of(context)
+                                            .push(Routes.bookRoute);
+                                      },
+                                    ),
+                                    const Divider(),
+                                  ],
                                 ),
-                                const Divider(),
-                              ],
-                            ),
-                          ),
-                    ],
+                              ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),

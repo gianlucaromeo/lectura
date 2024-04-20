@@ -68,11 +68,10 @@ class BookResult extends StatelessWidget {
 
                   /// STATUS
                   if (book.status != BookStatus.unknown)
-                    Container(
-                      padding: [3.0, 10.0].verticalHorizontal,
-                      color: Theme.of(context).colorScheme.surfaceVariant,
+                    Align(
+                      alignment: Alignment.centerRight,
                       child: Text(
-                        book.status.name,
+                        "#${book.status.name}",
                         style: Theme.of(context).textTheme.labelSmall,
                       ),
                     ),
