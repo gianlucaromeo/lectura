@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
-import 'package:lectura/features/common/presentation/widgets/app_bottom_navigation_bar.dart';
 import 'package:lectura/features/common/presentation/widgets/login_bloc_consumer_with_loading.dart';
 
 @RoutePage()
@@ -17,9 +16,6 @@ class LibraryPage extends StatelessWidget {
           children: [
             Text("***Test")
           ],
-        ),
-        bottomNavigationBar: AppBottomNavigationBar(
-          currentPage: BottomBarCurrentPage.library,
         ),
       ),
     );

@@ -5,7 +5,6 @@ import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/routes.dart';
 import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
-import 'package:lectura/features/common/presentation/widgets/app_bottom_navigation_bar.dart';
 import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
 import 'package:lectura/features/search/presentation/widgets/book_result.dart';
 
@@ -66,9 +65,6 @@ class SearchPage extends StatelessWidget {
             ],
           );
         },
-      ),
-      bottomNavigationBar: const AppBottomNavigationBar(
-        currentPage: BottomBarCurrentPage.search,
       ),
     );
   }
