@@ -1,6 +1,12 @@
 {
   "@COMMON": "",
   "app__title": "Lectura",
+  "book_status__read": "Read",
+  "book_status__currently_reading": "Currently Reading",
+  "book_status__to_read": "To Read",
+  "book_status__change": "Change",
+  "book_status__add": "Add Status",
+  "book_status__remove": "Remove from my library",
 
   "bottom_bar__home": "Home",
   "bottom_bar__search": "Search",

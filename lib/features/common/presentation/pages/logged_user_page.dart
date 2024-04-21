@@ -31,7 +31,6 @@ class LoggedUserPage extends StatelessWidget {
               icon: const Icon(Icons.book),
               label: context.l10n.bottom_bar__library,
             ),
-            //BottomNavigationBarItem(icon: Icon(Icons.person), label: "***profile"),
           ],
           currentIndex: tabsRouter.activeIndex,
           onTap: tabsRouter.setActiveIndex,

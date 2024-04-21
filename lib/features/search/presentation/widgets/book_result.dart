@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lectura/core/extensions.dart';
+import 'package:lectura/core/utils.dart';
 import 'package:lectura/features/common/presentation/widgets/book_image.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:lectura/core/enums.dart';
@@ -41,7 +42,9 @@ class BookResult extends StatelessWidget {
                     book.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold,),
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   4.0.verticalSpace,
 
@@ -64,15 +67,24 @@ class BookResult extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  15.0.verticalSpace,
+                  5.0.verticalSpace,
 
                   /// STATUS
                   if (book.status != BookStatus.unknown)
                     Align(
                       alignment: Alignment.centerRight,
-                      child: Text(
-                        "#${book.status.name}",
-                        style: Theme.of(context).textTheme.labelSmall,
+                      child: Chip(
+                        elevation: 4.0, // TODO Find a better color
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          side: const BorderSide(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                        label: Text(
+                          getStatusText(context, book.status),
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
                       ),
                     ),
                 ],

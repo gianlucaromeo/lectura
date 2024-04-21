@@ -8,8 +8,10 @@ class LecturaPage extends StatelessWidget {
     this.title,
     this.bottomNavigationBar,
     this.padding,
+    this.showBackIcon = false,
   });
 
+  final bool showBackIcon; // Useful when title is null
   final String? title;
   final Widget body;
   final Widget? bottomNavigationBar;
@@ -18,22 +20,19 @@ class LecturaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-      appBar: title?.isNotEmpty == true
+      resizeToAvoidBottomInset: false,
+      appBar: title?.isNotEmpty == true || showBackIcon
           ? AppBar(
-              title: Text(title!),
+              title: Text(title ?? ""),
               titleSpacing: 20.0,
               elevation: 1.0,
               titleTextStyle: Theme.of(context).textTheme.titleLarge,
             )
-      : null,
+          : null,
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
-        padding: title?.isNotEmpty == true ? EdgeInsets.zero : kToolbarHeight.onlyTop,
-        child: Padding(
-          padding: padding ?? 20.0.all,
-          child: body,
-        ),
+        padding: padding ?? 20.0.all,
+        child: body,
       ),
       bottomNavigationBar: bottomNavigationBar,
     );
