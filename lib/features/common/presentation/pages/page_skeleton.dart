@@ -31,7 +31,7 @@ class LecturaPage extends StatelessWidget {
           : null,
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
-        padding: padding ?? 20.0.all,
+        padding: padding ?? 0.0.all,
         child: body,
       ),
       bottomNavigationBar: bottomNavigationBar,

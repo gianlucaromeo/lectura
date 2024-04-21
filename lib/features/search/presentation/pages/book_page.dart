@@ -7,6 +7,7 @@ import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
 import 'package:lectura/features/common/presentation/widgets/book_image.dart';
 import 'package:lectura/core/enums.dart';
+import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
 
 @RoutePage()
@@ -39,10 +40,13 @@ class _BookPageState extends State<BookPage> {
 
     return LecturaPage(
       showBackIcon: true,
+      padding: 20.0.horizontal,
       body: SizedBox(
         width: double.infinity,
         child: Column(
           children: [
+            20.0.verticalSpace,
+
             /// IMAGE, TITLE, AUTHORS, STATUS, DESCRIPTION
             Expanded(
               child: SingleChildScrollView(
@@ -123,96 +127,11 @@ class _BookPageState extends State<BookPage> {
                             /// EDIT / ADD / REMOVE {BOTTOM SHEET}
                             TextButton(
                               onPressed: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) {
-                                    return SizedBox(
-                                      width: double.infinity,
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              3.0,
-                                      child: Padding(
-                                        padding: 20.0.all,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            /// TITLE
-                                            Text(
-                                              "***Select a status for this book:",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleLarge!
-                                                  .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                            ),
-                                            25.0.verticalSpace,
-
-                                            /// BUTTONS
-                                            ...List.generate(
-                                              3,
-                                              (i) {
-                                                return SizedBox(
-                                                  width: double.infinity,
-                                                  child: OutlinedButton(
-                                                    style: TextButton.styleFrom(
-                                                      backgroundColor: statusInfo[
-                                                                      i][1]
-                                                                  as BookStatus ==
-                                                              status
-                                                          ? Theme.of(context)
-                                                              .colorScheme
-                                                              .primary
-                                                          : Colors.transparent,
-                                                      foregroundColor: statusInfo[
-                                                                      i][1]
-                                                                  as BookStatus ==
-                                                              status
-                                                          ? Theme.of(context)
-                                                              .colorScheme
-                                                              .onPrimary
-                                                          : Theme.of(context)
-                                                              .colorScheme
-                                                              .primary,
-                                                    ),
-                                                    onPressed: () {
-                                                      final userId = context
-                                                          .read<LoginBloc>()
-                                                          .state
-                                                          .user!
-                                                          .id!;
-
-                                                      context
-                                                          .read<BrowseBloc>()
-                                                          .add(
-                                                            AddBookRequested(
-                                                              userId,
-                                                              book.id,
-                                                              statusInfo[i][1]
-                                                                  as BookStatus,
-                                                            ),
-                                                          );
-
-                                                      // Close bottom bar
-                                                      AutoRouter.of(context)
-                                                          .maybePop();
-                                                    },
-                                                    child: Text(
-                                                      statusInfo[i][0]
-                                                          as String,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
+                                _buildShowModalBottomSheet(
+                                  context,
+                                  statusInfo,
+                                  status,
+                                  book,
                                 );
                               },
                               child: Text(
@@ -239,6 +158,85 @@ class _BookPageState extends State<BookPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<dynamic> _buildShowModalBottomSheet(
+    BuildContext context,
+    List<List<Object>> statusInfo,
+    BookStatus status,
+    Book book,
+  ) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: 35.0.all,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                /// TITLE
+                Text(
+                  context.l10n.book_status__select_status,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                25.0.verticalSpace,
+
+                /// BUTTONS
+                ...List.generate(
+                  3,
+                  (i) {
+                    return SizedBox(
+                      width: double.infinity,
+                      child: Padding(
+                        padding: 15.0.onlyBottom,
+                        child: OutlinedButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor:
+                                statusInfo[i][1] as BookStatus == status
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Colors.transparent,
+                            foregroundColor:
+                                statusInfo[i][1] as BookStatus == status
+                                    ? Theme.of(context).colorScheme.onPrimary
+                                    : Theme.of(context).colorScheme.primary,
+                            textStyle: statusInfo[i][1] as BookStatus == status
+                                ? const TextStyle(fontWeight: FontWeight.bold)
+                                : null,
+                          ),
+                          onPressed: () {
+                            final userId =
+                                context.read<LoginBloc>().state.user!.id!;
+
+                            context.read<BrowseBloc>().add(
+                                  AddBookRequested(
+                                    userId,
+                                    book.id,
+                                    statusInfo[i][1] as BookStatus,
+                                  ),
+                                );
+
+                            // Close bottom bar
+                            AutoRouter.of(context).maybePop();
+                          },
+                          child: Text(
+                            statusInfo[i][0] as String,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
