@@ -27,6 +27,12 @@ class _BookPageState extends State<BookPage> {
       return const SizedBox(); // TODO
     }
 
+    final statusInfo = [
+      ["***read", BookStatus.read],
+      ["***reading now", BookStatus.currentlyReading],
+      ["***to read", BookStatus.toRead],
+    ];
+
     return LecturaPage(
       title: book.title,
       body: SizedBox(
@@ -88,16 +94,58 @@ class _BookPageState extends State<BookPage> {
                 width: double.infinity,
                 child: OutlinedButton(
                   onPressed: () {
-                    final userId = context.read<LoginBloc>().state.user!.id!;
-                    context.read<BrowseBloc>().add(
-                          AddBookRequested(
-                            userId,
-                            book.id,
-                            BookStatus.read,
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return SizedBox(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height / 3.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(
+                              3,
+                              (i) {
+                                return OutlinedButton(
+                                  onPressed: () {
+                                    final userId = context
+                                        .read<LoginBloc>()
+                                        .state
+                                        .user!
+                                        .id!;
+
+                                    context.read<BrowseBloc>().add(
+                                          AddBookRequested(
+                                            userId,
+                                            book.id,
+                                            statusInfo[i][1] as BookStatus,
+                                          ),
+                                        );
+
+                                    // Close bottom bar
+                                    AutoRouter.of(context).maybePop();
+                                  },
+                                  child: Text(statusInfo[i][0] as String),
+                                );
+                              },
+                            ),
                           ),
                         );
+                      },
+                    );
                   },
-                  child: const Text("***I read it!"),
+                  child:
+
+                      /// ADD OR EDIT
+                      Builder(
+                    builder: (context) {
+                      return Text(
+                        context.watch<BrowseBloc>().state.openedBook!.status ==
+                                BookStatus.unknown
+                            ? "**ADD"
+                            : "**EDIT",
+                      );
+                    },
+                  ),
                 ),
               ),
             )

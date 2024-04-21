@@ -6,6 +6,10 @@ class UserBookDto {
     this.status,
   );
 
+  UserBookDto.fromJson(Map<String, dynamic> json)
+      : bookId = json["bookId"],
+        status = bookStatusFromName(json["status"]);
+
   final String bookId;
   final BookStatus status;
 }

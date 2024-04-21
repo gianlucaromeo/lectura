@@ -29,9 +29,11 @@ class SearchRepositoryImpl implements SearchRepository {
 
   @override
   Future<Either<Failure, Book>> addBook(
-      String userId, String bookId, BookStatus status) async {
-    final resp =
-        await searchDatasource.addGoogleBook(userId, bookId, status.name);
+    String userId,
+    String bookId,
+    BookStatus status,
+  ) async {
+    final resp = await searchDatasource.addGoogleBook(userId, bookId, status);
 
     if (resp.isFailure) {
       return Left(resp.failure);

@@ -50,7 +50,7 @@ class BookResult extends StatelessWidget {
                     Padding(
                       padding: 10.0.onlyBottom,
                       child: Text(
-                        book.authors!.join(","),
+                        book.authors!.join(", "),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.labelSmall,

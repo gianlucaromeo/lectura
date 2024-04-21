@@ -10,11 +10,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lectura/features/search/data/dto/user_book_dto.dart';
 
 abstract class SearchDatasource {
+  /// Fetches a book using the Google Book API
   Future<Either<Failure, List<GoogleBookResultDto>>> fetchGoogleBooks(
-      String input);
+    String input,
+  );
 
+  /// Stores a book with its current status (read, currently reading, to read)
   Future<Either<Failure, GoogleBookResultDto>> addGoogleBook(
-      String userId, String bookId, String status);
+    String userId,
+    String bookId,
+    BookStatus status,
+  );
 
   Future<Either<Failure, GoogleBookResultDto>> fetchGoogleBook(String bookId);
 
@@ -22,18 +28,47 @@ abstract class SearchDatasource {
     String userId,
   );
 
-  Future<List<UserBookDto>> getReadBooks(String userId) async {
+  Future<List<UserBookDto>> _getBooksFromStatus(
+    String userId,
+    BookStatus status,
+  ) async {
     final booksSnapshot = await FirebaseFirestore.instance
         .collection("users")
         .doc(userId)
-        .collection("read")
+        .collection("books")
+        .where("status", isEqualTo: status.name)
         .get();
 
-    final readBooksDto = booksSnapshot.docs
-        .map((e) => UserBookDto(e.id, BookStatus.read))
-        .toList();
+    final booksDto =
+        booksSnapshot.docs.map((e) => UserBookDto(e.id, status)).toList();
 
-    return readBooksDto;
+    return booksDto;
+  }
+
+  Future<List<UserBookDto>> getAllBooks(String userId) async {
+    final booksSnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("books")
+        .get();
+
+    final booksDto = booksSnapshot.docs.map((e) {
+      return UserBookDto.fromJson(e.data());
+    }).toList();
+
+    return booksDto;
+  }
+
+  Future<List<UserBookDto>> getReadBooks(String userId) async {
+    return _getBooksFromStatus(userId, BookStatus.read);
+  }
+
+  Future<List<UserBookDto>> getCurrentlyReadingBooks(String userId) async {
+    return _getBooksFromStatus(userId, BookStatus.currentlyReading);
+  }
+
+  Future<List<UserBookDto>> getToReadBooks(String userId) async {
+    return _getBooksFromStatus(userId, BookStatus.toRead);
   }
 
   String getVolumesPath(String input) {
@@ -78,7 +113,8 @@ class GoogleApiDataSource extends SearchDatasource {
 
   @override
   Future<Either<Failure, GoogleBookResultDto>> fetchGoogleBook(
-      String bookId) async {
+    String bookId,
+  ) async {
     final path = getBookPath(bookId);
 
     try {
@@ -95,14 +131,18 @@ class GoogleApiDataSource extends SearchDatasource {
   Future<Either<Failure, GoogleBookResultDto>> addGoogleBook(
     String userId,
     String bookId,
-    String status,
+    BookStatus status,
   ) async {
     FirebaseFirestore.instance
         .collection("users")
         .doc(userId)
-        .collection(status)
+        .collection("books")
         .doc(bookId)
-        .set({"date": DateTime.now().toIso8601String()});
+        .set({
+      "bookId": bookId,
+      "date": DateTime.now().toIso8601String(),
+      "status": status.name,
+    });
 
     final resp = await fetchGoogleBook(bookId);
     if (resp.isFailure) {
@@ -117,7 +157,12 @@ class GoogleApiDataSource extends SearchDatasource {
   ) async {
     try {
       final readBooksDto = await getReadBooks(userId);
-      return Right(readBooksDto);
+      final currentlyReadingBooksDto = await getCurrentlyReadingBooks(userId);
+      final toReadBooksDto = await getToReadBooks(userId);
+
+      final allBooks = [...await getAllBooks(userId)];
+
+      return Right(allBooks);
     } catch (e) {
       return Left(GenericFailure());
     }
