@@ -33,7 +33,11 @@ class SearchRepositoryImpl implements SearchRepository {
     String bookId,
     BookStatus status,
   ) async {
-    final resp = await searchDatasource.addGoogleBook(userId, bookId, status);
+    final resp = await searchDatasource.addGoogleBook(
+      userId: userId,
+      bookId: bookId,
+      status: status,
+    );
 
     if (resp.isFailure) {
       return Left(resp.failure);
@@ -47,7 +51,7 @@ class SearchRepositoryImpl implements SearchRepository {
   Future<Either<Failure, List<Book>>> fetchAllUserBooks(
     String userId,
   ) async {
-    final resp = await searchDatasource.fetchAllUserBooks(userId);
+    final resp = await searchDatasource.fetchAllUserGoogleBooks(userId);
 
     if (resp.isFailure) {
       return Left(resp.failure);

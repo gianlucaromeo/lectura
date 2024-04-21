@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:lectura/core/enums.dart';
@@ -16,40 +15,74 @@ abstract class SearchDatasource {
   );
 
   /// Stores a book with its current status (read, currently reading, to read)
-  Future<Either<Failure, GoogleBookResultDto>> addGoogleBook(
-    String userId,
-    String bookId,
-    BookStatus status,
-  );
+  Future<Either<Failure, GoogleBookResultDto>> addGoogleBook({
+    required String userId,
+    required String bookId,
+    required BookStatus status,
+  });
 
+  /// Fetches one book using the Google Book API
   Future<Either<Failure, GoogleBookResultDto>> fetchGoogleBook(String bookId);
 
-  Future<Either<Failure, List<UserBookDto>>> fetchAllUserBooks(
+  /// Fetches all the stored user's books
+  Future<Either<Failure, List<UserBookDto>>> fetchAllUserGoogleBooks(
     String userId,
   );
+}
 
+class GoogleApiDataSource extends SearchDatasource {
+  final usersCollection = "users";
+  final booksCollection = "books";
+
+  /// Fetches all the user's "read" books
+  Future<List<UserBookDto>> _getReadBooks(String userId) async {
+    return _getBooksFromStatus(userId, BookStatus.read);
+  }
+
+  /// Fetches all the user's "currently reading" books
+  Future<List<UserBookDto>> _getCurrentlyReadingBooks(String userId) async {
+    return _getBooksFromStatus(userId, BookStatus.currentlyReading);
+  }
+
+  /// Fetches all the user's "to read" books
+  Future<List<UserBookDto>> _getToReadBooks(String userId) async {
+    return _getBooksFromStatus(userId, BookStatus.toRead);
+  }
+
+  /// Returns the path to fetch a list of books using Google API
+  String _getVolumesPath(String input) {
+    return "https://www.googleapis.com/books/v1/volumes?q=$input";
+  }
+
+  /// Returns the path to fetch a book using Google API
+  String _getBookPath(String volumeId) {
+    return "https://www.googleapis.com/books/v1/volumes/$volumeId";
+  }
+
+  /// Fetches all the user's books stored with the provided status
   Future<List<UserBookDto>> _getBooksFromStatus(
-    String userId,
-    BookStatus status,
-  ) async {
+      String userId,
+      BookStatus status,
+      ) async {
     final booksSnapshot = await FirebaseFirestore.instance
-        .collection("users")
+        .collection(usersCollection)
         .doc(userId)
-        .collection("books")
+        .collection(booksCollection)
         .where("status", isEqualTo: status.name)
         .get();
 
     final booksDto =
-        booksSnapshot.docs.map((e) => UserBookDto(e.id, status)).toList();
+    booksSnapshot.docs.map((e) => UserBookDto(e.id, status)).toList();
 
     return booksDto;
   }
 
-  Future<List<UserBookDto>> getAllBooks(String userId) async {
+  /// Fetches all the user's stored books
+  Future<List<UserBookDto>> _getAllBooks(String userId) async {
     final booksSnapshot = await FirebaseFirestore.instance
-        .collection("users")
+        .collection(usersCollection)
         .doc(userId)
-        .collection("books")
+        .collection(booksCollection)
         .get();
 
     final booksDto = booksSnapshot.docs.map((e) {
@@ -59,33 +92,11 @@ abstract class SearchDatasource {
     return booksDto;
   }
 
-  Future<List<UserBookDto>> getReadBooks(String userId) async {
-    return _getBooksFromStatus(userId, BookStatus.read);
-  }
-
-  Future<List<UserBookDto>> getCurrentlyReadingBooks(String userId) async {
-    return _getBooksFromStatus(userId, BookStatus.currentlyReading);
-  }
-
-  Future<List<UserBookDto>> getToReadBooks(String userId) async {
-    return _getBooksFromStatus(userId, BookStatus.toRead);
-  }
-
-  String getVolumesPath(String input) {
-    return "https://www.googleapis.com/books/v1/volumes?q=$input";
-  }
-
-  String getBookPath(String volumeId) {
-    return "https://www.googleapis.com/books/v1/volumes/$volumeId";
-  }
-}
-
-class GoogleApiDataSource extends SearchDatasource {
   @override
   Future<Either<Failure, List<GoogleBookResultDto>>> fetchGoogleBooks(
     String input,
   ) async {
-    final path = getVolumesPath(input);
+    final path = _getVolumesPath(input);
 
     try {
       final resp = await Dio().get(path);
@@ -105,8 +116,6 @@ class GoogleApiDataSource extends SearchDatasource {
           booksData.map((json) => GoogleBookResultDto.fromJson(json)).toList();
       return Right(googleBooksDTOs);
     } catch (e) {
-      log(e.toString());
-      // TODO
       return Left(GenericFailure()); // TODO
     }
   }
@@ -115,7 +124,7 @@ class GoogleApiDataSource extends SearchDatasource {
   Future<Either<Failure, GoogleBookResultDto>> fetchGoogleBook(
     String bookId,
   ) async {
-    final path = getBookPath(bookId);
+    final path = _getBookPath(bookId);
 
     try {
       final resp = await Dio().get(path);
@@ -128,15 +137,15 @@ class GoogleApiDataSource extends SearchDatasource {
   }
 
   @override
-  Future<Either<Failure, GoogleBookResultDto>> addGoogleBook(
-    String userId,
-    String bookId,
-    BookStatus status,
-  ) async {
+  Future<Either<Failure, GoogleBookResultDto>> addGoogleBook({
+    required String userId,
+    required String bookId,
+    required BookStatus status,
+  }) async {
     FirebaseFirestore.instance
-        .collection("users")
+        .collection(usersCollection)
         .doc(userId)
-        .collection("books")
+        .collection(booksCollection)
         .doc(bookId)
         .set({
       "bookId": bookId,
@@ -152,19 +161,15 @@ class GoogleApiDataSource extends SearchDatasource {
   }
 
   @override
-  Future<Either<Failure, List<UserBookDto>>> fetchAllUserBooks(
+  Future<Either<Failure, List<UserBookDto>>> fetchAllUserGoogleBooks(
     String userId,
   ) async {
     try {
-      final readBooksDto = await getReadBooks(userId);
-      final currentlyReadingBooksDto = await getCurrentlyReadingBooks(userId);
-      final toReadBooksDto = await getToReadBooks(userId);
-
-      final allBooks = [...await getAllBooks(userId)];
+      final allBooks = [...await _getAllBooks(userId)];
 
       return Right(allBooks);
     } catch (e) {
-      return Left(GenericFailure());
+      return Left(GenericFailure()); // TODO
     }
   }
 }
