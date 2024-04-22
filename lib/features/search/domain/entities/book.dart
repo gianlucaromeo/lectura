@@ -12,6 +12,14 @@ class Book extends Equatable {
     this.ratingCount,
     this.categories,
     this.status = BookStatus.unknown,
+    this.infoLink,
+    this.subtitle,
+    this.language,
+    this.mainCategory,
+    this.pageCount,
+    this.publisher,
+    this.publisherDate,
+    this.thumbnail,
   });
 
   Book copyWith({
@@ -24,6 +32,15 @@ class Book extends Equatable {
     int? ratingCount,
     BookStatus? status,
     List<String>? categories,
+    String? infoLink,
+
+    String? subtitle,
+    String? publisher,
+    String? publisherDate,
+    int? pageCount,
+    String? mainCategory,
+    String? thumbnail,
+    String? language,
   }) {
     return Book(
       id: id ?? this.id,
@@ -35,6 +52,13 @@ class Book extends Equatable {
       ratingCount: ratingCount ?? this.ratingCount,
       status: status ?? this.status,
       categories: categories ?? this.categories,
+      infoLink: infoLink ?? this.infoLink,
+      subtitle: subtitle ?? this.subtitle,
+      publisher: publisher ?? this.publisher,
+      pageCount: pageCount ?? this.pageCount,
+      mainCategory: mainCategory ?? this.mainCategory,
+      thumbnail: thumbnail ?? this.thumbnail,
+      language: language ?? this.language,
     );
   }
 
@@ -47,6 +71,15 @@ class Book extends Equatable {
 
   final double? averageRating;
   final int? ratingCount;
+  final String? infoLink;
+
+  final String? subtitle;
+  final String? publisher;
+  final String? publisherDate;
+  final int? pageCount;
+  final String? mainCategory;
+  final String? thumbnail;
+  final String? language;
 
   final BookStatus status;
 

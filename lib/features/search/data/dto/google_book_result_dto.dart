@@ -44,7 +44,8 @@ class GoogleBookVolumeInfoDto {
         description = json["description"],
         pageCount = json["pageCount"],
         mainCategory = json["mainCategory"],
-        categories = (json["categories"] as List?)?.map((e) => e as String).toList(),
+        categories =
+            (json["categories"] as List?)?.map((e) => e as String).toList(),
         averageRating = (json["averageRating"] as num?)?.toDouble(),
         ratingCount = json["ratingCount"],
         thumbnail = json["imageLinks"]?["thumbnail"],
@@ -85,4 +86,23 @@ class GoogleBookResultDto extends ConvertibleDto<Book> {
       categories: volumeInfo.categories,
     );
   }
+
+  GoogleBookResultDto.fromEntity(Book e)
+      : id = e.id,
+        volumeInfo = GoogleBookVolumeInfoDto(
+          categories: e.categories,
+          authors: e.authors,
+          averageRating: e.averageRating,
+          description: e.description,
+          infoLink: e.infoLink,
+          language: e.language,
+          mainCategory: e.mainCategory,
+          pageCount: e.pageCount,
+          publisher: e.publisher,
+          publisherDate: e.publisherDate,
+          ratingCount: e.ratingCount,
+          subtitle: e.subtitle,
+          thumbnail: e.thumbnail,
+          title: e.title,
+        );
 }
