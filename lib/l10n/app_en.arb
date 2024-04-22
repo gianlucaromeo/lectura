@@ -93,5 +93,8 @@
 
   "@SEARCH": "",
   "search__page_title": "Search",
-  "search__search_input__hint": "The Great Gatsby, 1984, Don Quixote"
+  "search__search_input__hint": "The Great Gatsby, 1984, Don Quixote",
+
+  "@BOOK": "",
+  "book_page__category": "Category"
 }

@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/utils.dart';
@@ -53,40 +55,76 @@ class _BookPageState extends State<BookPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    /// IMAGE - TITLE, AUTHORS
-                    Column(
+                    /// HEADER
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         /// IMAGE
                         BookImage(
                           imagePath: book.imagePath,
                           imageSize: BookImageSize.big,
                         ),
-                        25.0.verticalSpace,
+                        25.0.horizontalSpace,
 
-                        /// TITLE AND AUTHORS
-                        Text(
-                          book.title,
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        15.0.verticalSpace,
-
-                        /// TITLE
-                        () {
-                          if (book.authors?.isNotEmpty == true) {
-                            return Padding(
-                              padding: 15.0.onlyBottom,
-                              child: Text(
-                                book.authors!.join(", "),
-                                style: Theme.of(context).textTheme.labelMedium,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
+                        /// TITLE AUTHORS CATEGORIES
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                book.title,
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
-                            );
-                          }
-                          return const SizedBox();
-                        }(),
+                              7.0.verticalSpace,
+
+                              /// AUTHORS
+                              () {
+                                if (book.authors?.isNotEmpty == true) {
+                                  return Padding(
+                                    padding: 15.0.onlyBottom,
+                                    child: Text(
+                                      book.authors!.join(", "),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  );
+                                }
+                                return const SizedBox();
+                              }(),
+
+                              15.0.verticalSpace,
+
+                              /// CATEGORIES
+                              () {
+                                if (book.categories?.isNotEmpty == true) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        context.l10n.book_page__category,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall!
+                                            .copyWith(
+                                                fontWeight: FontWeight.bold),
+                                      ),
+                                      7.0.verticalSpace,
+                                      ...book.categories!.map((e) => Text(e)),
+                                    ],
+                                  );
+                                }
+                                return 0.0.verticalSpace;
+                              }(),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
+                    15.0.verticalSpace,
 
                     /// STATUS
                     Builder(
@@ -98,9 +136,8 @@ class _BookPageState extends State<BookPage> {
                             .status;
 
                         return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            /// STATUS
                             () {
                               if (status == BookStatus.unknown) {
                                 return const SizedBox();
@@ -145,8 +182,6 @@ class _BookPageState extends State<BookPage> {
                       },
                     ),
                     15.0.verticalSpace,
-
-                    Text(book.language ?? "no language"),
 
                     /// DESCRIPTION
                     Text(
