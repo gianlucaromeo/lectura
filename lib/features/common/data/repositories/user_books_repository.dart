@@ -21,7 +21,7 @@ class FirebaseUserBooksRepository implements UserBooksRepository {
   Future<Either<Failure, List<Book>>> fetchAllBooks(
     String userId,
   ) async {
-    final resp = await _userBooksDatasource.fetchAllUserGoogleBooks(userId);
+    final resp = await _userBooksDatasource.fetchAllUserBooks(userId);
 
     if (resp.isFailure) {
       return Left(resp.failure);

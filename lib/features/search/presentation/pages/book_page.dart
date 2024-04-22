@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/utils.dart';
@@ -25,7 +23,7 @@ class BookPage extends StatefulWidget {
 class _BookPageState extends State<BookPage> {
   @override
   Widget build(BuildContext context) {
-    final book = context.watch<BrowseBloc>().state.openedBook;
+    final book = context.read<BrowseBloc>().state.openedBook;
 
     if (book == null) {
       return const SizedBox(); // TODO

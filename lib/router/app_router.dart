@@ -16,14 +16,17 @@ class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: AuthRoute.page, initial: true),
-
         AutoRoute(page: LoggedUserRoute.page, children: [
+          AutoRoute(
+            page: SearchWrapperRoute.page,
+            children: [
+              AutoRoute(page: SearchRoute.page),
+              AutoRoute(page: BookRoute.page),
+            ],
+          ),
           AutoRoute(page: HomeRoute.page),
           AutoRoute(page: ProfileRoute.page), // TODO Nest it in home
-          AutoRoute(page: SearchWrapperRoute.page, children: [
-            AutoRoute(page: SearchRoute.page, initial: true),
-            AutoRoute(page: BookRoute.page),
-          ]),
+
           AutoRoute(page: LibraryRoute.page),
         ]),
       ];

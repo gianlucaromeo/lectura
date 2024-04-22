@@ -1,9 +1,6 @@
 
-import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
-import 'package:lectura/core/enums.dart';
-import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/features/search/data/dto/google_book_result_dto.dart';
 import 'package:dio/dio.dart';

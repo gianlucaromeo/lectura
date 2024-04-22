@@ -18,7 +18,7 @@ abstract class UserBooksDatasource {
   });
 
   /// Fetches all the stored user's books
-  Future<Either<Failure, List<UserBookDto>>> fetchAllUserGoogleBooks(
+  Future<Either<Failure, List<UserBookDto>>> fetchAllUserBooks(
     String userId,
   );
 }
@@ -32,16 +32,19 @@ class FirebaseUserBooksDatasource extends UserBooksDatasource {
   final SearchDatasource _searchDatasource;
 
   /// Fetches all the user's "read" books
+  // ignore: unused_element
   Future<List<UserBookDto>> _getReadBooks(String userId) async {
     return _getBooksFromStatus(userId, BookStatus.read);
   }
 
   /// Fetches all the user's "currently reading" books
+  // ignore: unused_element
   Future<List<UserBookDto>> _getCurrentlyReadingBooks(String userId) async {
     return _getBooksFromStatus(userId, BookStatus.currentlyReading);
   }
 
   /// Fetches all the user's "to read" books
+  // ignore: unused_element
   Future<List<UserBookDto>> _getToReadBooks(String userId) async {
     return _getBooksFromStatus(userId, BookStatus.toRead);
   }
@@ -107,7 +110,7 @@ class FirebaseUserBooksDatasource extends UserBooksDatasource {
   }
 
   @override
-  Future<Either<Failure, List<UserBookDto>>> fetchAllUserGoogleBooks(
+  Future<Either<Failure, List<UserBookDto>>> fetchAllUserBooks(
     String userId,
   ) async {
     try {

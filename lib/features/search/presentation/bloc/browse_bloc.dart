@@ -15,9 +15,11 @@ part 'browse_event.dart';
 part 'browse_state.dart';
 
 class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
-  BrowseBloc(SearchRepository searchRepository, UserBooksRepository userBooksRepository)
-      : _searchRepository = searchRepository,
-  _userBooksRepository = userBooksRepository,
+  BrowseBloc(
+    SearchRepository searchRepository,
+    UserBooksRepository userBooksRepository,
+  )   : _searchRepository = searchRepository,
+        _userBooksRepository = userBooksRepository,
         super(BrowseState.empty()) {
     on<BrowseInputChanged>(
       _onBrowseInputChanged,
