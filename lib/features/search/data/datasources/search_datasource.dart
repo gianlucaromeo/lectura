@@ -5,8 +5,6 @@ import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/features/search/data/dto/google_book_result_dto.dart';
 import 'package:dio/dio.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lectura/features/search/data/dto/user_book_dto.dart';
 
 abstract class SearchDatasource {
   /// Fetches a book using the Google Book API
@@ -37,21 +35,6 @@ class GoogleApiDataSource extends SearchDatasource {
   /// Returns the path to fetch a book using Google API
   String _getBookPath(String volumeId) {
     return "https://www.googleapis.com/books/v1/volumes/$volumeId";
-  }
-
-  /// Fetches all the user's stored books
-  Future<List<UserBookDto>> _getAllBooks(String userId) async {
-    final booksSnapshot = await FirebaseFirestore.instance
-        .collection(usersCollection)
-        .doc(userId)
-        .collection(booksCollection)
-        .get();
-
-    final booksDto = booksSnapshot.docs.map((e) {
-      return UserBookDto.fromJson(e.data());
-    }).toList();
-
-    return booksDto;
   }
 
   @override

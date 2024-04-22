@@ -4,7 +4,6 @@ import 'package:lectura/core/enums.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/features/search/data/dto/google_book_result_dto.dart';
-import 'package:dio/dio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lectura/features/search/data/dto/user_book_dto.dart';
 import 'package:lectura/features/search/domain/repositories/search_repository.dart';
