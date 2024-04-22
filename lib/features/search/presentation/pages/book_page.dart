@@ -115,7 +115,7 @@ class _BookPageState extends State<BookPage> {
                                   ),
                                   elevation: 4.0, // TODO Find better color
                                   label: Text(
-                                    "# ${getStatusText(context, status)}",
+                                    getStatusText(context, status),
                                     style:
                                         Theme.of(context).textTheme.labelLarge,
                                   ),
@@ -145,6 +145,8 @@ class _BookPageState extends State<BookPage> {
                       },
                     ),
                     15.0.verticalSpace,
+
+                    Text(book.language ?? "no language"),
 
                     /// DESCRIPTION
                     Text(

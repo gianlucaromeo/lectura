@@ -1,16 +1,13 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:lectura/core/enums.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
+import 'package:lectura/features/search/data/datasources/search_datasource.dart';
 import 'package:lectura/features/search/data/dto/google_book_result_dto.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lectura/features/search/data/dto/user_book_dto.dart';
-import 'package:lectura/features/search/domain/repositories/search_repository.dart';
 
 abstract class UserBooksDatasource {
-
-
   /// Stores a book with its current status (read, currently reading, to read)
   Future<Either<Failure, GoogleBookResultDto>> addGoogleBook({
     required String userId,
@@ -18,20 +15,19 @@ abstract class UserBooksDatasource {
     required BookStatus status,
   });
 
-
-
   /// Fetches all the stored user's books
   Future<Either<Failure, List<UserBookDto>>> fetchAllUserGoogleBooks(
-      String userId,
-      );
+    String userId,
+  );
 }
 
 class FirebaseUserBooksDatasource extends UserBooksDatasource {
   final usersCollection = "users";
   final booksCollection = "books";
 
-  FirebaseUserBooksDatasource(SearchRepository searchRepository) : _searchRepository = searchRepository;
-  final SearchRepository _searchRepository;
+  FirebaseUserBooksDatasource(SearchDatasource searchDatasource)
+      : _searchDatasource = searchDatasource;
+  final SearchDatasource _searchDatasource;
 
   /// Fetches all the user's "read" books
   Future<List<UserBookDto>> _getReadBooks(String userId) async {
@@ -50,9 +46,9 @@ class FirebaseUserBooksDatasource extends UserBooksDatasource {
 
   /// Fetches all the user's books stored with the provided status
   Future<List<UserBookDto>> _getBooksFromStatus(
-      String userId,
-      BookStatus status,
-      ) async {
+    String userId,
+    BookStatus status,
+  ) async {
     final booksSnapshot = await FirebaseFirestore.instance
         .collection(usersCollection)
         .doc(userId)
@@ -61,7 +57,7 @@ class FirebaseUserBooksDatasource extends UserBooksDatasource {
         .get();
 
     final booksDto =
-    booksSnapshot.docs.map((e) => UserBookDto(e.id, status)).toList();
+        booksSnapshot.docs.map((e) => UserBookDto(e.id, status)).toList();
 
     return booksDto;
   }
@@ -81,8 +77,6 @@ class FirebaseUserBooksDatasource extends UserBooksDatasource {
     return booksDto;
   }
 
-
-
   @override
   Future<Either<Failure, GoogleBookResultDto>> addGoogleBook({
     required String userId,
@@ -100,17 +94,17 @@ class FirebaseUserBooksDatasource extends UserBooksDatasource {
       "status": status.name,
     });
 
-    final resp = await _searchRepository.fetchBookById(bookId);
+    final resp = await _searchDatasource.fetchGoogleBook(bookId);
     if (resp.isFailure) {
       return Left(resp.failure); // TODO
     }
-    return Right(GoogleBookResultDto.fromEntity(resp.book));
+    return Right(GoogleBookResultDto.fromEntity(resp.bookDto.toEntity()));
   }
 
   @override
   Future<Either<Failure, List<UserBookDto>>> fetchAllUserGoogleBooks(
-      String userId,
-      ) async {
+    String userId,
+  ) async {
     try {
       final allBooks = [...await _getAllBooks(userId)];
 

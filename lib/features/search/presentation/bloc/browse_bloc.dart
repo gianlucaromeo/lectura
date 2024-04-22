@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
+import 'package:lectura/features/common/domain/repositories/user_books_repository.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:lectura/core/enums.dart';
 import 'package:lectura/features/search/domain/repositories/search_repository.dart';
@@ -14,8 +15,9 @@ part 'browse_event.dart';
 part 'browse_state.dart';
 
 class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
-  BrowseBloc(SearchRepository searchRepository)
+  BrowseBloc(SearchRepository searchRepository, UserBooksRepository userBooksRepository)
       : _searchRepository = searchRepository,
+  _userBooksRepository = userBooksRepository,
         super(BrowseState.empty()) {
     on<BrowseInputChanged>(
       _onBrowseInputChanged,
@@ -28,6 +30,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
   }
 
   final SearchRepository _searchRepository;
+  final UserBooksRepository _userBooksRepository;
 
   EventTransformer<BrowseInputChanged> _debounceSequential<BrowseInputChanged>(
     Duration duration,
@@ -46,7 +49,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
 
     emit(BrowseState.searching(state.books));
 
-    await FetchBooks(_searchRepository)
+    await FetchBooks(_searchRepository, _userBooksRepository)
         .call(FetchBooksParams(userId: event.userId, input: event.value))
         .then(
       (resp) {

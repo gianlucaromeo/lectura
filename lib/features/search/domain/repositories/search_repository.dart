@@ -13,8 +13,4 @@ abstract class SearchRepository {
     String bookId,
     BookStatus status,
   );
-
-  Future<Either<Failure, List<Book>>> fetchAllUserBooks(
-    String userId,
-  );
 }

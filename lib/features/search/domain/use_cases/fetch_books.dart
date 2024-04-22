@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/core/use_case.dart';
+import 'package:lectura/features/common/domain/repositories/user_books_repository.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:lectura/features/search/domain/repositories/search_repository.dart';
 
@@ -15,9 +16,10 @@ class FetchBooksParams {
 }
 
 class FetchBooks extends UseCase<void, FetchBooksParams> {
-  FetchBooks(this.searchRepository);
+  FetchBooks(this.searchRepository, this.userBooksRepository);
 
   final SearchRepository searchRepository;
+  final UserBooksRepository userBooksRepository;
 
   @override
   Future<Either<Failure, List<Book>>> call(FetchBooksParams params) async {
@@ -25,7 +27,7 @@ class FetchBooks extends UseCase<void, FetchBooksParams> {
       return Left(GenericFailure()); // TODO
     }
 
-    final userBooks = await searchRepository.fetchAllUserBooks(params.userId);
+    final userBooks = await userBooksRepository.fetchAllBooks(params.userId);
     final fetchedBooks = await searchRepository.fetchBooks(params.input);
 
     if (userBooks.isFailure) {
