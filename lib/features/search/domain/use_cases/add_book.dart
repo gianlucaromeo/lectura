@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
+import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/core/use_case.dart';
+import 'package:lectura/features/common/domain/repositories/user_books_repository.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:lectura/core/enums.dart';
 import 'package:lectura/features/search/domain/repositories/search_repository.dart';
@@ -14,13 +16,24 @@ class AddBookParams {
 }
 
 class AddBook extends UseCase<Book, AddBookParams> {
-  AddBook(SearchRepository searchRepository) : _searchRepository = searchRepository;
+  AddBook(SearchRepository searchRepository,
+      UserBooksRepository userBooksRepository)
+      : _userBooksRepository = userBooksRepository;
 
-  final SearchRepository _searchRepository;
+  final UserBooksRepository _userBooksRepository;
 
   @override
   Future<Either<Failure, Book>> call(AddBookParams params) async {
-    return _searchRepository.addBook(params.userId, params.bookId, params.status);
-  }
+    final resp = await _userBooksRepository.addBook(
+      params.userId,
+      params.bookId,
+      params.status,
+    );
 
+    if (resp.isFailure) {
+      return Left(resp.failure);
+    }
+
+    return Right(resp.book);
+  }
 }

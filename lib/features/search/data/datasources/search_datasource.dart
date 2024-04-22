@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:lectura/core/enums.dart';
 import 'package:lectura/core/extensions.dart';
@@ -11,13 +13,6 @@ abstract class SearchDatasource {
   Future<Either<Failure, List<GoogleBookResultDto>>> fetchGoogleBooks(
     String input,
   );
-
-  /// Stores a book with its current status (read, currently reading, to read)
-  Future<Either<Failure, GoogleBookResultDto>> addGoogleBook({
-    required String userId,
-    required String bookId,
-    required BookStatus status,
-  });
 
   /// Fetches one book using the Google Book API
   Future<Either<Failure, GoogleBookResultDto>> fetchGoogleBook(String bookId);
@@ -79,19 +74,5 @@ class GoogleApiDataSource extends SearchDatasource {
     } catch (e) {
       return Left(GenericFailure()); // TODO
     }
-  }
-
-  @override
-  Future<Either<Failure, GoogleBookResultDto>> addGoogleBook({
-    required String userId,
-    required String bookId,
-    required BookStatus status,
-  }) async {
-
-    final resp = await fetchGoogleBook(bookId);
-    if (resp.isFailure) {
-      return Left(resp.failure); // TODO
-    }
-    return Right(resp.bookDto);
   }
 }

@@ -30,28 +30,13 @@ class SearchRepositoryImpl implements SearchRepository {
   }
 
   @override
-  Future<Either<Failure, Book>> addBook(
-    String userId,
-    String bookId,
-    BookStatus status,
-  ) async {
-    final resp = await searchDatasource.addGoogleBook(
-      userId: userId,
-      bookId: bookId,
-      status: status,
-    );
+  Future<Either<Failure, Book>> fetchBookById(String input) async {
+    final resp = await searchDatasource.fetchGoogleBook(input);
 
     if (resp.isFailure) {
       return Left(resp.failure);
     }
 
-    final book = resp.bookDto.toEntity().copyWith(status: status);
-    return Right(book);
-  }
-
-  @override
-  Future<Either<Failure, Book>> fetchBookById(String input) {
-    // TODO: implement fetchBookById
-    throw UnimplementedError();
+    return Right(resp.bookDto.toEntity());
   }
 }

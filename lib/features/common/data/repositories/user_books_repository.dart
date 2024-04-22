@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:lectura/core/enums.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/features/common/data/datasources/user_books_datasource.dart';
@@ -34,5 +35,24 @@ class FirebaseUserBooksRepository implements UserBooksRepository {
     final books = await futures.wait;
 
     return Right(books);
+  }
+
+  @override
+  Future<Either<Failure, Book>> addBook(
+    String userId,
+    String bookId,
+    BookStatus status,
+  ) async {
+    final resp = await _userBooksDatasource.addBook(
+      userId: userId,
+      bookId: bookId,
+      status: status,
+    );
+
+    if (resp.isFailure) {
+      return Left(resp.failure);
+    }
+
+    return Right(resp.bookDto.toEntity().copyWith(status: status));
   }
 }

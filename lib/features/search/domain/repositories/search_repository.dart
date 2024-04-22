@@ -7,10 +7,4 @@ abstract class SearchRepository {
   Future<Either<Failure, List<Book>>> fetchBooks(String input);
 
   Future<Either<Failure, Book>> fetchBookById(String input);
-
-  Future<Either<Failure, Book>> addBook(
-    String userId,
-    String bookId,
-    BookStatus status,
-  );
 }

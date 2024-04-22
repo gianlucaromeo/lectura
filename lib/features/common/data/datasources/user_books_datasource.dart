@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:lectura/core/enums.dart';
 import 'package:lectura/core/extensions.dart';
@@ -9,7 +11,7 @@ import 'package:lectura/features/search/data/dto/user_book_dto.dart';
 
 abstract class UserBooksDatasource {
   /// Stores a book with its current status (read, currently reading, to read)
-  Future<Either<Failure, GoogleBookResultDto>> addGoogleBook({
+  Future<Either<Failure, GoogleBookResultDto>> addBook({
     required String userId,
     required String bookId,
     required BookStatus status,
@@ -78,7 +80,7 @@ class FirebaseUserBooksDatasource extends UserBooksDatasource {
   }
 
   @override
-  Future<Either<Failure, GoogleBookResultDto>> addGoogleBook({
+  Future<Either<Failure, GoogleBookResultDto>> addBook({
     required String userId,
     required String bookId,
     required BookStatus status,
@@ -96,9 +98,12 @@ class FirebaseUserBooksDatasource extends UserBooksDatasource {
 
     final resp = await _searchDatasource.fetchGoogleBook(bookId);
     if (resp.isFailure) {
+      log("Failure", name: "addBook");
       return Left(resp.failure); // TODO
     }
-    return Right(GoogleBookResultDto.fromEntity(resp.bookDto.toEntity()));
+
+    log("Success", name: "addBook");
+    return Right(resp.bookDto);
   }
 
   @override

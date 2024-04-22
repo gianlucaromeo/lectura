@@ -25,7 +25,7 @@ class BookPage extends StatefulWidget {
 class _BookPageState extends State<BookPage> {
   @override
   Widget build(BuildContext context) {
-    final book = context.read<BrowseBloc>().state.openedBook;
+    final book = context.watch<BrowseBloc>().state.openedBook;
 
     if (book == null) {
       return const SizedBox(); // TODO

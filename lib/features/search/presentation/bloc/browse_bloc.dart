@@ -70,14 +70,13 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
   ) async {
     log("...Adding book ${event.bookId} with status ${event.status.name}");
 
-    await AddBook(_searchRepository)
+    await AddBook(_searchRepository, _userBooksRepository)
         .call(AddBookParams(event.userId, event.bookId, event.status))
         .then((resp) {
       if (resp.isFailure) {
-        log("Failure ${resp.failure}");
+        log("Failure ${resp.failure}", name: "_onAddBookRequested");
         // TODO
       } else {
-        log("Success");
         final books = state.books
             .map((e) => e.id == resp.book.id ? resp.book : e)
             .toList();
