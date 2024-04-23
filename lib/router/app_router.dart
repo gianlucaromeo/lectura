@@ -14,18 +14,25 @@ part 'app_router.gr.dart';
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
 class AppRouter extends _$AppRouter {
   @override
-  List<AutoRoute> get routes => [
-        AutoRoute(page: AuthRoute.page, initial: true),
-        AutoRoute(page: LoggedUserRoute.page, children: [
-          AutoRoute(page: SearchWrapperRoute.page, children: [
-            AutoRoute(page: SearchRoute.page),
-            AutoRoute(page: LibraryRoute.page),
-            AutoRoute(page: BookRoute.page),
-          ]),
-          AutoRoute(page: HomeWrapperRoute.page, children: [
-            AutoRoute(page: HomeRoute.page),
-            AutoRoute(page: ProfileRoute.page),
-          ]),
+  List<AutoRoute> get routes {
+    return [
+      /// AUTH
+      AutoRoute(page: AuthRoute.page, initial: true),
+
+      AutoRoute(page: LoggedUserRoute.page, children: [
+        /// HOME
+        AutoRoute(page: HomeWrapperRoute.page, children: [
+          AutoRoute(page: HomeRoute.page, initial: true),
+          AutoRoute(page: ProfileRoute.page),
         ]),
-      ];
+
+        /// SEARCH, LIBRARY
+        AutoRoute(page: SearchWrapperRoute.page, children: [
+          AutoRoute(page: SearchRoute.page),
+          AutoRoute(page: LibraryRoute.page),
+          AutoRoute(page: BookRoute.page),
+        ]),
+      ]),
+    ];
+  }
 }

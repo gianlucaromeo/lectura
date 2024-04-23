@@ -11,7 +11,7 @@ class LoggedUserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       routes: [
-        Routes.homeRoute,
+        Routes.homeWrapperRoute,
         Routes.searchRoute,
         Routes.libraryRoute,
       ],

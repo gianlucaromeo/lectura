@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/enums.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
 import 'package:lectura/features/common/presentation/widgets/login_bloc_consumer_with_loading.dart';
+import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
 
 @RoutePage()
 class LibraryPage extends StatefulWidget {
@@ -55,7 +57,11 @@ class _LibraryPageState extends State<LibraryPage> {
               25.0.verticalSpace,
 
               /// BOOKS
-              
+              ...context.watch<BrowseBloc>().state.books.map(
+                    (e) => selectedSegments.contains(e.status)
+                        ? Text(e.title)
+                        : 0.0.verticalSpace,
+                  ),
             ],
           ),
         ),
