@@ -5,7 +5,7 @@ import 'package:lectura/features/profile/presentation/pages/profile_page.dart';
 import 'package:lectura/features/search/presentation/pages/search_page.dart';
 import 'package:lectura/features/search/presentation/pages/book_page.dart';
 import 'package:lectura/features/library/presentation/pages/library_page.dart';
-import 'package:lectura/features/search/presentation/pages/search_wrapper_page.dart';
+import 'package:lectura/features/common/presentation/pages/search_wrapper_page.dart';
 import 'package:lectura/features/common/presentation/pages/logged_user_page.dart';
 import 'package:lectura/features/common/presentation/pages/homepage_wrapper.dart';
 
