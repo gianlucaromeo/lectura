@@ -33,12 +33,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const HomePage(),
       );
     },
-    LibraryRoute.name: (routeData) {
-      final args = routeData.argsAs<LibraryRouteArgs>(
-          orElse: () => const LibraryRouteArgs());
+    HomeWrapperRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: LibraryPage(key: args.key),
+        child: const HomeWrapperPage(),
+      );
+    },
+    LibraryRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LibraryPage(),
       );
     },
     LoggedUserRoute.name: (routeData) {
@@ -111,32 +115,31 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [HomeWrapperPage]
+class HomeWrapperRoute extends PageRouteInfo<void> {
+  const HomeWrapperRoute({List<PageRouteInfo>? children})
+      : super(
+          HomeWrapperRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeWrapperRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [LibraryPage]
-class LibraryRoute extends PageRouteInfo<LibraryRouteArgs> {
-  LibraryRoute({
-    Key? key,
-    List<PageRouteInfo>? children,
-  }) : super(
+class LibraryRoute extends PageRouteInfo<void> {
+  const LibraryRoute({List<PageRouteInfo>? children})
+      : super(
           LibraryRoute.name,
-          args: LibraryRouteArgs(key: key),
           initialChildren: children,
         );
 
   static const String name = 'LibraryRoute';
 
-  static const PageInfo<LibraryRouteArgs> page =
-      PageInfo<LibraryRouteArgs>(name);
-}
-
-class LibraryRouteArgs {
-  const LibraryRouteArgs({this.key});
-
-  final Key? key;
-
-  @override
-  String toString() {
-    return 'LibraryRouteArgs{key: $key}';
-  }
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
