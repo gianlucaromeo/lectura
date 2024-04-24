@@ -28,11 +28,15 @@ class FirebaseUserBooksRepository implements UserBooksRepository {
     }
 
     final futures = resp.googleUserBooksDTOs.map((e) async {
-      final book = await _searchDatasource.fetchGoogleBook(e.bookId);
-      return book.bookDto.toEntity().copyWith(status: e.status);
+      final resp = await _searchDatasource.fetchGoogleBook(e.bookId);
+      if (!resp.isFailure) {
+        return resp.bookDto.toEntity().copyWith(status: e.status);
+      }
     }).toList();
 
-    final books = await futures.wait;
+    final all = await futures.wait;
+
+    final books = all.where((e) => e != null).cast<Book>().toList();
 
     return Right(books);
   }

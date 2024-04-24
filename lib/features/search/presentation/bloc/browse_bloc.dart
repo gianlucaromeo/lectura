@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/features/common/domain/repositories/user_books_repository.dart';
+import 'package:lectura/features/profile/domain/use_cases/fetch_user_books.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:lectura/core/enums.dart';
 import 'package:lectura/features/search/domain/repositories/search_repository.dart';
@@ -27,8 +28,8 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
     );
 
     on<AddBookRequested>(_onAddBookRequested);
-
     on<OpenBookRequested>(_onOpenBookRequested);
+    on<FetchUserBooksRequested>(_onFetchUserBooksRequested);
   }
 
   final SearchRepository _searchRepository;
@@ -49,18 +50,18 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
       return;
     }
 
-    emit(BrowseState.searching(state.books));
+    emit(BrowseState.searching(state.books, state.userBooks));
 
     await FetchBooks(_searchRepository, _userBooksRepository)
         .call(FetchBooksParams(userId: event.userId, input: event.value))
         .then(
-      (resp) {
+      (resp) async {
         if (resp.isFailure) {
           log("Failure ${resp.failure}");
-          // TODO
+          emit(BrowseState.empty());
         } else {
           log("Success: ${resp.books.length}");
-          emit(BrowseState.filled(resp.books));
+          emit(BrowseState.filled(resp.books, state.userBooks));
         }
       },
     );
@@ -82,7 +83,11 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
         final books = state.books
             .map((e) => e.id == resp.book.id ? resp.book : e)
             .toList();
-        emit(BrowseState.openedBook(books, resp.book));
+
+        final userBooks = state.userBooks
+            .map((e) => e.id == resp.book.id ? e.copyWith(status: event.status) : e)
+            .toList();
+        emit(BrowseState.openedBook(books, resp.book, userBooks));
       }
     });
   }
@@ -91,6 +96,22 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
     OpenBookRequested event,
     Emitter<BrowseState> emit,
   ) {
-    emit(BrowseState.openedBook(state.books, event.book));
+    emit(BrowseState.openedBook(state.books, event.book, state.userBooks));
+  }
+
+  void _onFetchUserBooksRequested(
+    FetchUserBooksRequested event,
+    Emitter<BrowseState> emit,
+  ) async {
+    emit(BrowseState.searching(state.books, state.userBooks));
+
+    final resp = await FetchUserBooks(_userBooksRepository)
+        .call(FetchUserBooksParams(event.userId));
+
+    if (resp.isFailure) {
+      emit(BrowseState.filled(state.books, state.userBooks));
+    } else {
+      emit(BrowseState.filled(state.books, resp.books));
+    }
   }
 }

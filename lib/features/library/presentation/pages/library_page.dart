@@ -1,69 +1,44 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lectura/core/enums.dart';
 import 'package:lectura/core/extensions.dart';
+import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
-import 'package:lectura/features/common/presentation/widgets/login_bloc_consumer_with_loading.dart';
+import 'package:lectura/features/library/presentation/widgets/user_book.dart';
 import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
 
 @RoutePage()
-class LibraryPage extends StatefulWidget {
+class LibraryPage extends StatelessWidget {
   const LibraryPage({super.key});
 
   @override
-  State<LibraryPage> createState() => _LibraryPageState();
-}
-
-class _LibraryPageState extends State<LibraryPage> {
-  Set<BookStatus> selectedSegments = {BookStatus.currentlyReading};
-
-  @override
   Widget build(BuildContext context) {
-    return LoginBlocConsumerWithLoading(
-      builder: (context, state) => LecturaPage(
-        title: "***LIBRARY",
-        body: Padding(
-          padding: [20.0, 20.0, 20.0, 0.0].fromLTRB,
-          child: Column(
-            children: [
-              SegmentedButton(
-                multiSelectionEnabled: true,
-                segments: [
-                  ButtonSegment(
-                    value: BookStatus.read,
-                    label: Text(context.l10n.book_status__read),
-                  ),
-                  ButtonSegment(
-                    value: BookStatus.currentlyReading,
-                    label: Text(context.l10n.book_status__currently_reading),
-                  ),
-                  ButtonSegment(
-                    value: BookStatus.toRead,
-                    label: Text(context.l10n.book_status__to_read),
-                  ),
-                ],
-                style: SegmentedButton.styleFrom(
-                  padding: 6.0.horizontal, // TODO
-                ),
-                selected: selectedSegments,
-                onSelectionChanged: (newSelection) {
-                  setState(() {
-                    selectedSegments = newSelection;
-                  });
-                },
-                showSelectedIcon: false,
-              ),
-              25.0.verticalSpace,
+    context.read<BrowseBloc>().add(FetchUserBooksRequested(
+      context.read<LoginBloc>().state.user!.id!,
+    ));
 
-              /// BOOKS
-              ...context.watch<BrowseBloc>().state.books.map(
-                    (e) => selectedSegments.contains(e.status)
-                        ? Text(e.title)
-                        : 0.0.verticalSpace,
+    return LecturaPage(
+      title: "***LIBRARY",
+      body: Padding(
+        padding: [20.0, 20.0, 20.0, 0.0].fromLTRB,
+        child: Column(
+          children: [
+            /// BOOKS
+            BlocBuilder<BrowseBloc, BrowseState>(
+              builder: (context, state) {
+                return Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ...state.userBooks
+                            .map((e) => UserBook(book: e, onTap: () {})),
+                      ],
+                    ),
                   ),
-            ],
-          ),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

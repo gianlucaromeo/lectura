@@ -12,6 +12,7 @@ class BrowseState extends Equatable {
     this.books,
     this.status,
     this.openedBook,
+    this.userBooks,
   );
 
   BrowseState.empty()
@@ -19,31 +20,34 @@ class BrowseState extends Equatable {
           [],
           BrowseStatus.empty,
           null,
+          [],
         );
 
-  const BrowseState.filled(List<Book> books)
+  const BrowseState.filled(List<Book> books, List<Book> userBooks)
       : this._(
           books,
           BrowseStatus.filled,
           null,
+          userBooks,
         );
 
-  const BrowseState.searching(List<Book> books)
+  const BrowseState.searching(List<Book> books, List<Book> userBooks)
       : this._(
           books,
           BrowseStatus.searching,
           null,
+          userBooks,
         );
 
-  const BrowseState.openedBook(List<Book> books, Book book)
-      : this._(
-          books,
-          BrowseStatus.openedBook,
-          book,
-        );
+  const BrowseState.openedBook(
+    List<Book> books,
+    Book book,
+    List<Book> userBooks,
+  ) : this._(books, BrowseStatus.openedBook, book, userBooks);
 
   final BrowseStatus status;
   final List<Book> books;
+  final List<Book> userBooks;
   final Book? openedBook;
 
   @override
@@ -51,5 +55,6 @@ class BrowseState extends Equatable {
         status,
         books,
         openedBook,
+        userBooks,
       ];
 }
