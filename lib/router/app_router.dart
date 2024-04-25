@@ -19,9 +19,9 @@ class AppRouter extends _$AppRouter {
     return [
       AutoRoute(page: LoginWrapperRoute.page, initial: true, children: [
         /// AUTH
-        AutoRoute(page: AuthRoute.page, initial: true),
+        AutoRoute(page: AuthRoute.page),
 
-        AutoRoute(page: LoggedUserRoute.page, children: [
+        AutoRoute(page: LoggedUserRoute.page, initial: true, children: [
           /// HOME
           AutoRoute(page: HomeWrapperRoute.page, children: [
             AutoRoute(page: HomeRoute.page, initial: true),

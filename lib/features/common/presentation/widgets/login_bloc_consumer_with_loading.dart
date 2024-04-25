@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +28,9 @@ class _LoginBlocConsumerWithLoadingState
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
+        log("State: ${state.status}");
+
+        // Add/Remove loading
         if (state.status == LoginStatus.inProgress && !isLoading) {
           setState(() {
             isLoading = true;
@@ -36,12 +41,12 @@ class _LoginBlocConsumerWithLoadingState
             isLoading = false;
           });
           AutoRouter.of(context).popForced(); // pop loading
+        }
 
-          // If user is not logged in, show the auth page
-          if (state.user == null || state.user?.id == null) {
-            AutoRouter.of(context).popUntil((route) => route.isFirst);
-            AutoRouter.of(context).replace(Routes.authRoute);
-          }
+        // If user is not logged in, show the auth page
+        if (state.user == null || state.user?.id == null) {
+          AutoRouter.of(context).popUntil((route) => route.isFirst);
+          AutoRouter.of(context).replace(Routes.authRoute);
         }
       },
       builder: widget.builder,

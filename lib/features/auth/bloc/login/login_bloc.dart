@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,6 +75,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       Emitter<LoginState> emit,
       ) async {
     if (event.user.id?.isNotEmpty == true) {
+      log("USER CHANGED: ${event.user.id}");
       emit(LoginState.loggedIn(event.user));
     } else {
       emit(const LoginState.unknown());
