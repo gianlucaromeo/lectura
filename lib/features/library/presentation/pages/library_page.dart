@@ -13,10 +13,6 @@ class LibraryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<BrowseBloc>().add(FetchUserBooksRequested(
-      context.read<LoginBloc>().state.user!.id!,
-    ));
-
     return LecturaPage(
       title: "***LIBRARY",
       body: Padding(

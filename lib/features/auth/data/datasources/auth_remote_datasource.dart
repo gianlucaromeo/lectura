@@ -104,8 +104,8 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
   }
 
   @override
-  Future<void> logout() {
-    return _firebaseAuth.signOut();
+  Future<void> logout() async {
+    return await _firebaseAuth.signOut();
   }
 
   @override
