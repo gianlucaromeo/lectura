@@ -19,9 +19,14 @@ abstract class AuthRemoteDataSource {
   Future<void> logout();
 
   Future<void> deleteUser();
+
+  Stream<UserDto> get user;
 }
 
 class FirebaseAuthDataSource extends AuthRemoteDataSource {
+
+  final _firebaseAuth = FirebaseAuth.instance;
+
   @override
   Future<bool> createUserWithEmailAndPassword({
     required String email,
@@ -29,7 +34,8 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
   }) async {
     try {
       email = email.trim();
-      final userCredentials = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final userCredentials =
+          await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -37,7 +43,8 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
       return true;
     } on FirebaseAuthException catch (e) {
       if (firebaseAuthExceptions.containsKey(e.code)) {
-        log("Firebase Registration Exception: ${e.code}", name: "App Exception");
+        log("Firebase Registration Exception: ${e.code}",
+            name: "App Exception");
         throw firebaseAuthExceptions[e.code]!;
       } else {
         log(
@@ -57,7 +64,8 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
     try {
       email = email.trim();
 
-      final credentials = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final credentials =
+          await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -81,7 +89,6 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
         id: credentials.user!.uid,
         email: credentials.user!.email,
       );
-
     } on FirebaseAuthException catch (e) {
       if (firebaseAuthExceptions.containsKey(e.code)) {
         log("Firebase Login Exception: ${e.code}", name: "App Exception");
@@ -98,11 +105,20 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
 
   @override
   Future<void> logout() {
-    return FirebaseAuth.instance.signOut();
+    return _firebaseAuth.signOut();
   }
 
   @override
   Future<void> deleteUser() {
-    return FirebaseAuth.instance.currentUser?.delete() ?? Future.value();
+    return _firebaseAuth.currentUser?.delete() ?? Future.value();
+  }
+
+  @override
+  Stream<UserDto> get user {
+    return _firebaseAuth.authStateChanges().map((firebaseUser) {
+     return firebaseUser == null
+          ? UserDto.empty()
+          : UserDto(id: firebaseUser.uid, email: firebaseUser.email);
+    });
   }
 }

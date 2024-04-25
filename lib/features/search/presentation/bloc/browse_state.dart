@@ -15,19 +15,16 @@ class BrowseState extends Equatable {
     this.userBooks,
   );
 
-  BrowseState.empty()
-      : this._(
-          [],
-          BrowseStatus.empty,
-          null,
-          [],
-        );
+  BrowseState.empty() : this._([], BrowseStatus.empty, null, []);
 
-  const BrowseState.filled(List<Book> books, List<Book> userBooks)
-      : this._(
+  const BrowseState.filled(
+    List<Book> books,
+    Book? openedBook,
+    List<Book> userBooks,
+  ) : this._(
           books,
           BrowseStatus.filled,
-          null,
+          openedBook,
           userBooks,
         );
 

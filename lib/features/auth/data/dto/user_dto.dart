@@ -10,6 +10,8 @@ class UserDto implements ConvertibleDto<User> {
   final String? id;
   final String? email;
 
+  UserDto.empty() : this();
+
   UserDto.fromMap(Map<String, dynamic> map)
       : id = map['id'],
         email = map['email'];

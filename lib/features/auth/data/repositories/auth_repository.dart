@@ -74,4 +74,9 @@ class AuthRepositoryImpl implements AuthRepository {
     return Right(authRemoteDataSource.deleteUser());
   }
 
+  @override
+  Stream<User> get user {
+    return authRemoteDataSource.user.map((dto) => dto.toEntity());
+  }
+
 }

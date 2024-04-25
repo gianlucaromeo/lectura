@@ -61,7 +61,19 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
           emit(BrowseState.empty());
         } else {
           log("Success: ${resp.books.length}");
-          emit(BrowseState.filled(resp.books, state.userBooks));
+
+          final userBooksMap =
+              Map.fromIterable(state.userBooks.map((e) => {e.id: e}));
+
+          final books = resp.books
+              .map((e) {
+                return userBooksMap.containsKey(e.id) ? userBooksMap[e.id] : e;
+              })
+              .cast<Book>()
+              .toList();
+
+          emit(BrowseState.filled(
+              books, state.openedBook, List.from(state.userBooks)));
         }
       },
     );
@@ -84,9 +96,9 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
             .map((e) => e.id == resp.book.id ? resp.book : e)
             .toList();
 
-        final userBooks = state.userBooks
-            .map((e) => e.id == resp.book.id ? e.copyWith(status: event.status) : e)
-            .toList();
+        final userBooks = List.from(state.userBooks
+            .map((e) => e.id == resp.book.id ? resp.book : e)).cast<Book>();
+
         emit(BrowseState.openedBook(books, resp.book, userBooks));
       }
     });
@@ -109,9 +121,9 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
         .call(FetchUserBooksParams(event.userId));
 
     if (resp.isFailure) {
-      emit(BrowseState.filled(state.books, state.userBooks));
+      emit(BrowseState.filled(state.books, state.openedBook, state.userBooks));
     } else {
-      emit(BrowseState.filled(state.books, resp.books));
+      emit(BrowseState.filled(state.books, state.openedBook, resp.books));
     }
   }
 }

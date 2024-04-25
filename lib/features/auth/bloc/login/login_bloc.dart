@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
@@ -16,6 +18,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({required AuthRepository authRepository})
       : _authRepository = authRepository,
         super(const LoginState.unknown()) {
+
+    on<_UserChanged>(_onUserChanged);
+    _userSubscription = _authRepository.user.listen((user) {
+      add(_UserChanged(user));
+    });
+
     on<LoginWithEmailAndPasswordRequested>(
       _onLoginWithEmailAndPasswordRequested,
     );
@@ -25,7 +33,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<UserDeleteAccountRequested>(_onUserDeleteAccountRequested);
   }
 
+  @override
+  Future<void> close() {
+    _userSubscription.cancel();
+    return super.close();
+  }
+
   final AuthRepository _authRepository;
+  late final StreamSubscription<User> _userSubscription;
 
   void _onLoginWithEmailAndPasswordRequested(
     LoginWithEmailAndPasswordRequested event,
@@ -52,6 +67,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async {
     emit(const LoginState.retryAfterFailure());
+  }
+
+  void _onUserChanged(
+      _UserChanged event,
+      Emitter<LoginState> emit,
+      ) async {
+    if (event.user.id?.isNotEmpty == true) {
+      emit(LoginState.loggedIn(event.user));
+    } else {
+      emit(const LoginState.unknown());
+    }
   }
 
   void _onUserLoggedOut(
