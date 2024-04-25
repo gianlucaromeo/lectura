@@ -4,15 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/features/common/data/datasources/user_books_datasource.dart';
 import 'package:lectura/features/common/data/repositories/user_books_repository.dart';
 import 'package:lectura/features/common/domain/repositories/user_books_repository.dart';
-import 'package:lectura/features/common/presentation/widgets/login_bloc_consumer_with_loading.dart';
 import 'package:lectura/features/search/data/datasources/search_datasource.dart';
 import 'package:lectura/features/search/data/repositories/search_repository.dart';
 import 'package:lectura/features/search/domain/repositories/search_repository.dart';
 import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
 
 @RoutePage()
-class SearchWrapperPage extends StatelessWidget {
-  const SearchWrapperPage({
+class BrowseBlocWrapperPage extends StatelessWidget {
+  const BrowseBlocWrapperPage({
     super.key,
   });
 
@@ -32,14 +31,12 @@ class SearchWrapperPage extends StatelessWidget {
           ),
         ),
       ],
-      child: LoginBlocConsumerWithLoading(
-        builder: (context, state) => BlocProvider<BrowseBloc>(
-          create: (context) => BrowseBloc(
-            context.read<SearchRepository>(),
-            context.read<UserBooksRepository>(),
-          ),
-          child: const AutoRouter(),
+      child: BlocProvider<BrowseBloc>(
+        create: (context) => BrowseBloc(
+          context.read<SearchRepository>(),
+          context.read<UserBooksRepository>(),
         ),
+        child: const AutoRouter(),
       ),
     );
   }

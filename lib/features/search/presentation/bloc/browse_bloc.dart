@@ -26,7 +26,6 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
       _onBrowseInputChanged,
       transformer: _debounceSequential(const Duration(milliseconds: 300)),
     );
-
     on<AddBookRequested>(_onAddBookRequested);
     on<OpenBookRequested>(_onOpenBookRequested);
     on<FetchUserBooksRequested>(_onFetchUserBooksRequested);
@@ -57,11 +56,8 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
         .then(
       (resp) async {
         if (resp.isFailure) {
-          log("Failure ${resp.failure}");
           emit(BrowseState.empty());
         } else {
-          log("Success: ${resp.books.length}");
-
           final userBooksMap =
               Map.fromIterable(state.userBooks.map((e) => {e.id: e}));
 
@@ -73,7 +69,10 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
               .toList();
 
           emit(BrowseState.filled(
-              books, state.openedBook, List.from(state.userBooks)));
+            books,
+            state.openedBook,
+            List.from(state.userBooks),
+          ));
         }
       },
     );
@@ -89,7 +88,6 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
         .call(AddBookParams(event.userId, event.bookId, event.status))
         .then((resp) {
       if (resp.isFailure) {
-        log("Failure ${resp.failure}", name: "_onAddBookRequested");
         // TODO
       } else {
         final books = state.books
@@ -115,6 +113,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
     FetchUserBooksRequested event,
     Emitter<BrowseState> emit,
   ) async {
+    log("requested");
     emit(BrowseState.searching(state.books, state.userBooks));
 
     final resp = await FetchUserBooks(_userBooksRepository)

@@ -27,6 +27,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const BookPage(),
       );
     },
+    BrowseBlocWrapperRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const BrowseBlocWrapperPage(),
+      );
+    },
     HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -51,6 +57,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LoggedUserPage(),
       );
     },
+    LoginWrapperRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LoginWrapperPage(),
+      );
+    },
     ProfileRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -61,12 +73,6 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const SearchPage(),
-      );
-    },
-    SearchWrapperRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const SearchWrapperPage(),
       );
     },
   };
@@ -96,6 +102,20 @@ class BookRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'BookRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [BrowseBlocWrapperPage]
+class BrowseBlocWrapperRoute extends PageRouteInfo<void> {
+  const BrowseBlocWrapperRoute({List<PageRouteInfo>? children})
+      : super(
+          BrowseBlocWrapperRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BrowseBlocWrapperRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -157,6 +177,20 @@ class LoggedUserRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [LoginWrapperPage]
+class LoginWrapperRoute extends PageRouteInfo<void> {
+  const LoginWrapperRoute({List<PageRouteInfo>? children})
+      : super(
+          LoginWrapperRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LoginWrapperRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [ProfilePage]
 class ProfileRoute extends PageRouteInfo<void> {
   const ProfileRoute({List<PageRouteInfo>? children})
@@ -180,20 +214,6 @@ class SearchRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SearchRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [SearchWrapperPage]
-class SearchWrapperRoute extends PageRouteInfo<void> {
-  const SearchWrapperRoute({List<PageRouteInfo>? children})
-      : super(
-          SearchWrapperRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SearchWrapperRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

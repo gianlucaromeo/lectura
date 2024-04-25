@@ -36,7 +36,9 @@ class _LoginBlocConsumerWithLoadingState
             isLoading = false;
           });
           AutoRouter.of(context).popForced(); // pop loading
-          if (state.user == null) {
+
+          // If user is not logged in, show the auth page
+          if (state.user == null || state.user?.id == null) {
             AutoRouter.of(context).popUntil((route) => route.isFirst);
             AutoRouter.of(context).replace(Routes.authRoute);
           }

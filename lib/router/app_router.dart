@@ -5,9 +5,10 @@ import 'package:lectura/features/profile/presentation/pages/profile_page.dart';
 import 'package:lectura/features/search/presentation/pages/search_page.dart';
 import 'package:lectura/features/search/presentation/pages/book_page.dart';
 import 'package:lectura/features/library/presentation/pages/library_page.dart';
-import 'package:lectura/features/common/presentation/pages/search_wrapper_page.dart';
+import 'package:lectura/features/common/presentation/pages/browse_bloc_wrapper.dart';
 import 'package:lectura/features/common/presentation/pages/logged_user_page.dart';
 import 'package:lectura/features/common/presentation/pages/homepage_wrapper.dart';
+import 'package:lectura/features/common/presentation/pages/login_wrapper_page.dart';
 
 part 'app_router.gr.dart';
 
@@ -16,21 +17,23 @@ class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes {
     return [
-      /// AUTH
-      AutoRoute(page: AuthRoute.page, initial: true),
+      AutoRoute(page: LoginWrapperRoute.page, initial: true, children: [
+        /// AUTH
+        AutoRoute(page: AuthRoute.page, initial: true),
 
-      AutoRoute(page: LoggedUserRoute.page, children: [
-        /// HOME
-        AutoRoute(page: HomeWrapperRoute.page, children: [
-          AutoRoute(page: HomeRoute.page, initial: true),
-          AutoRoute(page: ProfileRoute.page),
-        ]),
+        AutoRoute(page: LoggedUserRoute.page, children: [
+          /// HOME
+          AutoRoute(page: HomeWrapperRoute.page, children: [
+            AutoRoute(page: HomeRoute.page, initial: true),
+            AutoRoute(page: ProfileRoute.page),
+          ]),
 
-        /// SEARCH, LIBRARY
-        AutoRoute(page: SearchWrapperRoute.page, children: [
-          AutoRoute(page: SearchRoute.page),
-          AutoRoute(page: LibraryRoute.page),
-          AutoRoute(page: BookRoute.page),
+          /// SEARCH, LIBRARY
+          AutoRoute(page: BrowseBlocWrapperRoute.page, children: [
+            AutoRoute(page: SearchRoute.page),
+            AutoRoute(page: LibraryRoute.page, maintainState: true),
+            AutoRoute(page: BookRoute.page),
+          ]),
         ]),
       ]),
     ];
