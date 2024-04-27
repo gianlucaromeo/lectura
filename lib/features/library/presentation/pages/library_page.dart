@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/enums.dart';
@@ -10,14 +11,15 @@ import 'package:lectura/features/library/presentation/widgets/user_book.dart';
 import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
 
 @RoutePage()
-class LibraryPage extends StatelessWidget {
+class LibraryPage extends StatefulWidget {
   LibraryPage({super.key});
 
-  final _allStatus = [
-    BookStatus.read,
-    BookStatus.currentlyReading,
-    BookStatus.toRead,
-  ];
+  @override
+  State<LibraryPage> createState() => _LibraryPageState();
+}
+
+class _LibraryPageState extends State<LibraryPage> {
+  Set<BookStatus> selectedSegments = {BookStatus.currentlyReading};
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +30,54 @@ class LibraryPage extends StatelessWidget {
       title: context.l10n.library_page__title,
       body: Padding(
           padding: [20.0, 20.0, 20.0, 0.0].fromLTRB,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ...context
-                    .watch<BrowseBloc>()
-                    .state
-                    .userBooks
-                    .map((e) => UserBook(book: e, onTap: () {}))
-              ],
-            ),
+          child: Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: SegmentedButton(
+                  multiSelectionEnabled: true,
+                  segments: [
+                    ButtonSegment(
+                      value: BookStatus.read,
+                      label: Text(context.l10n.book_status__read),
+                    ),
+                    ButtonSegment(
+                      value: BookStatus.currentlyReading,
+                      label: Text(context.l10n.book_status__currently_reading),
+                    ),
+                    ButtonSegment(
+                      value: BookStatus.toRead,
+                      label: Text(context.l10n.book_status__to_read),
+                    ),
+                  ],
+                  style: SegmentedButton.styleFrom(
+                    padding: 6.0.horizontal, // TODO
+                  ),
+                  selected: selectedSegments,
+                  onSelectionChanged: (newSelection) {
+                    setState(() {
+                      selectedSegments = newSelection;
+                    });
+                  },
+                  showSelectedIcon: false,
+                ),
+              ),
+              20.0.verticalSpace,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ...context
+                          .watch<BrowseBloc>()
+                          .state
+                          .userBooks
+                          .where((e) => selectedSegments.contains(e.status))
+                          .map((e) => UserBook(book: e, onTap: () {}))
+                    ],
+                  ),
+                ),
+              ),
+            ],
           )),
     );
   }

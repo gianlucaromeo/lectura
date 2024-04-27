@@ -12,7 +12,9 @@ class BrowseBlocWrapperPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
-    return BlocProvider(create: (context) => context.read<BrowseBloc>(), child: const AutoRouter());
+    return BlocProvider(
+      create: (context) => context.read<BrowseBloc>(),
+      child: const AutoRouter(),
+    );
   }
 }
