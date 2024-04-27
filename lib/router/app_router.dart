@@ -25,7 +25,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: LoggedUserRoute.page, initial: true, children: [
           /// HOME
           AutoRoute(page: HomeWrapperRoute.page, children: [
-            AutoRoute(page: HomeRoute.page),
+            AutoRoute(page: HomeRoute.page, initial: true),
             AutoRoute(page: ProfileRoute.page),
           ]),
 
