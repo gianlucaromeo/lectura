@@ -9,9 +9,9 @@
   "book_status__add": "Add Status",
   "book_status__remove": "Remove from my library",
 
-  "bottom_bar__home": "Home",
-  "bottom_bar__search": "Search",
   "bottom_bar__library": "Library",
+  "bottom_bar__search": "Search",
+  "bottom_bar__profile": "Profile",
 
   "@FAILURES": "",
   "generic_failure__title": "Ops...",

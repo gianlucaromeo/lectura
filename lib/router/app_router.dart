@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:lectura/features/auth/presentation/pages/auth_page.dart';
 import 'package:lectura/features/home/presentation/pages/home_page.dart';
 import 'package:lectura/features/profile/presentation/pages/profile_page.dart';
@@ -22,22 +21,15 @@ class AppRouter extends _$AppRouter {
         /// AUTH
         AutoRoute(page: AuthRoute.page),
 
+        /// LOGGED USER
         AutoRoute(page: LoggedUserRoute.page, initial: true, children: [
-          /// HOME
-          AutoRoute(page: HomeWrapperRoute.page, children: [
-            AutoRoute(page: HomeRoute.page, initial: true),
+          /// SEARCH, LIBRARY
+          AutoRoute(page: BrowseBlocWrapperRoute.page, initial: true, children: [
+            AutoRoute(page: LibraryRoute.page, initial: true),
+            AutoRoute(page: SearchRoute.page),
+            AutoRoute(page: BookRoute.page, path: "book-route"),
             AutoRoute(page: ProfileRoute.page),
           ]),
-
-          /// SEARCH, LIBRARY
-          AutoRoute(
-              page: BrowseBlocWrapperRoute.page,
-              initial: true,
-              children: [
-                AutoRoute(page: SearchRoute.page, initial: true,),
-                AutoRoute(page: LibraryRoute.page, maintainState: true),
-                AutoRoute(page: BookRoute.page),
-              ]),
         ]),
       ]),
     ];

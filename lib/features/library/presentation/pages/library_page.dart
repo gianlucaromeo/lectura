@@ -1,25 +1,29 @@
 import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/enums.dart';
 import 'package:lectura/core/extensions.dart';
+import 'package:lectura/core/routes.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
 import 'package:lectura/features/library/presentation/widgets/user_book.dart';
 import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
 
 @RoutePage()
 class LibraryPage extends StatefulWidget {
-  LibraryPage({super.key});
+  const LibraryPage({super.key});
 
   @override
   State<LibraryPage> createState() => _LibraryPageState();
 }
 
 class _LibraryPageState extends State<LibraryPage> {
-  Set<BookStatus> selectedSegments = {BookStatus.currentlyReading};
+  Set<BookStatus> selectedSegments = {
+    BookStatus.read,
+    BookStatus.currentlyReading,
+    BookStatus.toRead,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +58,7 @@ class _LibraryPageState extends State<LibraryPage> {
                     padding: 6.0.horizontal, // TODO
                   ),
                   selected: selectedSegments,
+                  emptySelectionAllowed: false,
                   onSelectionChanged: (newSelection) {
                     setState(() {
                       selectedSegments = newSelection;
@@ -72,7 +77,10 @@ class _LibraryPageState extends State<LibraryPage> {
                           .state
                           .userBooks
                           .where((e) => selectedSegments.contains(e.status))
-                          .map((e) => UserBook(book: e, onTap: () {}))
+                          .map((e) => UserBook(book: e, onTap: () {
+                            context.read<BrowseBloc>().add(OpenBookRequested(e));
+                            AutoRouter.of(context).push(Routes.bookRoute);
+                      }))
                     ],
                   ),
                 ),

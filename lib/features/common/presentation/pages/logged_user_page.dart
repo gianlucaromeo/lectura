@@ -1,9 +1,11 @@
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/routes.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
 import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
 import 'package:lectura/features/common/data/datasources/user_books_datasource.dart';
 import 'package:lectura/features/common/data/repositories/user_books_repository.dart';
@@ -27,37 +29,45 @@ class LoggedUserPage extends StatelessWidget {
       googleApiDataSource,
     );
 
-    return BlocProvider(
-      create: (context) => BrowseBloc(
-        searchRepository,
-        userBooksRepository,
-      ),
+    final browseBloc = BrowseBloc(
+      searchRepository,
+      userBooksRepository,
+    );
+
+    browseBloc.add(FetchUserBooksRequested(
+      context.read<LoginBloc>().state.user!.id!,
+    ));
+
+    return BlocProvider.value(
+      value: browseBloc,
       child: AutoTabsScaffold(
         routes: [
-          Routes.homeWrapperRoute,
-          Routes.searchRoute,
           Routes.libraryRoute,
+          Routes.searchRoute,
+          Routes.profileRoute,
         ],
         bottomNavigationBuilder: (_, tabsRouter) {
-          return BottomNavigationBar(
-            showUnselectedLabels: false,
-            items: [
-              BottomNavigationBarItem(
-                icon: const Icon(Icons.home),
-                label: context.l10n.bottom_bar__home,
-              ),
-              BottomNavigationBarItem(
-                icon: const Icon(Icons.search),
-                label: context.l10n.bottom_bar__search,
-              ),
-              BottomNavigationBarItem(
-                icon: const Icon(Icons.book),
-                label: context.l10n.bottom_bar__library,
-              ),
-            ],
-            currentIndex: tabsRouter.activeIndex,
-            onTap: tabsRouter.setActiveIndex,
-          );
+          return tabsRouter.currentPath == "/book-route"
+              ? 0.0.verticalSpace
+              : BottomNavigationBar(
+                  showUnselectedLabels: false,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: const Icon(Icons.book),
+                      label: context.l10n.bottom_bar__library,
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const Icon(Icons.search),
+                      label: context.l10n.bottom_bar__search,
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const Icon(Icons.person),
+                      label: context.l10n.bottom_bar__profile,
+                    ),
+                  ],
+                  currentIndex: tabsRouter.activeIndex,
+                  onTap: tabsRouter.setActiveIndex,
+                );
         },
       ),
     );
