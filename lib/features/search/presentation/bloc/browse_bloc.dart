@@ -49,7 +49,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
       return;
     }
 
-    emit(BrowseState.searching(state.books, state.userBooks));
+    emit(BrowseState.searching(state.books, state.openedBook, state.userBooks));
 
     await FetchBooks(_searchRepository, _userBooksRepository)
         .call(FetchBooksParams(userId: event.userId, input: event.value))
@@ -61,12 +61,9 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
           final userBooksMap =
               Map.fromIterable(state.userBooks.map((e) => {e.id: e}));
 
-          final books = resp.books
-              .map((e) {
-                return userBooksMap.containsKey(e.id) ? userBooksMap[e.id] : e;
-              })
-              .cast<Book>()
-              .toList();
+          final books = List.from(resp.books.map((e) {
+            return userBooksMap.containsKey(e.id) ? userBooksMap[e.id] : e;
+          })).cast<Book>();
 
           emit(BrowseState.filled(
             books,
@@ -83,16 +80,16 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
     Emitter<BrowseState> emit,
   ) async {
     log("...Adding book ${event.bookId} with status ${event.status.name}");
+    emit(BrowseState.searching(state.books, state.openedBook, state.userBooks));
 
     await AddBook(_searchRepository, _userBooksRepository)
         .call(AddBookParams(event.userId, event.bookId, event.status))
         .then((resp) {
       if (resp.isFailure) {
-        // TODO
+        log("Failure", name: "_onAddBookRequested");
       } else {
-        final books = state.books
-            .map((e) => e.id == resp.book.id ? resp.book : e)
-            .toList();
+        final books = List.from(state.books
+            .map((e) => e.id == resp.book.id ? resp.book : e)).cast<Book>();
 
         final userBooks = List.from(state.userBooks
             .map((e) => e.id == resp.book.id ? resp.book : e)).cast<Book>();
@@ -114,7 +111,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
     Emitter<BrowseState> emit,
   ) async {
     log("requested");
-    emit(BrowseState.searching(state.books, state.userBooks));
+    emit(BrowseState.searching(state.books, state.openedBook, state.userBooks));
 
     final resp = await FetchUserBooks(_userBooksRepository)
         .call(FetchUserBooksParams(event.userId));

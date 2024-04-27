@@ -96,5 +96,8 @@
   "search__search_input__hint": "The Great Gatsby, 1984, Don Quixote",
 
   "@BOOK": "",
-  "book_page__category": "Category"
+  "book_page__category": "Category",
+
+  "@LIBRARY": "",
+  "library_page__title": "Library"
 }

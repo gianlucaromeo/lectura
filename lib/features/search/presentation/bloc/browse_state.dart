@@ -28,11 +28,11 @@ class BrowseState extends Equatable {
           userBooks,
         );
 
-  const BrowseState.searching(List<Book> books, List<Book> userBooks)
+  const BrowseState.searching(List<Book> books, Book? openedBook, List<Book> userBooks)
       : this._(
           books,
           BrowseStatus.searching,
-          null,
+          openedBook,
           userBooks,
         );
 

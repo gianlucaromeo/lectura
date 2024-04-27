@@ -24,16 +24,19 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: LoggedUserRoute.page, initial: true, children: [
           /// HOME
           AutoRoute(page: HomeWrapperRoute.page, children: [
-            AutoRoute(page: HomeRoute.page, initial: true),
+            AutoRoute(page: HomeRoute.page),
             AutoRoute(page: ProfileRoute.page),
           ]),
 
           /// SEARCH, LIBRARY
-          AutoRoute(page: BrowseBlocWrapperRoute.page, children: [
-            AutoRoute(page: SearchRoute.page),
-            AutoRoute(page: LibraryRoute.page, maintainState: true),
-            AutoRoute(page: BookRoute.page),
-          ]),
+          AutoRoute(
+              page: BrowseBlocWrapperRoute.page,
+              initial: true,
+              children: [
+                AutoRoute(page: SearchRoute.page, initial: true,),
+                AutoRoute(page: LibraryRoute.page, maintainState: true),
+                AutoRoute(page: BookRoute.page),
+              ]),
         ]),
       ]),
     ];
