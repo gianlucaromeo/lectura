@@ -99,5 +99,10 @@
   "book_page__category": "Category",
 
   "@LIBRARY": "",
-  "library_page__title": "Library"
+  "library_page__title": "Library",
+
+  "@PROFILE": "",
+  "profile_page__title": "Profile",
+  "profile_page__logout": "Logout",
+  "profile_page__delete_account": "Delete account"
 }
