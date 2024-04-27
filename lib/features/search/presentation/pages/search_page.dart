@@ -81,7 +81,7 @@ class _SearchPageState extends State<SearchPage> {
                         return const CircularProgressIndicator();
                       }
 
-                      if (state.status == BrowseStatus.empty) {
+                      if (state.books.isEmpty) {
                         return Lottie.asset("assets/books.json", height: 125.0);
                       }
 
