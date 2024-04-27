@@ -46,9 +46,11 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     LibraryRoute.name: (routeData) {
+      final args = routeData.argsAs<LibraryRouteArgs>(
+          orElse: () => const LibraryRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: LibraryPage(),
+        child: LibraryPage(key: args.key),
       );
     },
     LoggedUserRoute.name: (routeData) {
@@ -150,16 +152,31 @@ class HomeWrapperRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [LibraryPage]
-class LibraryRoute extends PageRouteInfo<void> {
-  const LibraryRoute({List<PageRouteInfo>? children})
-      : super(
+class LibraryRoute extends PageRouteInfo<LibraryRouteArgs> {
+  LibraryRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           LibraryRoute.name,
+          args: LibraryRouteArgs(key: key),
           initialChildren: children,
         );
 
   static const String name = 'LibraryRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<LibraryRouteArgs> page =
+      PageInfo<LibraryRouteArgs>(name);
+}
+
+class LibraryRouteArgs {
+  const LibraryRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'LibraryRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

@@ -9,6 +9,6 @@ class Routes {
 
   static get browseBlocWrapperRoute => const BrowseBlocWrapperRoute();
   static get searchRoute => const SearchRoute();
-  static get libraryRoute => const LibraryRoute();
+  static get libraryRoute => LibraryRoute();
   static get bookRoute => const BookRoute();
 }
