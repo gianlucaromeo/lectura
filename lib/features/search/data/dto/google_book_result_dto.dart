@@ -38,14 +38,14 @@ class GoogleBookVolumeInfoDto {
   GoogleBookVolumeInfoDto.fromMap(Map<String, dynamic> json)
       : title = json["title"],
         subtitle = json["subtitle"],
-        authors = (json["authors"] as List?)?.map((e) => e as String).toList(),
+        authors = (json["authors"] as List?)?.cast<String>(),
         publisher = json["publisher"],
         publisherDate = json["publisherDate"],
         description = json["description"],
         pageCount = json["pageCount"],
         mainCategory = json["mainCategory"],
         categories =
-            (json["categories"] as List?)?.map((e) => e as String).toList(),
+            (json["categories"] as List?)?.cast<String>(),
         averageRating = (json["averageRating"] as num?)?.toDouble(),
         ratingCount = json["ratingCount"],
         thumbnail = json["imageLinks"]?["thumbnail"],
