@@ -4,6 +4,7 @@ PRIORITY HIGH
 - Add delete book option (logic already implemented) and confirmation for the action
 - Add tests
 - Add confirmation when deleting account
+- Handle internet connection not available
 
 
 PRIORITY MEDIUM

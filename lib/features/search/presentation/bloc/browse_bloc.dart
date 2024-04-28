@@ -91,7 +91,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
         log("Failure", name: "_onAddBookRequested");
       } else {
         final books = List<Book>.from(
-                state.books.map((e) => e.id == resp.book.id ? resp.book : e));
+            state.books.map((e) => e.id == resp.book.id ? resp.book : e));
 
         // TODO Find a better and more optimized way to handle this
         // If book is already in user's db, change status
@@ -101,8 +101,8 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
 
         List<Book> updatedUserBooks;
         if (isUpdating) {
-          updatedUserBooks = List<Book>.from(state.userBooks
-              .map((e) => e.id == resp.book.id ? resp.book : e));
+          updatedUserBooks = List<Book>.from(
+              state.userBooks.map((e) => e.id == resp.book.id ? resp.book : e));
         } else {
           updatedUserBooks = List.from([
             ...state.userBooks,
@@ -154,24 +154,26 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
       // TODO Handle failure
       emit(BrowseState.filled(state.books, state.openedBook, state.userBooks));
     } else {
-
       // Book deleted
       final deletedBookId = resp.stringValue;
       log("Number of books: ${state.userBooks}");
 
-      final updatedUserBooks = List.from(state.userBooks).cast<Book>()
+      final updatedUserBooks = List<Book>.from(state.userBooks)
         ..removeWhere((e) => e.id == deletedBookId);
 
       // If the removed book is a search result, the status needs to be updated
-      final updatedBooks = List.from(
+      final updatedBooks = List<Book>.from(
         state.books.map(
           (e) => e.id == deletedBookId
               ? e.copyWith(status: BookStatus.unknown)
               : e,
         ),
-      ).cast<Book>();
-      log("Number of books: ${state.userBooks}");
-      emit(BrowseState.filled(updatedBooks, state.openedBook, updatedUserBooks));
+      );
+
+      final updatedOpenBook = state.openedBook?.id == deletedBookId
+          ? state.openedBook!.copyWith(status: BookStatus.unknown)
+          : state.openedBook;
+      emit(BrowseState.filled(updatedBooks, updatedOpenBook, updatedUserBooks));
     }
   }
 }

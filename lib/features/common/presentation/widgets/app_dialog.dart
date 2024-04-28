@@ -1,4 +1,8 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/features/auth/data/failures/firebase_auth_failures.dart';
@@ -132,4 +136,67 @@ Future<dynamic> showAppFailureDialog({
     },
   );
   onClose?.call();
+}
+
+Future<dynamic> showAppConfirmationDialog({
+  required BuildContext context,
+  required String title,
+  required String content,
+  required String confirmationOption,
+  required String denyOption,
+  required Function? onConfirm,
+  required Function? onDeny,
+}) async {
+  await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        icon: const Icon(Icons.warning_amber_outlined),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Divider(thickness: 0.5),
+            12.0.verticalSpace,
+            Flexible(
+              child: Text(
+                content,
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
+          ],
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        actionsOverflowButtonSpacing: 15.0, // padding between
+        actions: [
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: () {
+                onConfirm?.call();
+                context.router.maybePop();
+              },
+              child: Text(confirmationOption),
+            ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: () {
+                onDeny?.call();
+                context.router.maybePop();
+              },
+              child: Text(denyOption),
+            ),
+          ),
+        ],
+      );
+    },
+  );
 }

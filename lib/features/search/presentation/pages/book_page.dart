@@ -5,6 +5,7 @@ import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/utils.dart';
 import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
+import 'package:lectura/features/common/presentation/widgets/app_dialog.dart';
 import 'package:lectura/features/common/presentation/widgets/book_image.dart';
 import 'package:lectura/core/enums.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
@@ -23,9 +24,9 @@ class BookPage extends StatefulWidget {
 class _BookPageState extends State<BookPage> {
   @override
   Widget build(BuildContext context) {
-    final book = context.read<BrowseBloc>().state.openedBook;
+    final browseBlocBook = context.read<BrowseBloc>().state.openedBook;
 
-    if (book == null) {
+    if (browseBlocBook == null) {
       return const SizedBox(); // TODO
     }
 
@@ -59,7 +60,7 @@ class _BookPageState extends State<BookPage> {
                       children: [
                         /// IMAGE
                         BookImage(
-                          imagePath: book.imagePath,
+                          imagePath: browseBlocBook.imagePath,
                           imageSize: BookImageSize.big,
                         ),
                         25.0.horizontalSpace,
@@ -70,18 +71,19 @@ class _BookPageState extends State<BookPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                book.title,
+                                browseBlocBook.title,
                                 style: Theme.of(context).textTheme.titleLarge,
                               ),
                               7.0.verticalSpace,
 
                               /// AUTHORS
                               () {
-                                if (book.authors?.isNotEmpty == true) {
+                                if (browseBlocBook.authors?.isNotEmpty ==
+                                    true) {
                                   return Padding(
                                     padding: 15.0.onlyBottom,
                                     child: Text(
-                                      book.authors!.join(", "),
+                                      browseBlocBook.authors!.join(", "),
                                       style: Theme.of(context)
                                           .textTheme
                                           .labelSmall,
@@ -97,7 +99,8 @@ class _BookPageState extends State<BookPage> {
 
                               /// CATEGORIES
                               () {
-                                if (book.categories?.isNotEmpty == true) {
+                                if (browseBlocBook.categories?.isNotEmpty ==
+                                    true) {
                                   return Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -111,7 +114,8 @@ class _BookPageState extends State<BookPage> {
                                                 fontWeight: FontWeight.bold),
                                       ),
                                       7.0.verticalSpace,
-                                      ...book.categories!.map((e) => Text(e)),
+                                      ...browseBlocBook.categories!
+                                          .map((e) => Text(e)),
                                     ],
                                   );
                                 }
@@ -125,19 +129,14 @@ class _BookPageState extends State<BookPage> {
                     15.0.verticalSpace,
 
                     /// STATUS
-                    Builder(
-                      builder: (context) {
-                        final status = context
-                            .watch<BrowseBloc>()
-                            .state
-                            .openedBook!
-                            .status;
-
+                    BlocBuilder<BrowseBloc, BrowseState>(
+                      builder: (context, state) {
+                        final book = state.openedBook!;
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             () {
-                              if (status == BookStatus.unknown) {
+                              if (book.status == BookStatus.unknown) {
                                 return const SizedBox();
                               } else {
                                 return Chip(
@@ -150,7 +149,7 @@ class _BookPageState extends State<BookPage> {
                                   ),
                                   elevation: 4.0, // TODO Find better color
                                   label: Text(
-                                    getStatusText(context, status),
+                                    getStatusText(context, book.status),
                                     style:
                                         Theme.of(context).textTheme.labelLarge,
                                   ),
@@ -165,16 +164,48 @@ class _BookPageState extends State<BookPage> {
                                 _buildShowModalBottomSheet(
                                   context,
                                   statusInfo,
-                                  status,
+                                  book.status,
                                   book,
                                 );
                               },
                               child: Text(
-                                status == BookStatus.unknown
+                                book.status == BookStatus.unknown
                                     ? context.l10n.book_status__add
                                     : context.l10n.book_status__change,
                               ),
                             ),
+                            const Spacer(),
+
+                            /// DELETE
+                            if (book.status != BookStatus.unknown)
+                              IconButton(
+                                onPressed: () {
+                                  showAppConfirmationDialog(
+                                      context: context,
+                                      title: context.l10n.dialog__delete_book__title,
+                                      content: context.l10n.dialog__delete_book__content,
+                                      confirmationOption: context.l10n.dialog__delete_book__confirm_option,
+                                      denyOption: context.l10n.dialog__delete_book__deny_option,
+                                      onConfirm: () {
+                                        context.read<BrowseBloc>().add(
+                                          BookDeleteRequested(
+                                            userId: context
+                                                .read<LoginBloc>()
+                                                .state
+                                                .user!
+                                                .id!,
+                                            bookId: book.id,
+                                          ),
+                                        );
+                                      },
+                                      onDeny: () {
+
+                                      },
+                                  );
+
+                                },
+                                icon: const Icon(Icons.delete),
+                              ),
                           ],
                         );
                       },
@@ -183,7 +214,7 @@ class _BookPageState extends State<BookPage> {
 
                     /// DESCRIPTION
                     Text(
-                      book.description,
+                      browseBlocBook.description,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
