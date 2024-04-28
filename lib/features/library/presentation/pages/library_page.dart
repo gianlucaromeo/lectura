@@ -66,36 +66,58 @@ class _LibraryPageState extends State<LibraryPage> {
               ),
               20.0.verticalSpace,
               Expanded(
-                child: SingleChildScrollView(
-                  child: BlocBuilder<BrowseBloc, BrowseState>(
-                    buildWhen: (previous, current) =>
-                        previous.userBooks != current.userBooks,
-                    builder: (context, state) {
-                      log(
-                        "User books changed or status filters updated. Updating library...",
-                        name: "LibraryPage",
+                child: BlocBuilder<BrowseBloc, BrowseState>(
+                  buildWhen: (previous, current) =>
+                      previous.userBooks != current.userBooks,
+                  builder: (context, state) {
+                    final filteredUserBooks = state.userBooks
+                        .where((e) => selectedSegments.contains(e.status))
+                        .map(
+                          (e) => UserBook(
+                            book: e,
+                            onTap: () {
+                              context
+                                  .read<BrowseBloc>()
+                                  .add(OpenBookRequested(e));
+                              AutoRouter.of(context).push(Routes.bookRoute);
+                            },
+                          ),
+                        );
+
+                    if (filteredUserBooks.isEmpty) {
+                      return Padding(
+                        padding: 20.0.horizontal,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              context.l10n.library_page__no_books_info,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                              textAlign: TextAlign.center,
+                            ),
+                            15.0.verticalSpace,
+                            TextButton.icon(
+                              icon: const Icon(Icons.search),
+                              label:
+                                  Text(context.l10n.library_page__go_to_search),
+                              onPressed: () {
+                                AutoRouter.of(context)
+                                    .navigate(Routes.searchWrapperRoute);
+                              },
+                            ),
+                          ],
+                        ),
                       );
-                      log(state.userBooks.hashCode.toString());
-                      return Column(
+                    }
+
+                    return SingleChildScrollView(
+                      child: Column(
                         children: [
-                          ...state.userBooks
-                              .where((e) => selectedSegments.contains(e.status))
-                              .map(
-                                (e) => UserBook(
-                                  book: e,
-                                  onTap: () {
-                                    context
-                                        .read<BrowseBloc>()
-                                        .add(OpenBookRequested(e));
-                                    AutoRouter.of(context)
-                                        .push(Routes.bookRoute);
-                                  },
-                                ),
-                              ),
+                          ...filteredUserBooks,
                         ],
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],

@@ -105,6 +105,8 @@
 
   "@LIBRARY": "",
   "library_page__title": "Library",
+  "library_page__no_books_info": "There are no books in your library with these filters.",
+  "library_page__go_to_search": "Start browsing now",
 
   "@PROFILE": "",
   "profile_page__title": "Profile",
