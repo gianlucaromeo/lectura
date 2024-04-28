@@ -1,7 +1,6 @@
 PRIORITY HIGH
 - Save light/dark theme preferences
 - Add failures and failures handling
-- Add delete book option (logic already implemented) and confirmation for the action
 - Add tests
 - Add confirmation when deleting account
 - Handle internet connection not available
@@ -10,7 +9,6 @@ PRIORITY HIGH
 PRIORITY MEDIUM
 - Improve UI for ProfilePage
 - Refactor and clean code
-- Add animation or action when library is empty
 - Export paths to shorten imports
 
 
