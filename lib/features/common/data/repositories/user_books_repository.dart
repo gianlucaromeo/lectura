@@ -59,4 +59,12 @@ class FirebaseUserBooksRepository implements UserBooksRepository {
 
     return Right(resp.bookDto.toEntity().copyWith(status: status));
   }
+
+  @override
+  Future<Either<Failure, String>> deleteBook({
+    required String userId,
+    required String bookId,
+  }) {
+    return _userBooksDatasource.deleteBook(userId, bookId);
+  }
 }

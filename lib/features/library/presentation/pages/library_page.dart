@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/enums.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/routes.dart';
+import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
 import 'package:lectura/features/library/presentation/widgets/user_book.dart';
 import 'package:lectura/features/search/presentation/bloc/browse_bloc.dart';
@@ -70,18 +71,23 @@ class _LibraryPageState extends State<LibraryPage> {
               20.0.verticalSpace,
               Expanded(
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ...context
-                          .watch<BrowseBloc>()
-                          .state
-                          .userBooks
-                          .where((e) => selectedSegments.contains(e.status))
-                          .map((e) => UserBook(book: e, onTap: () {
-                            context.read<BrowseBloc>().add(OpenBookRequested(e));
-                            AutoRouter.of(context).push(Routes.bookRoute);
-                      }))
-                    ],
+                  child: BlocBuilder<BrowseBloc, BrowseState>(
+                    buildWhen: (previous, current) =>
+                        previous.userBooks != current.userBooks,
+                    builder: (context, state) {
+                      return Column(
+                        children: [
+                          ...state.userBooks.map((e) => UserBook(
+                              book: e,
+                              onTap: () {
+                                context
+                                    .read<BrowseBloc>()
+                                    .add(OpenBookRequested(e));
+                                AutoRouter.of(context).push(Routes.bookRoute);
+                              })),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),

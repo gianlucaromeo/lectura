@@ -21,6 +21,13 @@ abstract class UserBooksDatasource {
   Future<Either<Failure, List<UserBookDto>>> fetchAllUserBooks(
     String userId,
   );
+
+  /// Delete the book from the user's collection and returns either a failure
+  /// or the [bookId]
+  Future<Either<Failure, String>> deleteBook(
+    String userId,
+    String bookId,
+  );
 }
 
 class FirebaseUserBooksDatasource extends UserBooksDatasource {
@@ -120,5 +127,26 @@ class FirebaseUserBooksDatasource extends UserBooksDatasource {
     } catch (e) {
       return Left(GenericFailure()); // TODO
     }
+  }
+
+  @override
+  Future<Either<Failure, String>> deleteBook(
+      String userId, String bookId) async {
+    return await FirebaseFirestore.instance
+        .collection(usersCollection)
+        .doc(userId)
+        .collection(booksCollection)
+        .doc(bookId)
+        .delete()
+        .then(
+      (doc) async {
+        log("Document deleted: $bookId", name: "FirebaseUserBooksDatasource");
+        return Right(bookId);
+      },
+      onError: (e) {
+        log("Error (deleteBook): $e", name: "FirebaseUserBooksDatasource");
+        return Left(GenericFailure()); // TODO
+      },
+    );
   }
 }

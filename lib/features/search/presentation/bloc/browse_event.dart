@@ -28,5 +28,16 @@ final class OpenBookRequested extends BrowseEvent {
 
 final class FetchUserBooksRequested extends BrowseEvent {
   FetchUserBooksRequested(this.userId);
+
   final String userId;
+}
+
+final class BookDeleteRequested extends BrowseEvent {
+  BookDeleteRequested({
+    required this.userId,
+    required this.bookId,
+  });
+
+  final String userId;
+  final String bookId;
 }

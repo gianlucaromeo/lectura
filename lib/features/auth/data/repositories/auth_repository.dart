@@ -71,6 +71,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
   @override
   Future<Either<Failure, Future<void>>> deleteUser() async {
+    // TODO Remove all the records
     return Right(authRemoteDataSource.deleteUser());
   }
 

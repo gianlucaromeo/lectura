@@ -11,4 +11,9 @@ abstract class UserBooksRepository {
     String bookId,
     BookStatus status,
   );
+
+  Future<Either<Failure, String>> deleteBook({
+    required String userId,
+    required String bookId,
+  });
 }

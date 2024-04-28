@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:lectura/core/extensions.dart';
 import 'package:lectura/core/failures.dart';
 import 'package:lectura/core/use_case.dart';
 import 'package:lectura/features/auth/domain/entities/user.dart';
@@ -22,15 +21,9 @@ class LoginUserWithEmailAndPassword extends UseCase<User, EmailAndPasswordLoginP
 
   @override
   Future<Either<Failure, User>> call(EmailAndPasswordLoginParams params) async {
-    final resp = await authRepository.loginUserWithEmailAndPassword(
+    return authRepository.loginUserWithEmailAndPassword(
       email: params.email,
       password: params.password,
     );
-
-    if (resp.isFailure) {
-      return Left(resp.failure);
-    } else {
-      return Right(resp.user);
-    }
   }
 }

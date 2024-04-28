@@ -27,6 +27,14 @@ extension IsFailure on Either<Failure, dynamic> {
   bool get isFailure => isLeft();
 }
 
+extension GetStringValue on Either<Failure, String> {
+  String get stringValue {
+    assert(isRight(),
+    "Trying to get Right from an Either but isRight() is false.");
+    return fold((l) => l, (r) => r) as String;
+  }
+}
+
 extension GetFailure on Either<Failure, dynamic> {
   Failure get failure {
     assert(

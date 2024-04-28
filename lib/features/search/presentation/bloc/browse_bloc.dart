@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
 import 'package:lectura/features/common/domain/repositories/user_books_repository.dart';
+import 'package:lectura/features/common/domain/use_cases/delete_book_use_case.dart';
 import 'package:lectura/features/profile/domain/use_cases/fetch_user_books.dart';
 import 'package:lectura/features/search/domain/entities/book.dart';
 import 'package:lectura/core/enums.dart';
@@ -29,6 +30,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
     on<AddBookRequested>(_onAddBookRequested);
     on<OpenBookRequested>(_onOpenBookRequested);
     on<FetchUserBooksRequested>(_onFetchUserBooksRequested);
+    on<BookDeleteRequested>(_onBookDeleteRequested);
   }
 
   final SearchRepository _searchRepository;
@@ -88,13 +90,27 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
       if (resp.isFailure) {
         log("Failure", name: "_onAddBookRequested");
       } else {
-        final books = List.from(state.books
-            .map((e) => e.id == resp.book.id ? resp.book : e)).cast<Book>();
+        final books = List.from(
+                state.books.map((e) => e.id == resp.book.id ? resp.book : e))
+            .cast<Book>();
 
-        final userBooks = List.from(state.userBooks
-            .map((e) => e.id == resp.book.id ? resp.book : e)).cast<Book>();
+        // TODO Find a better and more optimized way to handle this
+        // If book is already in user's db, change status
+        // Otherwise, add it
+        final isUpdating =
+            state.userBooks.where((e) => e.id == resp.book.id).isNotEmpty;
+        var updatedUserBooks = List<Book>.empty(growable: true);
+        if (isUpdating) {
+          updatedUserBooks = List.from(state.userBooks
+              .map((e) => e.id == resp.book.id ? resp.book : e)).cast<Book>();
+        } else {
+          updatedUserBooks = List.from([
+            ...state.userBooks,
+            resp.book.copyWith(status: event.status)
+          ]).cast<Book>();
+        }
 
-        emit(BrowseState.openedBook(books, resp.book, userBooks));
+        emit(BrowseState.openedBook(books, resp.book, updatedUserBooks));
       }
     });
   }
@@ -110,7 +126,6 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
     FetchUserBooksRequested event,
     Emitter<BrowseState> emit,
   ) async {
-    log("requested");
     emit(BrowseState.searching(state.books, state.openedBook, state.userBooks));
 
     final resp = await FetchUserBooks(_userBooksRepository)
@@ -120,6 +135,32 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
       emit(BrowseState.filled(state.books, state.openedBook, state.userBooks));
     } else {
       emit(BrowseState.filled(state.books, state.openedBook, resp.books));
+    }
+  }
+
+  void _onBookDeleteRequested(
+    BookDeleteRequested event,
+    Emitter<BrowseState> emit,
+  ) async {
+    log("Book delete requested", name: "BrowseBloc");
+    emit(BrowseState.searching(state.books, state.openedBook, state.userBooks));
+
+    final resp = await DeleteBook(_userBooksRepository).call(DeleteBookParams(
+      userId: event.userId,
+      bookId: event.bookId,
+    ));
+
+    if (resp.isFailure) {
+      // TODO Handle failure
+      emit(BrowseState.filled(state.books, state.openedBook, state.userBooks));
+    } else {
+      // Book deleted
+      final deletedBookId = resp.stringValue;
+      log("Number of books: ${state.userBooks}");
+      final updatedUserBooks = List.from(state.userBooks).cast<Book>()
+        ..removeWhere((e) => e.id == deletedBookId);
+      log("Number of books: ${state.userBooks}");
+      emit(BrowseState.filled(state.books, state.openedBook, updatedUserBooks));
     }
   }
 }
