@@ -236,71 +236,77 @@ class _BookPageState extends State<BookPage> {
     return showModalBottomSheet(
       context: context,
       builder: (context) {
-        return SizedBox(
-          width: double.infinity,
-          child: Padding(
-            padding: 35.0.all,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                /// TITLE
-                Text(
-                  context.l10n.book_status__select_status,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
-                25.0.verticalSpace,
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: 35.0.all,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    /// TITLE
+                    Text(
+                      context.l10n.book_status__select_status,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    25.0.verticalSpace,
 
-                /// BUTTONS
-                ...List.generate(
-                  3,
-                  (i) {
-                    return SizedBox(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: 15.0.onlyBottom,
-                        child: OutlinedButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor:
-                                statusInfo[i][1] as BookStatus == status
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Colors.transparent,
-                            foregroundColor:
-                                statusInfo[i][1] as BookStatus == status
-                                    ? Theme.of(context).colorScheme.onPrimary
-                                    : Theme.of(context).colorScheme.primary,
-                            textStyle: statusInfo[i][1] as BookStatus == status
-                                ? const TextStyle(fontWeight: FontWeight.bold)
-                                : null,
+                    /// BUTTONS
+                    ...List.generate(
+                      3,
+                      (i) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: 15.0.onlyBottom,
+                            child: OutlinedButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    statusInfo[i][1] as BookStatus == status
+                                        ? Theme.of(context).colorScheme.primary
+                                        : Colors.transparent,
+                                foregroundColor:
+                                    statusInfo[i][1] as BookStatus == status
+                                        ? Theme.of(context).colorScheme.onPrimary
+                                        : Theme.of(context).colorScheme.primary,
+                                textStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  height: 3.0,
+                                )
+                              ),
+                              onPressed: () {
+                                final userId =
+                                    context.read<LoginBloc>().state.user!.id!;
+
+                                context.read<BrowseBloc>().add(
+                                      AddBookRequested(
+                                        userId,
+                                        book.id,
+                                        statusInfo[i][1] as BookStatus,
+                                      ),
+                                    );
+
+                                // Close bottom bar
+                                AutoRouter.of(context).maybePop();
+                              },
+                              child: Text(
+                                statusInfo[i][0] as String,
+                              ),
+                            ),
                           ),
-                          onPressed: () {
-                            final userId =
-                                context.read<LoginBloc>().state.user!.id!;
-
-                            context.read<BrowseBloc>().add(
-                                  AddBookRequested(
-                                    userId,
-                                    book.id,
-                                    statusInfo[i][1] as BookStatus,
-                                  ),
-                                );
-
-                            // Close bottom bar
-                            AutoRouter.of(context).maybePop();
-                          },
-                          child: Text(
-                            statusInfo[i][0] as String,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         );
       },
     );
