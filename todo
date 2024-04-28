@@ -3,6 +3,7 @@ PRIORITY HIGH
 - Add failures and failures handling
 - Add tests
 - Add confirmation when deleting account
+- Clear the BrowseBloc state when logout
 - Handle internet connection not available
 
 
