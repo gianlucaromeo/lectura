@@ -22,8 +22,8 @@ class FormFieldHandler {
 }
 
 
-/// Returns the corresponding text of a status.
-/// i.e.: BookStatus.currentlyReading --> "Currently Reading"
+/// Returns the corresponding text of a status based on the localization file.
+/// i.e.: BookStatus.currentlyReading --> (app_en.arb) "Reading"
 String getStatusText(BuildContext context, BookStatus status) {
   switch (status) {
     case BookStatus.read:

@@ -50,5 +50,4 @@ flutter:
   generate: true
 
   assets:
-    - assets/google-loading.json
     - assets/books.json

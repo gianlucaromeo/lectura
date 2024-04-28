@@ -4,6 +4,7 @@ PRIORITY HIGH
 - Add tests
 - Add confirmation when deleting account
 - Clear the BrowseBloc state when logout
+- Delete user records when deleting account
 - Handle internet connection not available
 
 
