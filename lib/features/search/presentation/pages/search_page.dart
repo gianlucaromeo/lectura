@@ -32,9 +32,6 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<BrowseBloc>().add(FetchUserBooksRequested(
-          context.read<LoginBloc>().state.user!.id!,
-        ));
     return LecturaPage(
       title: context.l10n.search__page_title,
       padding: [20.0, 40.0, 20.0, 0.0].fromLTRB,
