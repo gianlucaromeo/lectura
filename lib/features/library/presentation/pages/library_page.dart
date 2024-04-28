@@ -27,9 +27,6 @@ class _LibraryPageState extends State<LibraryPage> {
 
   @override
   Widget build(BuildContext context) {
-    log("Build", name: "LibraryPage");
-    log("Provider: ${context.read<BrowseBloc>().state}", name: "LibraryPage");
-
     return LecturaPage(
       title: context.l10n.library_page__title,
       body: Padding(
@@ -74,6 +71,12 @@ class _LibraryPageState extends State<LibraryPage> {
                     buildWhen: (previous, current) =>
                         previous.userBooks != current.userBooks,
                     builder: (context, state) {
+                      // TODO Fix: buildWhen seems not to work
+                      log(
+                        "User books changed. Updating library...",
+                        name: "LibraryPage",
+                      );
+                      log(state.userBooks.hashCode.toString());
                       return Column(
                         children: [
                           ...state.userBooks.map((e) => UserBook(

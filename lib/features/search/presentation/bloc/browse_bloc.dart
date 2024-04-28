@@ -63,9 +63,9 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
           final userBooksMap =
               Map.fromIterable(state.userBooks.map((e) => {e.id: e}));
 
-          final books = List.from(resp.books.map((e) {
+          final books = List<Book>.from(resp.books.map((e) {
             return userBooksMap.containsKey(e.id) ? userBooksMap[e.id] : e;
-          })).cast<Book>();
+          }));
 
           emit(BrowseState.filled(
             books,
@@ -90,19 +90,19 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
       if (resp.isFailure) {
         log("Failure", name: "_onAddBookRequested");
       } else {
-        final books = List.from(
-                state.books.map((e) => e.id == resp.book.id ? resp.book : e))
-            .cast<Book>();
+        final books = List<Book>.from(
+                state.books.map((e) => e.id == resp.book.id ? resp.book : e));
 
         // TODO Find a better and more optimized way to handle this
         // If book is already in user's db, change status
         // Otherwise, add it
         final isUpdating =
             state.userBooks.where((e) => e.id == resp.book.id).isNotEmpty;
-        var updatedUserBooks = List<Book>.empty(growable: true);
+
+        List<Book> updatedUserBooks;
         if (isUpdating) {
-          updatedUserBooks = List.from(state.userBooks
-              .map((e) => e.id == resp.book.id ? resp.book : e)).cast<Book>();
+          updatedUserBooks = List<Book>.from(state.userBooks
+              .map((e) => e.id == resp.book.id ? resp.book : e));
         } else {
           updatedUserBooks = List.from([
             ...state.userBooks,
@@ -154,13 +154,24 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
       // TODO Handle failure
       emit(BrowseState.filled(state.books, state.openedBook, state.userBooks));
     } else {
+
       // Book deleted
       final deletedBookId = resp.stringValue;
       log("Number of books: ${state.userBooks}");
+
       final updatedUserBooks = List.from(state.userBooks).cast<Book>()
         ..removeWhere((e) => e.id == deletedBookId);
+
+      // If the removed book is a search result, the status needs to be updated
+      final updatedBooks = List.from(
+        state.books.map(
+          (e) => e.id == deletedBookId
+              ? e.copyWith(status: BookStatus.unknown)
+              : e,
+        ),
+      ).cast<Book>();
       log("Number of books: ${state.userBooks}");
-      emit(BrowseState.filled(state.books, state.openedBook, updatedUserBooks));
+      emit(BrowseState.filled(updatedBooks, state.openedBook, updatedUserBooks));
     }
   }
 }

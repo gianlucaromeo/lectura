@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
-class BrowseBlocWrapperPage extends StatelessWidget {
-  const BrowseBlocWrapperPage({
+class SearchWrapperPage extends StatelessWidget {
+  const SearchWrapperPage({
     super.key,
   });
 

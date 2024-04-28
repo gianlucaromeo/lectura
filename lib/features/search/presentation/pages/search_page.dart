@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,11 +33,8 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     context.read<BrowseBloc>().add(FetchUserBooksRequested(
-      context.read<LoginBloc>().state.user!.id!,
-    ));
-    log("Build", name: "SearchPage");
-    log("Provider: ${context.read<BrowseBloc>().state}", name: "SearchPage");
-
+          context.read<LoginBloc>().state.user!.id!,
+        ));
     return LecturaPage(
       title: context.l10n.search__page_title,
       padding: [20.0, 40.0, 20.0, 0.0].fromLTRB,

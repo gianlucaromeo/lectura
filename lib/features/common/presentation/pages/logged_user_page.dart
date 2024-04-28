@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -42,12 +43,22 @@ class LoggedUserPage extends StatelessWidget {
       value: browseBloc,
       child: AutoTabsScaffold(
         routes: [
-          Routes.libraryRoute,
-          Routes.searchRoute,
+          Routes.libraryWrapperRoute,
+          Routes.searchWrapperRoute,
           Routes.profileRoute,
         ],
         bottomNavigationBuilder: (_, tabsRouter) {
-          return tabsRouter.currentPath == "/book-route"
+          log(
+            "Current index: ${tabsRouter.activeIndex}, route: ${tabsRouter.currentPath}",
+            name: "LoggedUserPage",
+          );
+
+          log(
+            "Stack ${tabsRouter.stack.map((e) => e.name)}",
+            name: "LoggedUserPage",
+          );
+
+          return tabsRouter.currentPath.endsWith("/book")
               ? 0.0.verticalSpace
               : BottomNavigationBar(
                   showUnselectedLabels: false,
