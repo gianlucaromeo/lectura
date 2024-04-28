@@ -70,7 +70,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
           emit(BrowseState.filled(
             books,
             state.openedBook,
-            List.from(state.userBooks),
+            state.userBooks,
           ));
         }
       },

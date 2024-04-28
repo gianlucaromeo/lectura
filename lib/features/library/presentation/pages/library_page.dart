@@ -71,22 +71,27 @@ class _LibraryPageState extends State<LibraryPage> {
                     buildWhen: (previous, current) =>
                         previous.userBooks != current.userBooks,
                     builder: (context, state) {
-                      // TODO Fix: buildWhen seems not to work
                       log(
-                        "User books changed. Updating library...",
+                        "User books changed or status filters updated. Updating library...",
                         name: "LibraryPage",
                       );
                       log(state.userBooks.hashCode.toString());
                       return Column(
                         children: [
-                          ...state.userBooks.map((e) => UserBook(
-                              book: e,
-                              onTap: () {
-                                context
-                                    .read<BrowseBloc>()
-                                    .add(OpenBookRequested(e));
-                                AutoRouter.of(context).push(Routes.bookRoute);
-                              })),
+                          ...state.userBooks
+                              .where((e) => selectedSegments.contains(e.status))
+                              .map(
+                                (e) => UserBook(
+                                  book: e,
+                                  onTap: () {
+                                    context
+                                        .read<BrowseBloc>()
+                                        .add(OpenBookRequested(e));
+                                    AutoRouter.of(context)
+                                        .push(Routes.bookRoute);
+                                  },
+                                ),
+                              ),
                         ],
                       );
                     },
