@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,8 +26,6 @@ class _LoginBlocConsumerWithLoadingState
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
-        log("State: ${state.status}");
-
         // Add/Remove loading
         if (state.status == LoginStatus.inProgress && !isLoading) {
           setState(() {
