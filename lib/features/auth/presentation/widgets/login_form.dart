@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginForm> {
             _handleFailure(state.loginFailure ?? GenericFailure());
             break;
           case LoginStatus.loggedIn:
-            AutoRouter.of(context).replace(Routes.searchRoute);
+            AutoRouter.of(context).replace(Routes.libraryRoute);
             break;
         }
       },
