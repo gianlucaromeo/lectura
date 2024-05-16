@@ -124,7 +124,7 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
   @override
   Stream<UserDto> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
-     return firebaseUser == null
+     return firebaseUser == null || !firebaseUser.emailVerified
           ? UserDto.empty()
           : UserDto(id: firebaseUser.uid, email: firebaseUser.email);
     });
