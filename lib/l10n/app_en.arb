@@ -18,6 +18,11 @@
   "dialog__delete_book__confirm_option": "Yes, delete",
   "dialog__delete_book__deny_option": "No",
 
+  "dialog__delete_account__title": "Delete account",
+  "dialog__delete_account__content": "Are you sure you want to delete your account? All your data will be deleted permanently.",
+  "dialog__delete_account__confirm_option": "Yes, delete",
+  "dialog__delete_account__deny_option": "No",
+
   "@FAILURES": "",
   "generic_failure__title": "Ops...",
   "generic_failure__info": "Something went wrong. If the error persists contact lectura@support.com",

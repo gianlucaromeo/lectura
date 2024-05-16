@@ -1,4 +1,6 @@
 PRIORITY HIGH
+- Fix navigation after registration
+- Fix: after registration, user logs in automatically
 - Save light/dark theme preferences
 - Add failures and failures handling
 - Add tests

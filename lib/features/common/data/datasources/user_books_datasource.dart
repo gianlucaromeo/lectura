@@ -28,6 +28,8 @@ abstract class UserBooksDatasource {
     String userId,
     String bookId,
   );
+
+  Future<Either<Failure, void>> deleteUserBooks(String userId);
 }
 
 class FirebaseUserBooksDatasource extends UserBooksDatasource {
@@ -131,7 +133,9 @@ class FirebaseUserBooksDatasource extends UserBooksDatasource {
 
   @override
   Future<Either<Failure, String>> deleteBook(
-      String userId, String bookId) async {
+    String userId,
+    String bookId,
+  ) async {
     return await FirebaseFirestore.instance
         .collection(usersCollection)
         .doc(userId)
@@ -148,5 +152,29 @@ class FirebaseUserBooksDatasource extends UserBooksDatasource {
         return Left(GenericFailure()); // TODO
       },
     );
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteUserBooks(String userId) async {
+    try {
+      final doc = FirebaseFirestore.instance
+          .collection(usersCollection)
+          .doc(userId);
+
+      log(doc.toString());
+      await doc.delete();
+
+      log(
+        "Deleted all user's books: $userId",
+        name: "FirebaseUserBooksDatasource",
+      );
+      return const Right(null);
+    } catch (e) {
+      log(
+        "Error (deleteUserBooks): $e",
+        name: "FirebaseUserBooksDatasource",
+      );
+      return Left(GenericFailure());
+    }
   }
 }

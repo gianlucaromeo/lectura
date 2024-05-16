@@ -67,4 +67,9 @@ class FirebaseUserBooksRepository implements UserBooksRepository {
   }) {
     return _userBooksDatasource.deleteBook(userId, bookId);
   }
+
+  @override
+  Future<Either<Failure, void>> deleteAllBooks(String userId) {
+    return _userBooksDatasource.deleteUserBooks(userId);
+  }
 }

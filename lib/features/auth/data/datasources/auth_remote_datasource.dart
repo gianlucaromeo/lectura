@@ -109,8 +109,16 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
   }
 
   @override
-  Future<void> deleteUser() {
-    return _firebaseAuth.currentUser?.delete() ?? Future.value();
+  Future<void> deleteUser() async {
+    try {
+      await _firebaseAuth.currentUser!.delete();
+
+    } on FirebaseAuthException catch (e) {
+      log("Error code: ${e.code}", name: "AuthRemoteDatasource");
+
+    } catch (e) {
+      log("Error deleting account $e", name: "AuthRemoteDatasource");
+    }
   }
 
   @override

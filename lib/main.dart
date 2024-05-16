@@ -61,7 +61,10 @@ Future<void> mainCommon(AppEnvironment environment) async {
             create: (context) => ThemeBloc(),
           ),
           BlocProvider(
-            create: (context) => LoginBloc(authRepository: authRepository),
+            create: (context) => LoginBloc(
+              authRepository: authRepository,
+              userBooksRepository: userBooksRepository,
+            ),
           ),
           BlocProvider(
             create: (context) => BrowseBloc(

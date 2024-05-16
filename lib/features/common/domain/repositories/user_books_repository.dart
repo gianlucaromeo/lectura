@@ -7,14 +7,14 @@ abstract class UserBooksRepository {
   Future<Either<Failure, List<Book>>> fetchAllBooks(String userId);
 
   /// If successful, returns a [Book] with the provided [status]
-  Future<Either<Failure, Book>> addBook(
-    String userId,
-    String bookId,
-    BookStatus status,
-  );
+  Future<Either<Failure, Book>> addBook(String userId,
+      String bookId,
+      BookStatus status,);
 
   Future<Either<Failure, String>> deleteBook({
     required String userId,
     required String bookId,
   });
+
+  Future<Either<Failure, void>> deleteAllBooks(String userId);
 }

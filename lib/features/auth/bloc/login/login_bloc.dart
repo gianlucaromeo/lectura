@@ -11,15 +11,18 @@ import 'package:lectura/features/auth/domain/repositories/auth_repository.dart';
 import 'package:lectura/features/auth/domain/use_cases/delete_user.dart';
 import 'package:lectura/features/auth/domain/use_cases/login_user_with_email_and_password.dart';
 import 'package:lectura/features/auth/domain/use_cases/logout_user.dart';
+import 'package:lectura/features/common/domain/repositories/user_books_repository.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc({required AuthRepository authRepository})
-      : _authRepository = authRepository,
+  LoginBloc({
+    required AuthRepository authRepository,
+    required UserBooksRepository userBooksRepository,
+  })  : _authRepository = authRepository,
+        _userBooksRepository = userBooksRepository,
         super(const LoginState.unknown()) {
-
     on<_UserChanged>(_onUserChanged);
     _userSubscription = _authRepository.user.listen((user) {
       add(_UserChanged(user));
@@ -41,6 +44,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   final AuthRepository _authRepository;
+  final UserBooksRepository _userBooksRepository;
   late final StreamSubscription<User> _userSubscription;
 
   void _onLoginWithEmailAndPasswordRequested(
@@ -71,9 +75,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   void _onUserChanged(
-      _UserChanged event,
-      Emitter<LoginState> emit,
-      ) async {
+    _UserChanged event,
+    Emitter<LoginState> emit,
+  ) async {
     if (event.user.id?.isNotEmpty == true) {
       log("USER CHANGED: ${event.user.id}");
       emit(LoginState.loggedIn(event.user));
@@ -92,11 +96,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   void _onUserDeleteAccountRequested(
-      UserDeleteAccountRequested event,
-      Emitter<LoginState> emit,
-      ) async {
+    UserDeleteAccountRequested event,
+    Emitter<LoginState> emit,
+  ) async {
     emit(LoginState.inProgress(state.user));
-    await DeleteUser(_authRepository).call(NoParams());
+    await DeleteUser(_authRepository, _userBooksRepository)
+        .call(DeleteUserParams(event.userId));
     emit(const LoginState.unknown());
   }
 }
