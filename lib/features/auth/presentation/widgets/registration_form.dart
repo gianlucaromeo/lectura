@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lectura/core/extensions.dart';
@@ -69,8 +70,11 @@ class _RegistrationPageState extends State<RegistrationForm> {
               title: context.l10n.auth__signup_form__registration_success__dialog__title,
               content: context.l10n.auth__signup_form__registration_success__dialog__content,
               onClose: () {
-                Navigator.of(context).pop();
-            },
+                AutoRouter.of(context).maybePop();
+                setState(() {
+                  isLoading = false;
+                });
+              },
             );
             break;
         }

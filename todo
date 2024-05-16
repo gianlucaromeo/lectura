@@ -1,6 +1,5 @@
 PRIORITY HIGH
-- Fix navigation after registration
-- Fix: after registration, user logs in automatically
+- Fix: deleteUserBooks seems to work but not actually deleting books from Firestore
 - Save light/dark theme preferences
 - Add failures and failures handling
 - Add tests
