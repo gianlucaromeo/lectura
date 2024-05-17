@@ -58,7 +58,7 @@ Future<void> mainCommon(AppEnvironment environment) async {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => ThemeBloc(),
+            create: (context) => ThemeBloc(prefs),
           ),
           BlocProvider(
             create: (context) => LoginBloc(

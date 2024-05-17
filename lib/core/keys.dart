@@ -1,5 +1,7 @@
 class SharedPrefsKeys {
-  static const darkMode = "dark_mode";
+  static const themeMode = "theme_mode";
+  static const dark = "dark";
+  static const light = "light";
 }
 
 class AppKeys {

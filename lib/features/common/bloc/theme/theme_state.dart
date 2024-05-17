@@ -9,6 +9,16 @@ class ThemeState extends Equatable {
 
   const ThemeState.system() : this._(currentThemeMode: ThemeMode.system);
 
+  factory ThemeState.fromSharedPreferences(SharedPreferences prefs) {
+    final currentTheme = prefs.get(SharedPrefsKeys.themeMode) as String?;
+    if (currentTheme == SharedPrefsKeys.dark) {
+      return const ThemeState.dark();
+    } else if (currentTheme == SharedPrefsKeys.light) {
+      return const ThemeState.light();
+    }
+    return const ThemeState.light();
+  }
+
   final ThemeMode currentThemeMode;
 
   @override

@@ -1,6 +1,5 @@
 PRIORITY HIGH
 - Fix: deleteUserBooks seems to work but not actually deleting books from Firestore
-- Save light/dark theme preferences
 - Add failures and failures handling
 - Add tests
 - Handle internet connection not available
@@ -12,6 +11,7 @@ PRIORITY MEDIUM
 - Improve UI for ProfilePage
 - Refactor and clean code
 - Export paths to shorten imports
+- Add other languages
 
 
 BEFORE RELEASING
