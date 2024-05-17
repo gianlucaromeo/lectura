@@ -78,3 +78,7 @@ Future<void> mainCommon(AppEnvironment environment) async {
     ),
   );
 }
+
+void resetBlocs(BuildContext context) {
+  context.read<BrowseBloc>().add(ResetBrowseBlocRequested());
+}

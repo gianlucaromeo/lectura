@@ -6,6 +6,7 @@ import 'package:lectura/features/auth/bloc/login/login_bloc.dart';
 import 'package:lectura/features/common/bloc/theme/theme_bloc.dart';
 import 'package:lectura/features/common/presentation/pages/page_skeleton.dart';
 import 'package:lectura/features/common/presentation/widgets/app_dialog.dart';
+import 'package:lectura/main.dart';
 
 @RoutePage()
 class ProfilePage extends StatelessWidget {
@@ -25,7 +26,11 @@ class ProfilePage extends StatelessWidget {
             OutlinedButton(
               child: Text(context.l10n.profile_page__logout),
               onPressed: () {
-                loginBloc.add(UserLoggedOut());
+                loginBloc.add(
+                  UserLoggedOut(
+                    onLogout: () => resetBlocs(context),
+                  ),
+                );
               },
             ),
             15.0.verticalSpace,
@@ -39,15 +44,12 @@ class ProfilePage extends StatelessWidget {
                   context: context,
                   title: context.l10n.dialog__delete_account__title,
                   content: context.l10n.dialog__delete_account__content,
-                  confirmationOption: context.l10n.dialog__delete_account__confirm_option,
+                  confirmationOption:
+                      context.l10n.dialog__delete_account__confirm_option,
                   denyOption: context.l10n.dialog__delete_account__deny_option,
                   onConfirm: () {
                     loginBloc.add(UserDeleteAccountRequested(
-                      userId: context
-                          .read<LoginBloc>()
-                          .state
-                          .user!
-                          .id!,
+                      userId: context.read<LoginBloc>().state.user!.id!,
                     ));
                   },
                   onDeny: () {},

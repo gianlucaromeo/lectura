@@ -31,6 +31,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
     on<OpenBookRequested>(_onOpenBookRequested);
     on<FetchUserBooksRequested>(_onFetchUserBooksRequested);
     on<BookDeleteRequested>(_onBookDeleteRequested);
+    on<ResetBrowseBlocRequested>(_onResetBrowseBlocRequested);
   }
 
   final SearchRepository _searchRepository;
@@ -175,5 +176,12 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
           : state.openedBook;
       emit(BrowseState.filled(updatedBooks, updatedOpenBook, updatedUserBooks));
     }
+  }
+
+  void _onResetBrowseBlocRequested(
+    ResetBrowseBlocRequested event,
+    Emitter<BrowseState> emit,
+  ) {
+    emit(BrowseState.empty());
   }
 }

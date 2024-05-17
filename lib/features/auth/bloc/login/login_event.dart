@@ -16,7 +16,10 @@ final class LoginWithEmailAndPasswordRequested extends LoginEvent {
 
 final class LoginRetryAfterFailure extends LoginEvent {}
 
-final class UserLoggedOut extends LoginEvent {}
+final class UserLoggedOut extends LoginEvent {
+  const UserLoggedOut({this.onLogout});
+  final Function? onLogout;
+}
 
 final class UserDeleteAccountRequested extends LoginEvent {
   const UserDeleteAccountRequested({required this.userId});

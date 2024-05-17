@@ -92,6 +92,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async {
     emit(LoginState.inProgress(state.user));
     await LogoutUser(_authRepository).call(NoParams());
+    event.onLogout?.call();
     emit(const LoginState.unknown());
   }
 

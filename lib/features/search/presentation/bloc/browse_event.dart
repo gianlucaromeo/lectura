@@ -41,3 +41,5 @@ final class BookDeleteRequested extends BrowseEvent {
   final String userId;
   final String bookId;
 }
+
+final class ResetBrowseBlocRequested extends BrowseEvent {}
