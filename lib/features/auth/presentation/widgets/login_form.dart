@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -175,7 +177,11 @@ class _LoginPageState extends State<LoginForm> {
       };
     } else if (failure is GenericFailure) {
       onClose = () {
-        Focus.of(context).unfocus();
+        try {
+          Focus.of(context).unfocus();
+        } catch (e) {
+          log("Error while unfcusing", name: "LoginForm");
+        }
       };
     }
 

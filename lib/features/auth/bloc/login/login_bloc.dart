@@ -10,6 +10,7 @@ import 'package:lectura/features/auth/domain/entities/user.dart';
 import 'package:lectura/features/auth/domain/repositories/auth_repository.dart';
 import 'package:lectura/features/auth/domain/use_cases/delete_user.dart';
 import 'package:lectura/features/auth/domain/use_cases/login_user_with_email_and_password.dart';
+import 'package:lectura/features/auth/domain/use_cases/login_with_google.dart';
 import 'package:lectura/features/auth/domain/use_cases/logout_user.dart';
 import 'package:lectura/features/common/domain/repositories/user_books_repository.dart';
 
@@ -31,6 +32,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginWithEmailAndPasswordRequested>(
       _onLoginWithEmailAndPasswordRequested,
     );
+
+    on<LoginWithGoogleRequested>(_onLoginWithGoogleRequested);
 
     on<LoginRetryAfterFailure>(_onLoginRetryAfterFailure);
     on<UserLoggedOut>(_onUserLoggedOut);
@@ -59,6 +62,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         password: event.password,
       ),
     );
+
+    if (resp.isFailure) {
+      emit(LoginState.failed(resp.failure));
+    } else {
+      emit(LoginState.loggedIn(resp.user));
+    }
+  }
+
+  void _onLoginWithGoogleRequested(
+    LoginWithGoogleRequested event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(LoginState.inProgress(state.user));
+
+    final resp = await LoginWithGoogle(_authRepository).call(NoParams());
 
     if (resp.isFailure) {
       emit(LoginState.failed(resp.failure));

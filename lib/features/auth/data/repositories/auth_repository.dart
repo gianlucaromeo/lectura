@@ -48,10 +48,33 @@ class AuthRepositoryImpl implements AuthRepository {
     if (await networkInfo.isConnected) {
       try {
         return Right(
-          await authRemoteDataSource.loginUserWithEmailAndPassword(
-            email: email,
-            password: password,
-          ).then((dto) => dto.toEntity()),
+          await authRemoteDataSource
+              .loginUserWithEmailAndPassword(
+                email: email,
+                password: password,
+              )
+              .then((dto) => dto.toEntity()),
+        );
+      } catch (e) {
+        if (e is ServerException) {
+          return Left(e.failure);
+        } else {
+          return Left(ServerFailure());
+        }
+      }
+    } else {
+      return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, User>> loginWithGoogle() async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(
+          await authRemoteDataSource
+              .loginWithGoogle()
+              .then((dto) => dto.toEntity()),
         );
       } catch (e) {
         if (e is ServerException) {
@@ -69,6 +92,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, Future<void>>> logout() async {
     return Right(authRemoteDataSource.logout());
   }
+
   @override
   Future<Either<Failure, Future<void>>> deleteUser() async {
     return Right(authRemoteDataSource.deleteUser());
@@ -78,5 +102,4 @@ class AuthRepositoryImpl implements AuthRepository {
   Stream<User> get user {
     return authRemoteDataSource.user.map((dto) => dto.toEntity());
   }
-
 }

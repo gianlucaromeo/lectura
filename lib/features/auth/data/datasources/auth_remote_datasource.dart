@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lectura/core/exceptions.dart';
 import 'package:lectura/features/auth/data/dto/user_dto.dart';
 import 'package:lectura/features/auth/data/exceptions/firebase_auth_exceptions.dart';
@@ -16,6 +17,8 @@ abstract class AuthRemoteDataSource {
     required String password,
   });
 
+  Future<UserDto> loginWithGoogle();
+
   Future<void> logout();
 
   Future<void> deleteUser();
@@ -24,8 +27,8 @@ abstract class AuthRemoteDataSource {
 }
 
 class FirebaseAuthDataSource extends AuthRemoteDataSource {
-
   final _firebaseAuth = FirebaseAuth.instance;
+  final _googleSignIn = GoogleSignIn();
 
   @override
   Future<bool> createUserWithEmailAndPassword({
@@ -64,8 +67,7 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
     try {
       email = email.trim();
 
-      final credentials =
-          await _firebaseAuth.signInWithEmailAndPassword(
+      final credentials = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -105,6 +107,9 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
 
   @override
   Future<void> logout() async {
+    if (_googleSignIn.currentUser != null) {
+      await _googleSignIn.disconnect();
+    }
     return await _firebaseAuth.signOut();
   }
 
@@ -112,10 +117,8 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
   Future<void> deleteUser() async {
     try {
       await _firebaseAuth.currentUser!.delete();
-
     } on FirebaseAuthException catch (e) {
       log("Error code: ${e.code}", name: "AuthRemoteDatasource");
-
     } catch (e) {
       log("Error deleting account $e", name: "AuthRemoteDatasource");
     }
@@ -124,9 +127,42 @@ class FirebaseAuthDataSource extends AuthRemoteDataSource {
   @override
   Stream<UserDto> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
-     return firebaseUser == null || !firebaseUser.emailVerified
+      return firebaseUser == null || !firebaseUser.emailVerified
           ? UserDto.empty()
           : UserDto(id: firebaseUser.uid, email: firebaseUser.email);
     });
+  }
+
+  @override
+  Future<UserDto> loginWithGoogle() async {
+    try {
+      final account = await _googleSignIn.signIn();
+
+      if (account == null) {
+        throw GenericException(); // TODO
+      }
+
+      final authentication = await account.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: authentication.accessToken,
+        idToken: authentication.idToken,
+      );
+
+      final userCredential = await _firebaseAuth.signInWithCredential(credential);
+
+      if (userCredential.user != null) {
+        return UserDto(
+          id: _firebaseAuth.currentUser!.uid,
+          email: _firebaseAuth.currentUser!.email, // TODO Check if it works
+        );
+      } else {
+        throw GenericException(); // TODO
+      }
+    }
+    catch (e) {
+      log("Error during sign in with Google: $e");
+      throw GenericException(); // TODO
+    }
   }
 }
