@@ -17,44 +17,54 @@ class ProfilePage extends StatelessWidget {
     final loginBloc = context.read<LoginBloc>();
     return LecturaPage(
       title: context.l10n.profile_page__title,
+      padding: 20.0.all,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(loginBloc.state.user!.email!),
             25.0.verticalSpace,
-            OutlinedButton(
-              child: Text(context.l10n.profile_page__logout),
-              onPressed: () {
-                loginBloc.add(
-                  UserLoggedOut(
-                    onLogout: () => resetBlocs(context),
-                  ),
-                );
-              },
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.tonal(
+                child: Text(context.l10n.profile_page__logout),
+                onPressed: () {
+                  loginBloc.add(
+                    UserLoggedOut(
+                      onLogout: () => resetBlocs(context),
+                    ),
+                  );
+                },
+              ),
             ),
             15.0.verticalSpace,
-            OutlinedButton(
-              child: Text(
-                context.l10n.profile_page__delete_account,
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                style: TextButton.styleFrom(
+                  side: const BorderSide(color: Colors.black26),
+                ),
+                onPressed: () {
+                  showAppConfirmationDialog(
+                    context: context,
+                    title: context.l10n.dialog__delete_account__title,
+                    content: context.l10n.dialog__delete_account__content,
+                    confirmationOption:
+                        context.l10n.dialog__delete_account__confirm_option,
+                    denyOption: context.l10n.dialog__delete_account__deny_option,
+                    onConfirm: () {
+                      loginBloc.add(UserDeleteAccountRequested(
+                        userId: context.read<LoginBloc>().state.user!.id!,
+                      ));
+                    },
+                    onDeny: () {},
+                  );
+                },
+                child: Text(
+                  context.l10n.profile_page__delete_account,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                ),
               ),
-              onPressed: () {
-                showAppConfirmationDialog(
-                  context: context,
-                  title: context.l10n.dialog__delete_account__title,
-                  content: context.l10n.dialog__delete_account__content,
-                  confirmationOption:
-                      context.l10n.dialog__delete_account__confirm_option,
-                  denyOption: context.l10n.dialog__delete_account__deny_option,
-                  onConfirm: () {
-                    loginBloc.add(UserDeleteAccountRequested(
-                      userId: context.read<LoginBloc>().state.user!.id!,
-                    ));
-                  },
-                  onDeny: () {},
-                );
-              },
             ),
             25.0.verticalSpace,
             IconButton(
