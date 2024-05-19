@@ -22,7 +22,10 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(loginBloc.state.user!.email!),
+            Text(
+              loginBloc.state.user!.email!,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
             25.0.verticalSpace,
             SizedBox(
               width: double.infinity,
@@ -42,7 +45,12 @@ class ProfilePage extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton(
                 style: TextButton.styleFrom(
-                  side: const BorderSide(color: Colors.black26),
+                  side: BorderSide(
+                    color: context.read<ThemeBloc>().state.currentThemeMode ==
+                            ThemeMode.dark
+                        ? Colors.white24
+                        : Colors.black26,
+                  ),
                 ),
                 onPressed: () {
                   showAppConfirmationDialog(
@@ -51,7 +59,8 @@ class ProfilePage extends StatelessWidget {
                     content: context.l10n.dialog__delete_account__content,
                     confirmationOption:
                         context.l10n.dialog__delete_account__confirm_option,
-                    denyOption: context.l10n.dialog__delete_account__deny_option,
+                    denyOption:
+                        context.l10n.dialog__delete_account__deny_option,
                     onConfirm: () {
                       loginBloc.add(UserDeleteAccountRequested(
                         userId: context.read<LoginBloc>().state.user!.id!,
