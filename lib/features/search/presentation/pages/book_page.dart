@@ -111,11 +111,15 @@ class _BookPageState extends State<BookPage> {
                                             .textTheme
                                             .titleSmall!
                                             .copyWith(
-                                                fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                       ),
                                       7.0.verticalSpace,
-                                      ...browseBlocBook.categories!
-                                          .map((e) => Text(e)),
+                                      Text(
+                                        browseBlocBook.categories!.join(", "),
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ],
                                   );
                                 }
@@ -181,28 +185,29 @@ class _BookPageState extends State<BookPage> {
                               IconButton(
                                 onPressed: () {
                                   showAppConfirmationDialog(
-                                      context: context,
-                                      title: context.l10n.dialog__delete_book__title,
-                                      content: context.l10n.dialog__delete_book__content,
-                                      confirmationOption: context.l10n.dialog__delete_book__confirm_option,
-                                      denyOption: context.l10n.dialog__delete_book__deny_option,
-                                      onConfirm: () {
-                                        context.read<BrowseBloc>().add(
-                                          BookDeleteRequested(
-                                            userId: context
-                                                .read<LoginBloc>()
-                                                .state
-                                                .user!
-                                                .id!,
-                                            bookId: book.id,
-                                          ),
-                                        );
-                                      },
-                                      onDeny: () {
-
-                                      },
+                                    context: context,
+                                    title:
+                                        context.l10n.dialog__delete_book__title,
+                                    content: context
+                                        .l10n.dialog__delete_book__content,
+                                    confirmationOption: context.l10n
+                                        .dialog__delete_book__confirm_option,
+                                    denyOption: context
+                                        .l10n.dialog__delete_book__deny_option,
+                                    onConfirm: () {
+                                      context.read<BrowseBloc>().add(
+                                            BookDeleteRequested(
+                                              userId: context
+                                                  .read<LoginBloc>()
+                                                  .state
+                                                  .user!
+                                                  .id!,
+                                              bookId: book.id,
+                                            ),
+                                          );
+                                    },
+                                    onDeny: () {},
                                   );
-
                                 },
                                 icon: const Icon(Icons.delete),
                               ),
@@ -266,19 +271,24 @@ class _BookPageState extends State<BookPage> {
                             padding: 15.0.onlyBottom,
                             child: OutlinedButton(
                               style: TextButton.styleFrom(
-                                backgroundColor:
-                                    statusInfo[i][1] as BookStatus == status
-                                        ? Theme.of(context).colorScheme.primary
-                                        : Colors.transparent,
-                                foregroundColor:
-                                    statusInfo[i][1] as BookStatus == status
-                                        ? Theme.of(context).colorScheme.onPrimary
-                                        : Theme.of(context).colorScheme.primary,
-                                textStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  height: 3.0,
-                                )
-                              ),
+                                  backgroundColor:
+                                      statusInfo[i][1] as BookStatus == status
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                          : Colors.transparent,
+                                  foregroundColor: statusInfo[i][1]
+                                              as BookStatus ==
+                                          status
+                                      ? Theme.of(context).colorScheme.onPrimary
+                                      : Theme.of(context).colorScheme.primary,
+                                  textStyle: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        height: 3.0,
+                                      )),
                               onPressed: () {
                                 final userId =
                                     context.read<LoginBloc>().state.user!.id!;

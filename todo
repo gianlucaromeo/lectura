@@ -1,9 +1,9 @@
 PRIORITY HIGH
 - Fix: deleteUserBooks seems to work but not actually deleting books from Firestore
+- Fix: navigation when registering an already-registered account
 - Add failures and failures handling
 - Add tests
 - Handle internet connection not available
-- Add login with Google
 - Add "about"
 
 
