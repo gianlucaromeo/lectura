@@ -1,4 +1,3 @@
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,7 +50,11 @@ class _LibraryPageState extends State<LibraryPage> {
                     ),
                   ],
                   style: SegmentedButton.styleFrom(
-                    padding: 6.0.horizontal, // TODO
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      side: BorderSide.none,
+                    ),
+                    side: BorderSide(color: Theme.of(context).colorScheme.surface)
                   ),
                   selected: selectedSegments,
                   emptySelectionAllowed: false,
