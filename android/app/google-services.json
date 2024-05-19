@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "727441168093-6h5o3omcto50l359nnefcfu7l0tgql2d.apps.googleusercontent.com",
+          "client_id": "727441168093-kojg9jdikd6nfs24124lavqm1qp48alp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lectura.lectura",
+            "certificate_hash": "660e621c12ed7a25632442bcd8213a72fc97fdcd"
+          }
+        },
+        {
+          "client_id": "727441168093-o92s14n272079h51pv01a82aphjpvthm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -29,6 +37,13 @@
             {
               "client_id": "727441168093-6h5o3omcto50l359nnefcfu7l0tgql2d.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "727441168093-1abc9qvqlng9m0sqdtp8tttpik1gbspp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lectura.lectura"
+              }
             }
           ]
         }
